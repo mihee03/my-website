@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>팝업스토어 검색 및 지도 표시</title>
-    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=h1ch1c9q07"></script> 
+
+    <!-- 지도 API -->
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=지도용_클라이언트_ID"></script>
     <style>
         #map {
             width: 100%;
@@ -41,15 +43,13 @@
             zoom: 12
         });
 
-        // 네이버 API 정보
-        const clientId = "2il85btNfU6KvdvFEPYu"; // 네이버 클라이언트 ID
-        const clientSecret = "y4iSS_jPQq"; // 네이버 클라이언트 Secret
+        // 지역 검색 API 정보
+        const clientId = "2il85btNfU6KvdvFEPYu"; // 지역 검색 API 클라이언트 ID
+        const clientSecret = "y4iSS_jPQq"; // 지역 검색 API 클라이언트 Secret
 
         // 네이버 지역 검색 API 호출
         async function searchPlaces(query) {
-            // CORS Proxy 추가
-            const proxyUrl = "https://cors-anywhere.herokuapp.com/";
-            const url = `${proxyUrl}https://openapi.naver.com/v1/search/local.json?query=${encodeURIComponent(query)}&display=5&start=1&sort=random`;
+            const url = `https://openapi.naver.com/v1/search/local.json?query=${encodeURIComponent(query)}&display=5&start=1&sort=random`;
 
             try {
                 const response = await fetch(url, {
