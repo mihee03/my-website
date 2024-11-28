@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>팝업스토어 검색 및 지도 표시</title>
-
-    <!-- 지도 API -->
-    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=h1ch1c9q07"></script>
+    <title>검색 API와 지도 표시</title>
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=h1ch1c9q07"></script> <!-- 네이버 지도 API -->
     <style>
         #map {
             width: 100%;
@@ -43,39 +41,35 @@
             zoom: 12
         });
 
-        // 지역 검색 API 정보
-        const clientId = "2il85btNfU6KvdvFEPYu"; // 지역 검색 API 클라이언트 ID
-        const clientSecret = "y4iSS_jPQq"; // 지역 검색 API 클라이언트 Secret
-
-        // 네이버 지역 검색 API 호출
+        // 네이버 지역 검색 API를 호출하는 함수
         async function searchPlaces(query) {
-            const url = `https://openapi.naver.com/v1/search/local.json?query=${encodeURIComponent(query)}&display=5&start=1&sort=random`;
+            const clientId = "2il85btNfU6KvdvFEPYu";  // 클라이언트 ID
+            const clientSecret = "y4iSS_jPQq"; // 클라이언트 Secret
 
-            try {
-                const response = await fetch(url, {
-                    headers: {
-                        "X-Naver-Client-Id": clientId,
-                        "X-Naver-Client-Secret": clientSecret
-                    }
-                });
-                const data = await response.json();
+            // URL 인코딩된 쿼리
+            const encText = encodeURIComponent(query);
+            const url = `https://openapi.naver.com/v1/search/local.json?query=${encText}&display=5`;
 
-                if (data.items) {
-                    displayResults(data.items);
-                } else {
-                    alert("검색 결과가 없습니다.");
+            const response = await fetch(url, {
+                headers: {
+                    "X-Naver-Client-Id": clientId,
+                    "X-Naver-Client-Secret": clientSecret
                 }
-            } catch (error) {
-                console.error("API 요청 오류:", error);
-                alert("API 요청 중 오류가 발생했습니다.");
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                displayResults(data.items);
+            } else {
+                alert("검색 결과를 불러오는 데 실패했습니다.");
             }
         }
 
-        // 검색 결과를 지도와 목록에 표시
+        // 검색 결과를 지도와 페이지에 표시하는 함수
         function displayResults(places) {
             // 이전 결과 초기화
             document.getElementById("results").innerHTML = "";
-            map.setCenter(new naver.maps.LatLng(37.5665, 126.9780)); // 초기 지도 중심
+            map.setCenter(new naver.maps.LatLng(37.5665, 126.9780)); // 지도 중심 초기화
 
             places.forEach(place => {
                 // 지도에 마커 추가
@@ -89,6 +83,7 @@
                 const infoWindow = new naver.maps.InfoWindow({
                     content: `<div><strong>${place.title}</strong><br>${place.address}</div>`
                 });
+
                 naver.maps.Event.addListener(marker, "click", () => {
                     infoWindow.open(map, marker);
                 });
