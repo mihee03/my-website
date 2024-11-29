@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>검색 API와 지도 + 커뮤니티 공간</title>
-    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=h1ch1c9q07"></script> <!-- 네이버 지도 API -->
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=h1ch1c9q07"></script> <!-- 네이버 지도 API -->
     <style>
         #map {
             width: 100%;
@@ -220,4 +220,13 @@
                 });
                 postDiv.appendChild(commentsDiv);
                 postsContainer.appendChild(postDiv);
-           
+            });
+        }
+
+        // 페이지 로드 시 사용자 위치 가져오기
+        window.onload = function() {
+            getUserLocation(); // 사용자 위치 가져오기
+        };
+    </script>
+</body>
+</html>
