@@ -100,7 +100,7 @@
 
                     // 검색 결과 목록 추가
                     document.getElementById("results").innerHTML += `
-                        <div class="result-item">
+                        <div class="result-item" onclick="moveToLocation(${mapy}, ${mapx})">
                             <strong>${place.title.replace(/<[^>]+>/g, "")}</strong><br>
                             ${place.address}<br>
                             <a href="${place.link}" target="_blank">상세보기</a>
@@ -121,6 +121,12 @@
                 alert("검색어를 입력하세요!");
             }
         });
+
+        // 지도에서 마커 위치로 이동하는 함수
+        function moveToLocation(lat, lng) {
+            map.setCenter(new naver.maps.LatLng(lat, lng));
+            map.setZoom(14); // 적절한 줌 레벨로 설정
+        }
     </script>
 </body>
 </html>
