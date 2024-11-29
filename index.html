@@ -83,7 +83,6 @@
                         map: map,
                         title: place.title.replace(/<[^>]+>/g, "") // HTML 태그 제거
                     });
-                    console.log(`마커 추가: ${place.title}, 위치: ${place.mapy}, ${place.mapx}`);
 
                     // 지도 중심을 마커 위치로 변경
                     map.setCenter(new naver.maps.LatLng(place.mapy, place.mapx));
