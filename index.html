@@ -1,49 +1,236 @@
-// 게시글과 댓글 표시
-function displayPosts() {
-    const postsContainer = document.getElementById("posts");
-    postsContainer.innerHTML = ""; // 기존 게시글 초기화
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>검색 API와 지도 + 커뮤니티 공간</title>
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=h1ch1c9q07"></script> <!-- 네이버 지도 API -->
+    <style>
+        #map {
+            width: 100%;
+            height: 500px;
+            margin-bottom: 20px;
+        }
+        .search-box {
+            margin: 20px;
+            text-align: center;
+        }
+        #results {
+            margin: 20px;
+        }
+        .result-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        /* 커뮤니티 영역 스타일 */
+        #community-section {
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 2px solid #ddd;
+        }
+        #community-section h2 {
+            font-size: 24px;
+        }
+        .post {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .post .comments {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+        .comment {
+            margin-top: 5px;
+        }
+        .post textarea {
+            width: 100%;
+            height: 80px;
+        }
+    </style>
+</head>
+<body>
+    <div class="search-box">
+        <input type="text" id="search-input" placeholder="검색어를 입력하세요" style="width: 300px; padding: 5px;" />
+        <button id="search-button" style="padding: 5px 10px;">검색</button>
+    </div>
+    <div id="map"></div>
+    <div id="results"></div>
 
-    posts.forEach(post => {
-        const postDiv = document.createElement("div");
-        postDiv.classList.add("post");
+    <!-- 커뮤니티 공간 -->
+    <div id="community-section">
+        <h2>익명 게시판</h2>
+        <div id="posts"></div>
+        <div>
+            <textarea id="post-input" placeholder="글을 작성해보세요..." style="width: 100%; height: 80px;"></textarea>
+            <button id="post-button" style="padding: 5px 10px;">글 작성</button>
+        </div>
+    </div>
 
-        const postTitle = document.createElement("div");
-        postTitle.textContent = `익명글 ${post.id}: ${post.content}`;
-        postDiv.appendChild(postTitle);
+    <script>
+        var map;
 
-        // 댓글 작성 부분
-        const commentInput = document.createElement("textarea");
-        commentInput.placeholder = "댓글을 작성해보세요...";
-        postDiv.appendChild(commentInput);
+        // 지도 초기화
+        function initializeMap(latitude, longitude) {
+            map = new naver.maps.Map('map', {
+                center: new naver.maps.LatLng(latitude, longitude), // 사용자의 현재 위치
+                zoom: 12
+            });
+        }
 
-        const commentButton = document.createElement("button");
-        commentButton.textContent = "댓글 작성";
-        postDiv.appendChild(commentButton);
-
-        // 댓글 작성 기능
-        commentButton.addEventListener("click", () => {
-            const commentContent = commentInput.value.trim();
-            if (commentContent) {
-                post.comments.push(commentContent);
-                commentInput.value = ""; // 댓글 입력창 초기화
-                displayPosts(); // 댓글 추가 후 게시글 새로 고침
+        // 사용자의 위치 가져오기
+        function getUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var userLat = position.coords.latitude;
+                    var userLng = position.coords.longitude;
+                    initializeMap(userLat, userLng); // 사용자 위치로 지도 초기화
+                    searchPlaces(userLat, userLng); // 주변 장소 검색
+                }, function() {
+                    alert("사용자의 위치를 가져올 수 없습니다.");
+                });
             } else {
-                alert("댓글을 입력해주세요.");
+                alert("이 브라우저는 Geolocation을 지원하지 않습니다.");
+            }
+        }
+
+        // 검색 API (CORS Proxy 변경)
+        async function searchPlaces(lat, lng) {
+            const proxyUrl = "https://api.allorigins.win/get"; // CORS Proxy URL
+            const query = document.getElementById("search-input").value || "팝업"; // 사용자가 입력한 검색어
+            const url = `https://openapi.naver.com/v1/search/local.json?query=${encodeURIComponent(query)}&display=5&start=1&sort=random&mapx=${lng}&mapy=${lat}`;
+
+            console.log(`API URL: ${url}`);  // API 호출 URL 확인
+            try {
+                const response = await fetch(`${proxyUrl}?url=${encodeURIComponent(url)}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    const places = JSON.parse(data.contents).items; // 검색 결과 배열
+
+                    console.log(places); // API 응답을 콘솔에 출력하여 결과 확인
+
+                    if (places && places.length > 0) {
+                        displayResults(places); // 검색 결과를 화면에 표시
+                    } else {
+                        alert("검색 결과가 없습니다.");
+                    }
+                } else {
+                    alert("검색 결과를 불러오는 데 실패했습니다.");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("API 요청 중 오류가 발생했습니다.");
+            }
+        }
+
+        // 검색 결과를 지도와 페이지에 표시하는 함수
+        function displayResults(places) {
+            document.getElementById("results").innerHTML = ""; // 기존 결과 초기화
+
+            places.forEach(place => {
+                const mapx = parseFloat(place.mapx); // 경도
+                const mapy = parseFloat(place.mapy); // 위도
+
+                // 지도에 마커 추가
+                const marker = new naver.maps.Marker({
+                    position: new naver.maps.LatLng(mapy, mapx),
+                    map: map,
+                    title: place.title.replace(/<[^>]+>/g, "") // HTML 태그 제거
+                });
+
+                // 마커 클릭 이벤트 (정보창 표시)
+                const infoWindow = new naver.maps.InfoWindow({
+                    content: `<div><strong>${place.title}</strong><br>${place.address}</div>`
+                });
+
+                naver.maps.Event.addListener(marker, "click", () => {
+                    infoWindow.open(map, marker);
+                });
+
+                // 검색 결과 목록 추가
+                document.getElementById("results").innerHTML += `
+                    <div class="result-item">
+                        <strong>${place.title.replace(/<[^>]+>/g, "")}</strong><br>
+                        ${place.address}<br>
+                        <a href="${place.link}" target="_blank">상세보기</a>
+                    </div>
+                `;
+            });
+        }
+
+        // 커뮤니티 게시글 작성
+        let posts = []; // 게시글을 저장하는 배열
+        document.getElementById("post-button").addEventListener("click", () => {
+            const postContent = document.getElementById("post-input").value.trim();
+            if (postContent) {
+                const newPost = {
+                    id: posts.length + 1,
+                    content: postContent,
+                    comments: [] // 댓글을 저장할 배열
+                };
+                posts.push(newPost);
+                displayPosts(); // 게시글 새로 고침
+                document.getElementById("post-input").value = ""; // 글 입력창 초기화
+            } else {
+                alert("글을 입력해주세요.");
             }
         });
 
-        // 댓글 표시
-        const commentsDiv = document.createElement("div");
-        commentsDiv.classList.add("comments");
+        // 게시글과 댓글 표시
+        function displayPosts() {
+            const postsContainer = document.getElementById("posts");
+            postsContainer.innerHTML = ""; // 기존 게시글 초기화
 
-        post.comments.forEach(comment => {
-            const commentDiv = document.createElement("div");
-            commentDiv.classList.add("comment");
-            commentDiv.textContent = comment;
-            commentsDiv.appendChild(commentDiv);
-        });
+            posts.forEach(post => {
+                const postDiv = document.createElement("div");
+                postDiv.classList.add("post");
 
-        postDiv.appendChild(commentsDiv);
-        postsContainer.appendChild(postDiv);
-    });
-}
+                const postTitle = document.createElement("div");
+                postTitle.textContent = `익명글 ${post.id}: ${post.content}`;
+                postDiv.appendChild(postTitle);
+
+                // 댓글 작성 부분
+                const commentInput = document.createElement("textarea");
+                commentInput.placeholder = "댓글을 작성해보세요...";
+                postDiv.appendChild(commentInput);
+
+                const commentButton = document.createElement("button");
+                commentButton.textContent = "댓글 작성";
+                postDiv.appendChild(commentButton);
+
+                // 댓글 작성 기능
+                commentButton.addEventListener("click", () => {
+                    const commentContent = commentInput.value.trim();
+                    if (commentContent) {
+                        post.comments.push(commentContent);
+                        commentInput.value = ""; // 댓글 입력창 초기화
+                        displayPosts(); // 댓글 추가 후 게시글 새로 고침
+                    } else {
+                        alert("댓글을 입력해주세요.");
+                    }
+                });
+
+                // 댓글 표시
+                const commentsDiv = document.createElement("div");
+                commentsDiv.classList.add("comments");
+                post.comments.forEach(comment => {
+                    const commentDiv = document.createElement("div");
+                    commentDiv.classList.add("comment");
+                    commentDiv.textContent = comment;
+                    commentsDiv.appendChild(commentDiv);
+                });
+                postDiv.appendChild(commentsDiv);
+                postsContainer.appendChild(postDiv);
+            });
+        }
+
+        // 페이지 로드 시 사용자 위치 가져오기
+        window.onload = function() {
+            getUserLocation(); // 사용자 위치 가져오기
+        };
+    </script>
+</body>
+</html>
