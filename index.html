@@ -59,10 +59,10 @@
             }
         }
 
-        // 네이버 지역 검색 API를 호출하는 함수
-        async function searchPlaces(lat, lng) {
+        // 위치 기반 검색을 하는 함수
+        async function searchPlaces(userLat, userLng) {
             const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // CORS Proxy URL
-            const url = `${proxyUrl}https://openapi.naver.com/v1/search/local.json?query=팝업&display=5&start=1&sort=random&lat=${lat}&lng=${lng}`;
+            const url = `${proxyUrl}https://openapi.naver.com/v1/search/local.json?query=팝업&display=5&start=1&sort=random&lat=${userLat}&lng=${userLng}`;
 
             try {
                 const response = await fetch(url, {
@@ -88,6 +88,7 @@
         function displayResults(places) {
             // 이전 결과 초기화
             document.getElementById("results").innerHTML = "";
+            map.setCenter(new naver.maps.LatLng(37.5665, 126.9780)); // 지도 중심 초기화
 
             places.forEach(place => {
                 // 좌표값이 유효한지 확인
@@ -129,14 +130,16 @@
         document.getElementById("search-button").addEventListener("click", () => {
             const query = document.getElementById("search-input").value;
             if (query.trim()) {
-                getUserLocation(); // 현재 위치를 확인한 후 주변 장소 검색
+                searchPlaces(query.trim()); // 검색 실행
             } else {
                 alert("검색어를 입력하세요!");
             }
         });
 
-        // 페이지 로드 시 사용자 위치로 검색 시작
-        getUserLocation(); 
+        // 페이지 로드 시 사용자 위치를 가져옴
+        window.onload = function() {
+            getUserLocation(); // 사용자 위치를 가져와 지도와 검색 결과 표시
+        };
     </script>
 </body>
 </html>
