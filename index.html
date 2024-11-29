@@ -49,6 +49,7 @@
                 navigator.geolocation.getCurrentPosition(function(position) {
                     var userLat = position.coords.latitude;
                     var userLng = position.coords.longitude;
+                    console.log("User location:", userLat, userLng); // 위치 확인
                     map.setCenter(new naver.maps.LatLng(userLat, userLng)); // 사용자 위치로 지도 중심 이동
                     searchPlaces(userLat, userLng, "팝업"); // 사용자 위치를 기준으로 주변 장소 검색
                 }, function() {
@@ -74,7 +75,8 @@
 
                 if (response.ok) {
                     const data = await response.json();
-                    filterResultsByDistance(data.items, userLat, userLng); // 검색된 결과 중 가까운 장소만 필터링
+                    console.log("API Response:", data); // API 응답 확인
+                    displayResults(data.items, userLat, userLng); // 검색된 결과를 지도에 표시
                 } else {
                     alert("검색 결과를 불러오는 데 실패했습니다.");
                 }
@@ -101,23 +103,24 @@
         // 거리 기준으로 결과 필터링하는 함수
         function filterResultsByDistance(places, userLat, userLng) {
             const maxDistance = 5; // 최대 거리 (킬로미터 단위)
-
+            console.log("Filtering results by distance...");
+            
             // 필터링된 결과만 사용
             const filteredPlaces = places.filter(place => {
                 const mapx = parseFloat(place.mapx); // 경도
                 const mapy = parseFloat(place.mapy); // 위도
                 const distance = calculateDistance(userLat, userLng, mapy, mapx);
+                console.log(`Place: ${place.title}, Distance: ${distance} km`); // 거리 확인
                 return distance <= maxDistance;
             });
 
-            displayResults(filteredPlaces);
+            displayResults(filteredPlaces); // 필터링된 결과만 표시
         }
 
         // 검색 결과를 지도와 페이지에 표시하는 함수
-        function displayResults(places) {
+        function displayResults(places, userLat, userLng) {
             // 이전 결과 초기화
             document.getElementById("results").innerHTML = "";
-
             places.forEach(place => {
                 const mapx = parseFloat(place.mapx); // 경도
                 const mapy = parseFloat(place.mapy); // 위도
