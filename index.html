@@ -73,6 +73,8 @@
             map.setCenter(new naver.maps.LatLng(37.5665, 126.9780)); // 지도 중심 초기화
 
             places.forEach(place => {
+                console.log(`Place: ${place.title}, mapx: ${place.mapx}, mapy: ${place.mapy}`); // 좌표 확인
+
                 // 지도에 마커 추가
                 const marker = new naver.maps.Marker({
                     position: new naver.maps.LatLng(place.mapy, place.mapx),
