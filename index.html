@@ -73,19 +73,20 @@
             map.setCenter(new naver.maps.LatLng(37.5665, 126.9780)); // 지도 중심 초기화
 
             places.forEach(place => {
-                console.log(`Place: ${place.title}, mapx: ${place.mapx}, mapy: ${place.mapy}`); // 좌표 확인
-
                 // 좌표값이 유효한지 확인
-                if (place.mapx && place.mapy) {
+                const mapx = parseFloat(place.mapx); // 경도
+                const mapy = parseFloat(place.mapy); // 위도
+
+                if (!isNaN(mapx) && !isNaN(mapy)) {
                     // 지도에 마커 추가
                     const marker = new naver.maps.Marker({
-                        position: new naver.maps.LatLng(place.mapy, place.mapx),
+                        position: new naver.maps.LatLng(mapy, mapx),
                         map: map,
                         title: place.title.replace(/<[^>]+>/g, "") // HTML 태그 제거
                     });
 
                     // 지도 중심을 마커 위치로 변경
-                    map.setCenter(new naver.maps.LatLng(place.mapy, place.mapx));
+                    map.setCenter(new naver.maps.LatLng(mapy, mapx));
                     map.setZoom(14); // 적절한 줌 레벨로 설정
 
                     // 마커 클릭 이벤트 (정보창 표시)
