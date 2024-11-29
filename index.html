@@ -72,7 +72,7 @@
 
     <script>
         var map;
-        
+
         // 지도 초기화
         function initializeMap(latitude, longitude) {
             map = new naver.maps.Map('map', {
@@ -107,7 +107,12 @@
                 const response = await fetch(`${proxyUrl}?url=${encodeURIComponent(url)}`);
                 if (response.ok) {
                     const data = await response.json();
-                    displayResults(JSON.parse(data.contents).items); // 검색 결과를 화면에 표시
+                    const places = JSON.parse(data.contents).items; // 검색 결과 배열
+                    if (places && places.length > 0) {
+                        displayResults(places); // 검색 결과를 화면에 표시
+                    } else {
+                        alert("검색 결과가 없습니다.");
+                    }
                 } else {
                     alert("검색 결과를 불러오는 데 실패했습니다.");
                 }
