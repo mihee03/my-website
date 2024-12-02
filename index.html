@@ -1,3 +1,5 @@
+익명 게시판까지
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -77,7 +79,7 @@
             zoom: 12
         });
 
-        // 검색 API
+        // 검색 API (기존 코드)
         async function searchPlaces(query) {
             const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // CORS Proxy URL
             const url = `${proxyUrl}https://openapi.naver.com/v1/search/local.json?query=${encodeURIComponent(query)}&display=5&start=1&sort=random`;
@@ -102,7 +104,7 @@
             }
         }
 
-        // 검색 결과를 지도와 페이지에 표시하는 함수
+        // 검색 결과를 지도와 페이지에 표시하는 함수 (기존 코드)
         function displayResults(places) {
             // 이전 결과 초기화
             document.getElementById("results").innerHTML = "";
