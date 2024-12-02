@@ -69,46 +69,52 @@
 
         // 검색 결과를 지도와 페이지에 표시하는 함수
         function displayResults(places) {
-            // 이전 결과 초기화
-            document.getElementById("results").innerHTML = "";
-            map.setCenter(new naver.maps.LatLng(37.5665, 126.9780)); // 지도 중심 초기화
+    // 이전 결과 초기화
+    document.getElementById("results").innerHTML = "";
+    map.setCenter(new naver.maps.LatLng(37.5665, 126.9780)); // 지도 중심 초기화
 
-            // 마커 배열
-            const markers = [];
+    // 마커 배열
+    const markers = [];
 
-            places.forEach(place => {
-                // 지도에 마커 추가
-                const marker = new naver.maps.Marker({
-                    position: new naver.maps.LatLng(place.mapy, place.mapx),
-                    map: map,
-                    title: place.title.replace(/<[^>]+>/g, "") // HTML 태그 제거
-                });
+    places.forEach(place => {
+        // mapy, mapx 값이 있는지 확인
+        console.log('Latitude:', place.mapy, 'Longitude:', place.mapx);
 
-                // 마커 클릭 이벤트 (정보창 표시)
-                const infoWindow = new naver.maps.InfoWindow({
-                    content: `<div><strong>${place.title}</strong><br>${place.address}</div>`
-                });
-
-                naver.maps.Event.addListener(marker, "click", () => {
-                    infoWindow.open(map, marker);
-                });
-
-                // 마커 배열에 추가
-                markers.push(marker);
-
-                // 검색 결과 목록 추가
-                document.getElementById("results").innerHTML += `
-                    <div class="result-item">
-                        <strong>${place.title.replace(/<[^>]+>/g, "")}</strong><br>
-                        ${place.address}<br>
-                        <a href="${place.link}" target="_blank">상세보기</a>
-                    </div>
-                `;
+        if (place.mapy && place.mapx) {
+            // 지도에 마커 추가
+            const marker = new naver.maps.Marker({
+                position: new naver.maps.LatLng(place.mapy, place.mapx),
+                map: map,
+                title: place.title.replace(/<[^>]+>/g, "") // HTML 태그 제거
             });
 
-            // 검색된 결과에 마커 표시
-            showMarkers(markers);
+            // 마커 클릭 이벤트 (정보창 표시)
+            const infoWindow = new naver.maps.InfoWindow({
+                content: `<div><strong>${place.title}</strong><br>${place.address}</div>`
+            });
+
+            naver.maps.Event.addListener(marker, "click", () => {
+                infoWindow.open(map, marker);
+            });
+
+            // 마커 배열에 추가
+            markers.push(marker);
+
+            // 검색 결과 목록 추가
+            document.getElementById("results").innerHTML += `
+                <div class="result-item">
+                    <strong>${place.title.replace(/<[^>]+>/g, "")}</strong><br>
+                    ${place.address}<br>
+                    <a href="${place.link}" target="_blank">상세보기</a>
+                </div>
+            `;
         }
+    });
+
+    // 검색된 결과에 마커 표시
+    showMarkers(markers);
+}
+
 
         // 마커 표시 함수
         function showMarkers(markers) {
