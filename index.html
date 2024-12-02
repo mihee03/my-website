@@ -91,8 +91,7 @@
         // Flask 서버에서 실시간 데이터 가져오기
         async function updatePassengerData() {
             try {
-                // GitHub Pages에서 백엔드 서버는 클라우드 서버로 수정해야 함
-                const response = await fetch('https://your-backend-url.com/get-hourly-passengers');  <!-- 실제 백엔드 서버 URL로 수정 -->
+                const response = await fetch('https://your-backend-url.com/get-hourly-passengers');  // 실제 백엔드 서버 URL로 수정
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -207,42 +206,4 @@
 
                 const commentButton = document.createElement("button");
                 commentButton.textContent = "댓글 작성";
-                postDiv.appendChild(commentButton);
-
-                commentButton.addEventListener("click", () => {
-                    const commentContent = commentInput.value.trim();
-                    if (commentContent) {
-                        post.comments.push(commentContent);
-                        commentInput.value = ""; // 댓글 입력창 초기화
-                        displayPosts(); // 댓글 추가 후 게시글 새로 고침
-                    } else {
-                        alert("댓글을 입력해주세요.");
-                    }
-                });
-
-                // 댓글 표시
-                const commentsDiv = document.createElement("div");
-                commentsDiv.classList.add("comments");
-                post.comments.forEach(comment => {
-                    const commentDiv = document.createElement("div");
-                    commentDiv.classList.add("comment");
-                    commentDiv.textContent = comment;
-                    commentsDiv.appendChild(commentDiv);
-                });
-                postDiv.appendChild(commentsDiv);
-                postsContainer.appendChild(postDiv);
-            });
-        }
-
-        // 검색 버튼 클릭 이벤트
-        document.getElementById("search-button").addEventListener("click", () => {
-            const query = document.getElementById("search-input").value;
-            if (query.trim()) {
-                searchPlaces(query.trim()); // 검색 실행
-            } else {
-                alert("검색어를 입력하세요!");
-            }
-        });
-    </script>
-</body>
-</html>
+                postDiv.appendChild
