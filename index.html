@@ -102,6 +102,11 @@
             <input type="radio" name="q2" value="기타"> 기타
         </div>
 
+        <div class="question">
+            <label>3. 기타 피드백</label>
+            <textarea name="q3" id="q3-feedback" placeholder="기타 불편한 점이나 피드백을 남겨주세요..." rows="4"></textarea>
+        </div>
+
         <button id="survey-submit" class="survey-button">설문 제출</button>
     </div>
 
@@ -117,13 +122,15 @@
         // 설문 데이터 저장
         const surveyResults = {
             q1: { '매일': 0, '주 1~2회': 0, '월 1~2회': 0, '전혀 안 이용': 0 },
-            q2: { '혼잡': 0, '환승이 복잡': 0, '기차시간 불확실': 0, '기타': 0 }
+            q2: { '혼잡': 0, '환승이 복잡': 0, '기차시간 불확실': 0, '기타': 0 },
+            q3: "" // 3번 기타 피드백은 텍스트로 저장
         };
 
         // 설문 제출 이벤트
         document.getElementById("survey-submit").addEventListener("click", () => {
             const q1Answer = document.querySelector('input[name="q1"]:checked');
             const q2Answer = document.querySelector('input[name="q2"]:checked');
+            const q3Answer = document.getElementById("q3-feedback").value.trim();
 
             if (!q1Answer || !q2Answer) {
                 alert("모든 질문에 답해주세요.");
@@ -133,6 +140,7 @@
             // 선택된 답변 저장
             surveyResults.q1[q1Answer.value]++;
             surveyResults.q2[q2Answer.value]++;
+            surveyResults.q3 = q3Answer;
 
             // 설문 결과 화면 표시
             displaySurveyStatistics();
@@ -153,12 +161,18 @@
             // 각 질문의 결과를 표시
             for (let question in surveyResults) {
                 const resultItem = document.createElement("li");
-                resultItem.textContent = `${question === 'q1' ? '1. 지하철을 얼마나 자주 이용하시나요?' : '2. 지하철을 이용할 때 가장 불편한 점은 무엇인가요?'} - `;
+                resultItem.textContent = `${question === 'q1' ? '1. 지하철을 얼마나 자주 이용하시나요?' : 
+                                          question === 'q2' ? '2. 지하철을 이용할 때 가장 불편한 점은 무엇인가요?' : 
+                                          '3. 기타 피드백'} - `;
 
                 // 각 답변별 통계 표시
-                const answers = surveyResults[question];
-                for (let answer in answers) {
-                    resultItem.textContent += `${answer}: ${answers[answer]}명, `;
+                if (question !== 'q3') {
+                    const answers = surveyResults[question];
+                    for (let answer in answers) {
+                        resultItem.textContent += `${answer}: ${answers[answer]}명, `;
+                    }
+                } else {
+                    resultItem.textContent += surveyResults.q3 ? surveyResults.q3 : "없음";
                 }
 
                 resultsList.appendChild(resultItem);
@@ -172,6 +186,9 @@
             radioButtons.forEach(button => {
                 button.checked = false;
             });
+
+            // 텍스트 영역 초기화
+            document.getElementById("q3-feedback").value = "";
         }
     </script>
 
