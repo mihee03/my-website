@@ -4,72 +4,178 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>익명 게시판</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* 커뮤니티 영역 스타일 */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f7fa;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
         #community-section {
-            margin-top: 40px;
+            margin: 40px auto;
             padding: 20px;
-            border-top: 2px solid #ddd;
+            max-width: 800px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+
         #community-section h2 {
-            font-size: 24px;
-        }
-        .post {
+            font-size: 28px;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #eaeaea;
+            padding-bottom: 10px;
             margin-bottom: 20px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
         }
+
+        .post {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #fafafa;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
         .post .comments {
-            margin-top: 10px;
+            margin-top: 15px;
             padding-left: 20px;
         }
+
         .comment {
-            margin-top: 5px;
+            margin-top: 10px;
+            padding: 8px;
+            background: #f1f1f1;
+            border-radius: 5px;
+            border-left: 5px solid #6c63ff;
         }
+
         .post textarea {
             width: 100%;
             height: 80px;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+            resize: none;
+            font-size: 14px;
+            font-family: 'Roboto', sans-serif;
         }
-        /* 설문조사 및 Q&A 스타일 */
-        .survey-section, .qa-section {
+
+        .post button {
+            background-color: #6c63ff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .post button:hover {
+            background-color: #5a4db8;
+        }
+
+        /* 설문조사 및 피드백 */
+        .survey-section {
             margin-top: 40px;
             padding: 20px;
-            border-top: 2px solid #ddd;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        .survey-section h2, .qa-section h2 {
+
+        .survey-section h2 {
             font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
         }
-        .survey-question {
-            margin: 10px 0;
-        }
+
         .survey-button {
-            padding: 5px 10px;
+            background-color: #ff6347;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
+
+        .survey-button:hover {
+            background-color: #e5533d;
+        }
+
+        /* Q&A 게시판 */
+        .qa-section {
+            margin-top: 40px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .qa-section h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
         .qa-item {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            border-left: 5px solid #4CAF50;
+        }
+
+        .qa-item textarea {
+            width: 100%;
+            height: 80px;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+        }
+
+        .qa-item button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .qa-item button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
-    <!-- 커뮤니티 공간 -->
+
     <div id="community-section">
         <h2>익명 게시판</h2>
         <div id="posts"></div>
         <div>
-            <textarea id="post-input" placeholder="글을 작성해보세요..." style="width: 100%; height: 80px;"></textarea>
-            <button id="post-button" style="padding: 5px 10px;">글 작성</button>
+            <textarea id="post-input" placeholder="글을 작성해보세요..."></textarea>
+            <button id="post-button">글 작성</button>
         </div>
     </div>
 
     <!-- 설문조사 및 피드백 -->
     <div class="survey-section">
         <h2>설문조사 및 피드백</h2>
-        <div class="survey-question">
-            <label for="survey-feedback">지하철 서비스에 대한 피드백을 주세요:</label><br>
-            <textarea id="survey-feedback" placeholder="피드백을 남겨주세요..." style="width: 100%; height: 80px;"></textarea><br>
-            <button class="survey-button" id="survey-submit">설문 제출</button>
-        </div>
+        <textarea id="survey-feedback" placeholder="피드백을 남겨주세요..."></textarea><br>
+        <button class="survey-button" id="survey-submit">설문 제출</button>
     </div>
 
     <!-- Q&A 게시판 -->
@@ -77,25 +183,25 @@
         <h2>Q&A 게시판</h2>
         <div id="qa-posts"></div>
         <div>
-            <textarea id="qa-input" placeholder="질문을 작성해보세요..." style="width: 100%; height: 80px;"></textarea>
-            <button id="qa-post-button" style="padding: 5px 10px;">질문 작성</button>
+            <textarea id="qa-input" placeholder="질문을 작성해보세요..."></textarea>
+            <button id="qa-post-button">질문 작성</button>
         </div>
     </div>
 
     <script>
         // 커뮤니티 게시글 작성
-        let posts = []; // 게시글을 저장하는 배열
+        let posts = [];
         document.getElementById("post-button").addEventListener("click", () => {
             const postContent = document.getElementById("post-input").value.trim();
             if (postContent) {
                 const newPost = {
                     id: posts.length + 1,
                     content: postContent,
-                    comments: [] // 댓글을 저장할 배열
+                    comments: []
                 };
                 posts.push(newPost);
-                displayPosts(); // 게시글 새로 고침
-                document.getElementById("post-input").value = ""; // 글 입력창 초기화
+                displayPosts();
+                document.getElementById("post-input").value = "";
             } else {
                 alert("글을 입력해주세요.");
             }
@@ -104,7 +210,7 @@
         // 게시글과 댓글 표시
         function displayPosts() {
             const postsContainer = document.getElementById("posts");
-            postsContainer.innerHTML = ""; // 기존 게시글 초기화
+            postsContainer.innerHTML = "";
 
             posts.forEach(post => {
                 const postDiv = document.createElement("div");
@@ -114,7 +220,6 @@
                 postTitle.textContent = `익명글 ${post.id}: ${post.content}`;
                 postDiv.appendChild(postTitle);
 
-                // 댓글 작성 부분
                 const commentInput = document.createElement("textarea");
                 commentInput.placeholder = "댓글을 작성해보세요...";
                 postDiv.appendChild(commentInput);
@@ -123,19 +228,17 @@
                 commentButton.textContent = "댓글 작성";
                 postDiv.appendChild(commentButton);
 
-                // 댓글 작성 기능
                 commentButton.addEventListener("click", () => {
                     const commentContent = commentInput.value.trim();
                     if (commentContent) {
                         post.comments.push(commentContent);
-                        commentInput.value = ""; // 댓글 입력창 초기화
-                        displayPosts(); // 댓글 추가 후 게시글 새로 고침
+                        commentInput.value = "";
+                        displayPosts();
                     } else {
                         alert("댓글을 입력해주세요.");
                     }
                 });
 
-                // 댓글 표시
                 const commentsDiv = document.createElement("div");
                 commentsDiv.classList.add("comments");
                 post.comments.forEach(comment => {
@@ -154,77 +257,12 @@
             const feedback = document.getElementById("survey-feedback").value.trim();
             if (feedback) {
                 alert("피드백이 제출되었습니다. 감사합니다!");
-                document.getElementById("survey-feedback").value = ""; // 설문 입력창 초기화
+                document.getElementById("survey-feedback").value = "";
             } else {
                 alert("피드백을 입력해주세요.");
             }
         });
 
         // Q&A 게시글 작성
-        let qaPosts = []; // Q&A 게시글을 저장하는 배열
-        document.getElementById("qa-post-button").addEventListener("click", () => {
-            const qaContent = document.getElementById("qa-input").value.trim();
-            if (qaContent) {
-                const newQaPost = {
-                    id: qaPosts.length + 1,
-                    content: qaContent,
-                    answers: [] // 답변을 저장할 배열
-                };
-                qaPosts.push(newQaPost);
-                displayQaPosts(); // Q&A 게시글 새로 고침
-                document.getElementById("qa-input").value = ""; // 글 입력창 초기화
-            } else {
-                alert("질문을 입력해주세요.");
-            }
-        });
-
-        // Q&A 게시글과 답변 표시
-        function displayQaPosts() {
-            const qaPostsContainer = document.getElementById("qa-posts");
-            qaPostsContainer.innerHTML = ""; // 기존 Q&A 게시글 초기화
-
-            qaPosts.forEach(qaPost => {
-                const qaPostDiv = document.createElement("div");
-                qaPostDiv.classList.add("post");
-
-                const qaPostTitle = document.createElement("div");
-                qaPostTitle.textContent = `질문 ${qaPost.id}: ${qaPost.content}`;
-                qaPostDiv.appendChild(qaPostTitle);
-
-                // 답변 작성 부분
-                const answerInput = document.createElement("textarea");
-                answerInput.placeholder = "답변을 작성해보세요...";
-                qaPostDiv.appendChild(answerInput);
-
-                const answerButton = document.createElement("button");
-                answerButton.textContent = "답변 작성";
-                qaPostDiv.appendChild(answerButton);
-
-                // 답변 작성 기능
-                answerButton.addEventListener("click", () => {
-                    const answerContent = answerInput.value.trim();
-                    if (answerContent) {
-                        qaPost.answers.push(answerContent);
-                        answerInput.value = ""; // 답변 입력창 초기화
-                        displayQaPosts(); // 답변 추가 후 Q&A 게시글 새로 고침
-                    } else {
-                        alert("답변을 입력해주세요.");
-                    }
-                });
-
-                // 답변 표시
-                const answersDiv = document.createElement("div");
-                answersDiv.classList.add("comments");
-                qaPost.answers.forEach(answer => {
-                    const answerDiv = document.createElement("div");
-                    answerDiv.classList.add("comment");
-                    answerDiv.textContent = answer;
-                    answersDiv.appendChild(answerDiv);
-                });
-                qaPostDiv.appendChild(answersDiv);
-                qaPostsContainer.appendChild(qaPostDiv);
-            });
-        }
-    </script>
-</body>
-</html>
+        let qaPosts = [];
+        document.getElementBy
