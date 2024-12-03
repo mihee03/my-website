@@ -79,6 +79,10 @@
         #survey-statistics ul li {
             margin-bottom: 10px;
         }
+
+        .survey-result-item {
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -163,6 +167,8 @@
             // 각 질문의 결과를 표시
             for (let question in surveyResults) {
                 const resultItem = document.createElement("li");
+                resultItem.classList.add('survey-result-item');
+
                 resultItem.textContent = `${question === 'q1' ? '1. 지하철을 얼마나 자주 이용하시나요?' : 
                                           question === 'q2' ? '2. 지하철을 이용할 때 가장 불편한 점은 무엇인가요?' : 
                                           '3. 기타 피드백'} - `;
