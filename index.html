@@ -123,7 +123,7 @@
         const surveyResults = {
             q1: { '매일': 0, '주 1~2회': 0, '월 1~2회': 0, '전혀 안 이용': 0 },
             q2: { '혼잡': 0, '환승이 복잡': 0, '기차시간 불확실': 0, '기타': 0 },
-            q3: "" // 3번 기타 피드백은 텍스트로 저장
+            q3: [] // 3번 기타 피드백은 배열로 저장
         };
 
         // 설문 제출 이벤트
@@ -140,7 +140,9 @@
             // 선택된 답변 저장
             surveyResults.q1[q1Answer.value]++;
             surveyResults.q2[q2Answer.value]++;
-            surveyResults.q3 = q3Answer;
+            if (q3Answer) {
+                surveyResults.q3.push(q3Answer); // 기타 피드백 저장
+            }
 
             // 설문 결과 화면 표시
             displaySurveyStatistics();
@@ -172,7 +174,9 @@
                         resultItem.textContent += `${answer}: ${answers[answer]}명, `;
                     }
                 } else {
-                    resultItem.textContent += surveyResults.q3 ? surveyResults.q3 : "없음";
+                    // 3번 기타 피드백 출력
+                    const feedback = surveyResults.q3.length > 0 ? surveyResults.q3.join(", ") : "없음";
+                    resultItem.textContent += feedback;
                 }
 
                 resultsList.appendChild(resultItem);
