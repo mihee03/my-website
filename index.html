@@ -1,204 +1,205 @@
+Q&A
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>설문조사</title>
+    <title>Q&A 게시판</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fa;
             margin: 0;
             padding: 0;
-            color: #333;
         }
 
-        #survey-section {
-            margin-top: 40px;
+        .qa-section {
+            max-width: 800px;
+            margin: 40px auto;
             padding: 20px;
             background: white;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            margin: 20px auto;
         }
 
-        h2 {
-            font-size: 24px;
+        .qa-section h2 {
+            font-size: 28px;
             font-weight: 600;
             color: #333;
+            margin-bottom: 20px;
+        }
+
+        .qa-item {
+            padding: 20px;
+            background: #fafafa;
             margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 5px solid #4CAF50;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
 
-        .question {
-            margin-bottom: 15px;
+        .qa-item h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
         }
 
-        .question label {
-            font-size: 18px;
-            display: block;
-            margin-bottom: 5px;
+        .qa-item p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 10px;
         }
 
-        .question input {
-            margin-right: 10px;
-        }
-
-        .survey-button {
-            background-color: #ff6347;
+        .qa-item button {
+            background-color: #4CAF50;
             color: white;
-            padding: 10px 20px;
+            padding: 8px 16px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
 
-        .survey-button:hover {
-            background-color: #e5533d;
+        .qa-item button:hover {
+            background-color: #45a049;
         }
 
-        #survey-statistics {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #f4f7fa;
-            border-radius: 10px;
+        .qa-answer {
+            margin-top: 10px;
+            padding-left: 20px;
+            border-left: 3px solid #ddd;
         }
 
-        #survey-statistics h3 {
-            font-size: 20px;
-            font-weight: 600;
-            color: #333;
+        .qa-answer textarea {
+            width: 100%;
+            height: 80px;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 14px;
         }
 
-        #survey-statistics ul {
-            list-style-type: none;
-            padding: 0;
+        .qa-answer button {
+            background-color: #6c63ff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
         }
 
-        #survey-statistics ul li {
-            margin-bottom: 10px;
+        .qa-answer button:hover {
+            background-color: #5a4db8;
         }
 
-        .survey-result-item {
-            font-size: 16px;
+        .qa-item:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .answer-box {
+            display: none;
+            margin-top: 10px;
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .show-answer {
+            background-color: #6c63ff;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .show-answer:hover {
+            background-color: #5a4db8;
         }
     </style>
 </head>
 <body>
 
-    <div id="survey-section">
-        <h2>설문조사</h2>
-        <!-- 설문 항목들 -->
-        <div class="question">
-            <label>1. 지하철을 얼마나 자주 이용하시나요?</label>
-            <input type="radio" name="q1" value="매일"> 매일
-            <input type="radio" name="q1" value="주 1~2회"> 주 1~2회
-            <input type="radio" name="q1" value="월 1~2회"> 월 1~2회
-            <input type="radio" name="q1" value="전혀 안 이용"> 전혀 안 이용
+    <div class="qa-section">
+        <h2>Q&A 게시판</h2>
+
+        <!-- 질문 1 -->
+        <div class="qa-item">
+            <h3>Q1. 지하철을 자주 이용하시나요?</h3>
+            <p>지하철 이용에 관한 자주 묻는 질문입니다.</p>
+            <button class="show-answer" onclick="toggleAnswer(1)">답변 보기</button>
+
+            <!-- 답변 박스 -->
+            <div class="answer-box" id="answer-box-1">
+                <p>네, 저는 매일 지하철을 이용합니다.</p>
+                <div class="qa-answer">
+                    <textarea placeholder="답변을 작성해주세요..."></textarea>
+                    <button onclick="submitAnswer(1)">답변 제출</button>
+                </div>
+            </div>
         </div>
 
-        <div class="question">
-            <label>2. 지하철을 이용할 때 가장 불편한 점은 무엇인가요?</label>
-            <input type="radio" name="q2" value="혼잡"> 혼잡
-            <input type="radio" name="q2" value="환승이 복잡"> 환승이 복잡
-            <input type="radio" name="q2" value="지하철 배차 시간 불확실"> 지하철 배차 시간 불확실
-            <input type="radio" name="q2" value="기타"> 기타
+        <!-- 질문 2 -->
+        <div class="qa-item">
+            <h3>Q2. 지하철을 이용할 때 가장 불편한 점은 무엇인가요?</h3>
+            <p>다양한 사람들이 겪는 불편한 점에 대해 알아보세요.</p>
+            <button class="show-answer" onclick="toggleAnswer(2)">답변 보기</button>
+
+            <!-- 답변 박스 -->
+            <div class="answer-box" id="answer-box-2">
+                <p>환승이 복잡해요. 여러 번 갈아타야 할 때마다 시간이 오래 걸립니다.</p>
+                <div class="qa-answer">
+                    <textarea placeholder="답변을 작성해주세요..."></textarea>
+                    <button onclick="submitAnswer(2)">답변 제출</button>
+                </div>
+            </div>
         </div>
 
-        <div class="question">
-            <label>3. 기타 피드백</label>
-            <textarea name="q3" id="q3-feedback" placeholder="기타 불편한 점이나 피드백을 남겨주세요..." rows="4"></textarea>
+        <!-- 질문 3 -->
+        <div class="qa-item">
+            <h3>Q3. 지하철의 어떤 점을 개선하면 좋을까요?</h3>
+            <p>불편함을 개선하기 위한 아이디어를 나눠주세요.</p>
+            <button class="show-answer" onclick="toggleAnswer(3)">답변 보기</button>
+
+            <!-- 답변 박스 -->
+            <div class="answer-box" id="answer-box-3">
+                <p>기차시간 불확실을 개선해 주세요. 기차 시간을 정확하게 알고 싶습니다.</p>
+                <div class="qa-answer">
+                    <textarea placeholder="답변을 작성해주세요..."></textarea>
+                    <button onclick="submitAnswer(3)">답변 제출</button>
+                </div>
+            </div>
         </div>
 
-        <button id="survey-submit" class="survey-button">설문 제출</button>
-    </div>
-
-    <!-- 설문 통계 -->
-    <div id="survey-statistics" style="display:none;">
-        <h3>설문 결과</h3>
-        <ul id="survey-results">
-            <!-- 통계 결과가 여기에 표시됩니다 -->
-        </ul>
     </div>
 
     <script>
-        // 설문 데이터 저장
-        const surveyResults = {
-            q1: { '매일': 0, '주 1~2회': 0, '월 1~2회': 0, '전혀 안 이용': 0 },
-            q2: { '혼잡': 0, '환승이 복잡': 0, '지하철 배차 시간 불확실': 0, '기타': 0 },
-            q3: [] // 3번 기타 피드백은 배열로 저장
-        };
-
-        // 설문 제출 이벤트
-        document.getElementById("survey-submit").addEventListener("click", () => {
-            const q1Answer = document.querySelector('input[name="q1"]:checked');
-            const q2Answer = document.querySelector('input[name="q2"]:checked');
-            const q3Answer = document.getElementById("q3-feedback").value.trim();
-
-            if (!q1Answer || !q2Answer) {
-                alert("모든 질문에 답해주세요.");
-                return;
-            }
-
-            // 선택된 답변 저장
-            surveyResults.q1[q1Answer.value]++;
-            surveyResults.q2[q2Answer.value]++;
-            if (q3Answer) {
-                surveyResults.q3.push(q3Answer); // 기타 피드백 저장
-            }
-
-            // 설문 결과 화면 표시
-            displaySurveyStatistics();
-
-            // 설문 제출 후 체크된 항목 초기화
-            resetSurveyForm();
-        });
-
-        // 설문 통계 표시
-        function displaySurveyStatistics() {
-            // 통계 영역 보이게 하기
-            document.getElementById("survey-statistics").style.display = 'block';
-
-            // 통계 결과를 ul에 추가
-            const resultsList = document.getElementById("survey-results");
-            resultsList.innerHTML = ""; // 이전 통계 삭제
-
-            // 각 질문의 결과를 표시
-            for (let question in surveyResults) {
-                const resultItem = document.createElement("li");
-                resultItem.classList.add('survey-result-item');
-
-                resultItem.textContent = `${question === 'q1' ? '1. 지하철을 얼마나 자주 이용하시나요?' : 
-                                          question === 'q2' ? '2. 지하철을 이용할 때 가장 불편한 점은 무엇인가요?' : 
-                                          '3. 기타 피드백'} - `;
-
-                // 각 답변별 통계 표시
-                if (question !== 'q3') {
-                    const answers = surveyResults[question];
-                    for (let answer in answers) {
-                        resultItem.textContent += `${answer}: ${answers[answer]}명, `;
-                    }
-                } else {
-                    // 3번 기타 피드백 출력
-                    const feedback = surveyResults.q3.length > 0 ? surveyResults.q3.join(", ") : "없음";
-                    resultItem.textContent += feedback;
-                }
-
-                resultsList.appendChild(resultItem);
+        // 답변 박스를 토글하는 함수
+        function toggleAnswer(id) {
+            const answerBox = document.getElementById('answer-box-' + id);
+            if (answerBox.style.display === 'block') {
+                answerBox.style.display = 'none';
+            } else {
+                answerBox.style.display = 'block';
             }
         }
 
-        // 설문 폼 초기화
-        function resetSurveyForm() {
-            // 모든 라디오 버튼 초기화
-            const radioButtons = document.querySelectorAll('input[type="radio"]');
-            radioButtons.forEach(button => {
-                button.checked = false;
-            });
-
-            // 텍스트 영역 초기화
-            document.getElementById("q3-feedback").value = "";
+        // 답변 제출 함수
+        function submitAnswer(id) {
+            const answerText = document.querySelector(`#answer-box-${id} textarea`).value;
+            if (answerText.trim() !== "") {
+                alert("답변이 제출되었습니다!");
+                // 제출 후 텍스트박스 초기화
+                document.querySelector(`#answer-box-${id} textarea`).value = "";
+            } else {
+                alert("답변을 입력해주세요.");
+            }
         }
     </script>
 
