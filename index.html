@@ -31,6 +31,24 @@
             width: 100%;
             height: 80px;
         }
+        /* 설문조사 및 Q&A 스타일 */
+        .survey-section, .qa-section {
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 2px solid #ddd;
+        }
+        .survey-section h2, .qa-section h2 {
+            font-size: 24px;
+        }
+        .survey-question {
+            margin: 10px 0;
+        }
+        .survey-button {
+            padding: 5px 10px;
+        }
+        .qa-item {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -41,6 +59,26 @@
         <div>
             <textarea id="post-input" placeholder="글을 작성해보세요..." style="width: 100%; height: 80px;"></textarea>
             <button id="post-button" style="padding: 5px 10px;">글 작성</button>
+        </div>
+    </div>
+
+    <!-- 설문조사 및 피드백 -->
+    <div class="survey-section">
+        <h2>설문조사 및 피드백</h2>
+        <div class="survey-question">
+            <label for="survey-feedback">지하철 서비스에 대한 피드백을 주세요:</label><br>
+            <textarea id="survey-feedback" placeholder="피드백을 남겨주세요..." style="width: 100%; height: 80px;"></textarea><br>
+            <button class="survey-button" id="survey-submit">설문 제출</button>
+        </div>
+    </div>
+
+    <!-- Q&A 게시판 -->
+    <div class="qa-section">
+        <h2>Q&A 게시판</h2>
+        <div id="qa-posts"></div>
+        <div>
+            <textarea id="qa-input" placeholder="질문을 작성해보세요..." style="width: 100%; height: 80px;"></textarea>
+            <button id="qa-post-button" style="padding: 5px 10px;">질문 작성</button>
         </div>
     </div>
 
@@ -108,6 +146,83 @@
                 });
                 postDiv.appendChild(commentsDiv);
                 postsContainer.appendChild(postDiv);
+            });
+        }
+
+        // 설문조사 제출
+        document.getElementById("survey-submit").addEventListener("click", () => {
+            const feedback = document.getElementById("survey-feedback").value.trim();
+            if (feedback) {
+                alert("피드백이 제출되었습니다. 감사합니다!");
+                document.getElementById("survey-feedback").value = ""; // 설문 입력창 초기화
+            } else {
+                alert("피드백을 입력해주세요.");
+            }
+        });
+
+        // Q&A 게시글 작성
+        let qaPosts = []; // Q&A 게시글을 저장하는 배열
+        document.getElementById("qa-post-button").addEventListener("click", () => {
+            const qaContent = document.getElementById("qa-input").value.trim();
+            if (qaContent) {
+                const newQaPost = {
+                    id: qaPosts.length + 1,
+                    content: qaContent,
+                    answers: [] // 답변을 저장할 배열
+                };
+                qaPosts.push(newQaPost);
+                displayQaPosts(); // Q&A 게시글 새로 고침
+                document.getElementById("qa-input").value = ""; // 글 입력창 초기화
+            } else {
+                alert("질문을 입력해주세요.");
+            }
+        });
+
+        // Q&A 게시글과 답변 표시
+        function displayQaPosts() {
+            const qaPostsContainer = document.getElementById("qa-posts");
+            qaPostsContainer.innerHTML = ""; // 기존 Q&A 게시글 초기화
+
+            qaPosts.forEach(qaPost => {
+                const qaPostDiv = document.createElement("div");
+                qaPostDiv.classList.add("post");
+
+                const qaPostTitle = document.createElement("div");
+                qaPostTitle.textContent = `질문 ${qaPost.id}: ${qaPost.content}`;
+                qaPostDiv.appendChild(qaPostTitle);
+
+                // 답변 작성 부분
+                const answerInput = document.createElement("textarea");
+                answerInput.placeholder = "답변을 작성해보세요...";
+                qaPostDiv.appendChild(answerInput);
+
+                const answerButton = document.createElement("button");
+                answerButton.textContent = "답변 작성";
+                qaPostDiv.appendChild(answerButton);
+
+                // 답변 작성 기능
+                answerButton.addEventListener("click", () => {
+                    const answerContent = answerInput.value.trim();
+                    if (answerContent) {
+                        qaPost.answers.push(answerContent);
+                        answerInput.value = ""; // 답변 입력창 초기화
+                        displayQaPosts(); // 답변 추가 후 Q&A 게시글 새로 고침
+                    } else {
+                        alert("답변을 입력해주세요.");
+                    }
+                });
+
+                // 답변 표시
+                const answersDiv = document.createElement("div");
+                answersDiv.classList.add("comments");
+                qaPost.answers.forEach(answer => {
+                    const answerDiv = document.createElement("div");
+                    answerDiv.classList.add("comment");
+                    answerDiv.textContent = answer;
+                    answersDiv.appendChild(answerDiv);
+                });
+                qaPostDiv.appendChild(answersDiv);
+                qaPostsContainer.appendChild(qaPostDiv);
             });
         }
     </script>
