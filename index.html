@@ -86,7 +86,7 @@
             const url = `https://openapi.naver.com/v1/search/local.json?query=${encodeURIComponent(query)}&display=5&start=1&sort=random`;
 
             try {
-                const response = await fetch(url, {
+                const response = await fetch(proxyUrl + url, {
                     headers: {
                         "X-Naver-Client-Id": "2il85btNfU6KvdvFEPYu",
                         "X-Naver-Client-Secret": "y4iSS_jPQq"
