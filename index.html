@@ -1,105 +1,30 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>지하철 이용 에티켓</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f7fa;
-            color: #333;
-        }
-
-        /* 배너 스타일 */
-        #etiquette-slide {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: #f9f9f9;
-            padding: 20px 0;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            z-index: 1000;
-        }
-
-        .etiquette-slide-container {
-            display: flex;
-            animation: slide 20s ease-in-out infinite; /* 20초에 한 번씩 슬라이드 */
-            align-items: center;
-        }
-
-        .etiquette-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex: none;
-            min-width: 100%;
-            text-align: center;
-            padding: 0 20px;
-        }
-
-        .etiquette-item img {
-            width: 100px; /* 이미지 크기 조정 */
-            height: 100px;
-            margin-right: 20px; /* 이미지와 텍스트 간격 */
-            border: 2px solid #6c63ff; /* 테두리 색상 */
-            border-radius: 10px; /* 테두리 둥글게 */
-        }
-
-        .etiquette-item h3 {
-            font-size: 22px; /* 텍스트 크기 조정 */
-            margin: 0;
-        }
-
-        /* 애니메이션 */
-        @keyframes slide {
-            0% {
-                transform: translateX(100%);
-            }
-            25% {
-                transform: translateX(0);
-            }
-            50% {
-                transform: translateX(-100%);
-            }
-            75% {
-                transform: translateX(-200%);
-            }
-            100% {
-                transform: translateX(-300%);
-            }
-        }
-    </style>
+    <title>예상 승객 수 조회</title>
 </head>
 <body>
+    <h1>승객 수 예측</h1>
+    <label for="station">역 이름:</label>
+    <input type="text" id="station" placeholder="예: 서울역">
+    <button onclick="getPrediction()">조회</button>
+    <h2>결과:</h2>
+    <div id="result"></div>
 
-    <div id="etiquette-slide">
-        <div class="etiquette-slide-container">
-            <div class="etiquette-item">
-                <img src="https://raw.githubusercontent.com/mihee03/my-website/main/홍보물사진/책가방.png" alt="책가방">
-                <h3>붐비는 열차에서는 가방을 앞으로</h3>
-            </div>
-            <div class="etiquette-item">
-                <img src="https://raw.githubusercontent.com/mihee03/my-website/main/홍보물사진/휴대폰 소리.png" alt="휴대폰 소리">
-                <h3>큰 소리로 통화하거나 떠들지 않기</h3>
-            </div>
-            <div class="etiquette-item">
-                <img src="https://raw.githubusercontent.com/mihee03/my-website/main/홍보물사진/음식.png" alt="음식">
-                <h3>열차 안에서 음식물 먹지 않기</h3>
-            </div>
-            <div class="etiquette-item">
-                <img src="https://raw.githubusercontent.com/mihee03/my-website/main/홍보물사진/넘어짐.png" alt="넘어짐">
-                <h3>보행 중이거나 열차 승하차시엔 스마트폰 사용하지 않기</h3>
-            </div>
-        </div>
-    </div>
-
+    <script>
+        async function getPrediction() {
+            const station = document.getElementById('station').value;
+            const response = await fetch(`/predict?station=${station}`);
+            const data = await response.json();
+            document.getElementById('result').innerHTML = `
+                <p>역 이름: ${data.station}</p>
+                <p>현재 시간: ${data.current_time}</p>
+                <p>요일: ${data.weekday}</p>
+                <p>예상 승객 수: ${data.predicted_passenger_count}</p>
+            `;
+        }
+    </script>
 </body>
 </html>
