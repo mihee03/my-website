@@ -1,11 +1,20 @@
+수정
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>지하철 이용 에티켓 홍보</title>
+    <title>지하철 검색</title>
     <style>
-        /* 슬라이드 텍스트 및 이미지 */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7fa;
+            color: #333;
+        }
+
+        /* 슬라이드 스타일 */
         #etiquette-slide {
             position: fixed;
             bottom: 0;
@@ -23,7 +32,7 @@
 
         .etiquette-slide-container {
             display: flex;
-            animation: slide 20s linear infinite;
+            animation: slide 40s linear infinite;  /* 10초에 한 번씩 슬라이드 */
         }
 
         .etiquette-item {
@@ -46,7 +55,7 @@
             margin-bottom: 5px;
         }
 
-        /* 애니메이션 */
+        /* 애니메이션 설정 */
         @keyframes slide {
             0% {
                 transform: translateX(0);
@@ -80,7 +89,6 @@
 </head>
 <body>
 
-    <!-- 슬라이드 내용 -->
     <div id="etiquette-slide">
         <div class="etiquette-slide-container">
             <div class="etiquette-item">
