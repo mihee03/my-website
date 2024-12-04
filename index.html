@@ -1,5 +1,3 @@
-익명게시판 (완)
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -7,32 +5,131 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>익명 게시판</title>
     <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fa;
+            margin: 0;
+            padding: 0;
+        }
+
         /* 커뮤니티 영역 스타일 */
         #community-section {
-            margin-top: 40px;
+            margin: 40px auto;
             padding: 20px;
-            border-top: 2px solid #ddd;
+            max-width: 800px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
+
         #community-section h2 {
-            font-size: 24px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
         }
+
+        /* 게시글 스타일 */
         .post {
             margin-bottom: 20px;
-            padding: 10px;
+            padding: 15px;
+            background: #fafafa;
+            border-radius: 8px;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
+
+        .post .content {
+            font-size: 16px;
+            color: #333;
+        }
+
         .post .comments {
             margin-top: 10px;
             padding-left: 20px;
         }
+
         .comment {
             margin-top: 5px;
+            padding: 10px;
+            background: #f1f1f1;
+            border-radius: 5px;
+            border-left: 5px solid #6c63ff;
         }
+
+        /* 글 작성 영역 */
         .post textarea {
             width: 100%;
             height: 80px;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+            resize: none;
+            font-size: 14px;
         }
+
+        .post button {
+            background-color: #6c63ff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .post button:hover {
+            background-color: #5a4db8;
+        }
+
+        /* 글 작성 입력창 스타일 */
+        #post-input {
+            width: 100%;
+            height: 80px;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+            resize: none;
+            font-size: 14px;
+        }
+
+        #post-button {
+            background-color: #6c63ff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        #post-button:hover {
+            background-color: #5a4db8;
+        }
+
+        /* 댓글 버튼 스타일 */
+        .comment-button {
+            background-color: #6c63ff;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .comment-button:hover {
+            background-color: #5a4db8;
+        }
+
     </style>
 </head>
 <body>
@@ -75,6 +172,7 @@
                 postDiv.classList.add("post");
 
                 const postTitle = document.createElement("div");
+                postTitle.classList.add("content");
                 postTitle.textContent = `익명글 ${post.id}: ${post.content}`;
                 postDiv.appendChild(postTitle);
 
@@ -84,6 +182,7 @@
                 postDiv.appendChild(commentInput);
 
                 const commentButton = document.createElement("button");
+                commentButton.classList.add("comment-button");
                 commentButton.textContent = "댓글 작성";
                 postDiv.appendChild(commentButton);
 
