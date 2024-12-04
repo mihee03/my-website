@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>지하철 검색</title>
+    <title>지하철 이용 에티켓</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -13,54 +13,52 @@
             color: #333;
         }
 
-        /* 슬라이드 스타일 */
+        /* 배너 스타일 */
         #etiquette-slide {
             position: fixed;
             bottom: 0;
             left: 0;
-            width: 100%; /* 배너 크기 100%로 설정 */
+            width: 100%;
             background-color: #f9f9f9;
-            padding: 10px 0;
+            padding: 20px 0;
             box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
             z-index: 1000;
-            margin-left: 15%; /* 화면 중앙 정렬을 위해 왼쪽 여백 추가 */
         }
 
         .etiquette-slide-container {
             display: flex;
-            width: 400%; /* 4개의 항목이 나올 수 있도록 400% 설정 */
-            animation: slide 16s linear infinite; /* 애니메이션 */
+            animation: slide 20s linear infinite;
+            align-items: center;
         }
 
         .etiquette-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: none;
             min-width: 100%;
             text-align: center;
-            padding: 10px;
-            display: flex;
-            align-items: center; /* 이미지와 텍스트를 수평으로 나란히 정렬 */
-            justify-content: center;
+            padding: 0 20px;
         }
 
         .etiquette-item img {
-            width: 120px; /* 사진 크기 2배로 설정 */
-            height: 120px; /* 사진 크기 2배로 설정 */
-            margin-right: 20px; /* 사진과 텍스트 사이 여백 */
-            border: 3px solid #6c63ff; /* 테두리 색 */
-            border-radius: 8px;
-            padding: 5px;
-            box-sizing: border-box;
+            width: 100px; /* 이미지 크기 조정 */
+            height: 100px;
+            margin-right: 20px; /* 이미지와 텍스트 간격 */
+            border: 2px solid #6c63ff; /* 테두리 색상 */
+            border-radius: 10px; /* 테두리 둥글게 */
         }
 
         .etiquette-item h3 {
-            font-size: 24px; /* 글씨 크기 키우기 */
-            font-weight: bold;
+            font-size: 22px; /* 텍스트 크기 조정 */
+            margin: 0;
         }
 
-        /* 애니메이션 설정 */
+        /* 애니메이션 */
         @keyframes slide {
             0% {
                 transform: translateX(0);
@@ -71,20 +69,20 @@
             30% {
                 transform: translateX(-100%);
             }
-            50% {
+            55% {
                 transform: translateX(-100%);
             }
-            55% {
+            60% {
                 transform: translateX(-200%);
             }
-            75% {
+            85% {
                 transform: translateX(-200%);
             }
-            80% {
+            90% {
                 transform: translateX(-300%);
             }
             100% {
-                transform: translateX(-300%);
+                transform: translateX(0);
             }
         }
     </style>
