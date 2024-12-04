@@ -105,9 +105,8 @@
 
         // 검색 API 요청
         async function searchPlaces(query) {
-            const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // CORS Proxy URL
+            const proxyUrl = "https://api.allorigins.win/get?url=";
             const url = `https://openapi.naver.com/v1/search/local.json?query=${encodeURIComponent(query)}&display=5&start=1&sort=random`;
-
             try {
                 const response = await fetch(proxyUrl + url, {
                     headers: {
