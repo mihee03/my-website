@@ -96,9 +96,10 @@
 
             // 필터링: 날짜, 시간, 역명을 기준으로 데이터 검색
             const filteredData = data.filter(row => {
-                const rowDate = new Date(row['일시']).toLocaleDateString('en-CA').slice(5); // mm-dd 형식
-                const rowHour = new Date(row['일시']).getHours(); // 시간 추출
-                const rowStation = row['역명'] ? row['역명'].trim() : ""; // 역명이 존재하면 공백 제거, 없으면 빈 문자열
+                const rowDate = row['일시'] ? new Date(row['일시']).toLocaleDateString('en-CA').slice(5) : ""; // mm-dd 형식
+                const rowHour = row['일시'] ? new Date(row['일시']).getHours() : null; // 시간
+                const rowStation = row['역명'] ? row['역명'].trim() : ""; // 역명이 존재하면 공백 제거
+
                 console.log(`Row date: ${rowDate}, Row hour: ${rowHour}, Station: ${rowStation}`); // 각 행의 날짜, 시간, 역명 확인
                 return rowDate === inputDate && rowHour == inputHour && rowStation === stationName;
             });
@@ -115,9 +116,6 @@
                 document.getElementById('results').textContent = `No data found for station: ${stationName} on date: ${inputDate} at hour: ${inputHour}:00`;
             }
         });
-
-        console.log("Loaded data (first 5 rows):", data.slice(0, 5));
-
     </script>
 </body>
 </html>
