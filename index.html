@@ -110,11 +110,24 @@
             // 총 인원수 계산
             const totalPassengers = filteredData.reduce((sum, row) => sum + parseInt(row['인원수'] || 0), 0);
 
+            // 노약자 좌석 수 결정
+            const elderlySeatCount = totalPassengers >= 170 ? 27 : 12;
+
             // 결과 표시
             if (filteredData.length > 0) {
-                document.getElementById('results').textContent = `Station: ${stationName}, Date: ${inputDate}, Hour: ${inputHour}:00, Total Passengers: ${totalPassengers}`;
+                document.getElementById('results').textContent = `
+                    Station: ${stationName}, 
+                    Date: ${inputDate}, 
+                    Hour: ${inputHour}:00, 
+                    Total Passengers: ${totalPassengers}, 
+                    Elderly Seats: ${elderlySeatCount} seats
+                `;
             } else {
-                document.getElementById('results').textContent = `No data found for station: ${stationName} on date: ${inputDate} at hour: ${inputHour}:00`;
+                document.getElementById('results').textContent = `
+                    No data found for station: ${stationName} 
+                    on date: ${inputDate} 
+                    at hour: ${inputHour}:00
+                `;
             }
         });
     </script>
