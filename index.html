@@ -86,8 +86,9 @@
                 return;
             }
 
-            // 역명이 유효하지 않으면 팝업 표시
-            if (!stationList.includes(stationName)) {
+            // 역명 리스트 확인 및 비교
+            console.log("Station list:", stationList); // 로드된 역명 리스트 출력
+            if (!stationList.some(station => station.toLowerCase() === stationName.toLowerCase())) {
                 alert("올바른 역명을 입력하세요.");
                 return;
             }
@@ -101,7 +102,7 @@
                 const rowStation = row['역명'] ? row['역명'].trim() : ""; // 역명이 존재하면 공백 제거
 
                 console.log(`Row date: ${rowDate}, Row hour: ${rowHour}, Station: ${rowStation}`); // 각 행의 날짜, 시간, 역명 확인
-                return rowDate === inputDate && rowHour == inputHour && rowStation === stationName;
+                return rowDate === inputDate && rowHour == inputHour && rowStation.toLowerCase() === stationName.toLowerCase();
             });
 
             console.log("Filtered data:", filteredData); // 필터링된 데이터 확인
