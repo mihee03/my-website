@@ -162,48 +162,55 @@
                 return;
             }
 
-            // 역명 리스트 확인 및 비교
-            console.log("Station list:", stationList); // 로드된 역명 리스트 출력
-            if (!stationList.some(station => station.toLowerCase() === stationName.toLowerCase())) {
-                alert("올바른 역명을 입력하세요.");
-                return;
-            }
+            // "잠시만 기다려주세요" 메시지 표시
+            document.getElementById('results').textContent = "잠시만 기다려주세요...";
 
-            console.log(`Searching for date: ${inputDate}, hour: ${inputHour}, station: ${stationName}`); // 검색 조건 확인
+            // 검색 로직 실행
+            setTimeout(() => {
+                // 역명 리스트 확인 및 비교
+                console.log("Station list:", stationList); // 로드된 역명 리스트 출력
+                if (!stationList.some(station => station.toLowerCase() === stationName.toLowerCase())) {
+                    alert("올바른 역명을 입력하세요.");
+                    document.getElementById('results').textContent = ""; // 메시지 초기화
+                    return;
+                }
 
-            // 필터링: 날짜, 시간, 역명을 기준으로 데이터 검색
-            const filteredData = data.filter(row => {
-                const rowDate = row['일시'] ? new Date(row['일시']).toLocaleDateString('en-CA').slice(5) : ""; // mm-dd 형식
-                const rowHour = row['일시'] ? new Date(row['일시']).getHours() : null; // 시간
-                const rowStation = row['역명'] ? row['역명'].trim() : ""; // 역명이 존재하면 공백 제거
+                console.log(`Searching for date: ${inputDate}, hour: ${inputHour}, station: ${stationName}`); // 검색 조건 확인
 
-                console.log(`Row date: ${rowDate}, Row hour: ${rowHour}, Station: ${rowStation}`); // 각 행의 날짜, 시간, 역명 확인
-                return rowDate === inputDate && rowHour == inputHour && rowStation.toLowerCase() === stationName.toLowerCase();
-            });
+                // 필터링: 날짜, 시간, 역명을 기준으로 데이터 검색
+                const filteredData = data.filter(row => {
+                    const rowDate = row['일시'] ? new Date(row['일시']).toLocaleDateString('en-CA').slice(5) : ""; // mm-dd 형식
+                    const rowHour = row['일시'] ? new Date(row['일시']).getHours() : null; // 시간
+                    const rowStation = row['역명'] ? row['역명'].trim() : ""; // 역명이 존재하면 공백 제거
 
-            console.log("Filtered data:", filteredData); // 필터링된 데이터 확인
+                    console.log(`Row date: ${rowDate}, Row hour: ${rowHour}, Station: ${rowStation}`); // 각 행의 날짜, 시간, 역명 확인
+                    return rowDate === inputDate && rowHour == inputHour && rowStation.toLowerCase() === stationName.toLowerCase();
+                });
 
-            // 총 인원수 계산
-            const totalPassengers = filteredData.reduce((sum, row) => sum + parseInt(row['인원수'] || 0), 0);
+                console.log("Filtered data:", filteredData); // 필터링된 데이터 확인
 
-            // 노약자 좌석 수 결정
-            const elderlySeatCount = totalPassengers >= 170 ? 27 : 12;
+                // 총 인원수 계산
+                const totalPassengers = filteredData.reduce((sum, row) => sum + parseInt(row['인원수'] || 0), 0);
 
-            // 결과 표시
-            if (filteredData.length > 0) {
-                document.getElementById('results').innerHTML = `
-                    <p><strong>Station:</strong> ${stationName}</p>
-                    <p><strong>Date:</strong> ${inputDate}</p>
-                    <p><strong>Hour:</strong> ${inputHour}:00</p>
-                    <p><strong>Total Passengers:</strong> ${totalPassengers}</p>
-                    <p><strong>Elderly Seats:</strong> ${elderlySeatCount} seats</p>
-                `;
-            } else {
-                document.getElementById('results').innerHTML = `
-                    <p>No data found for station: ${stationName}</p>
-                    <p>on date: ${inputDate} at hour: ${inputHour}:00</p>
-                `;
-            }
+                // 노약자 좌석 수 결정
+                const elderlySeatCount = totalPassengers >= 170 ? 27 : 12;
+
+                // 결과 표시
+                if (filteredData.length > 0) {
+                    document.getElementById('results').innerHTML = `
+                        <p><strong>Station:</strong> ${stationName}</p>
+                        <p><strong>Date:</strong> ${inputDate}</p>
+                        <p><strong>Hour:</strong> ${inputHour}:00</p>
+                        <p><strong>Total Passengers:</strong> ${totalPassengers}</p>
+                        <p><strong>Elderly Seats:</strong> ${elderlySeatCount} seats</p>
+                    `;
+                } else {
+                    document.getElementById('results').innerHTML = `
+                        <p>No data found for station: ${stationName}</p>
+                        <p>on date: ${inputDate} at hour: ${inputHour}:00</p>
+                    `;
+                }
+            }, 1000); // 1초 딜레이 추가
         });
     </script>
 </body>
