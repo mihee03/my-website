@@ -115,6 +115,9 @@
                 document.getElementById('results').textContent = `No data found for station: ${stationName} on date: ${inputDate} at hour: ${inputHour}:00`;
             }
         });
+
+        console.log("Loaded data (first 5 rows):", data.slice(0, 5));
+
     </script>
 </body>
 </html>
