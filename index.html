@@ -26,7 +26,7 @@
 <body>
     <h1>Passenger Search</h1>
     <label for="date">Enter Date (mm-dd):</label>
-    <input type="text" id="date" placeholder="mm-dd">
+    <input type="text" id="date" placeholder="01-01">
     <br><br>
     <label for="hour">Enter Hour (0-23):</label>
     <input type="number" id="hour" placeholder="6" min="0" max="23">
@@ -40,6 +40,7 @@
 
     <script>
         let data = [];
+        let stationList = []; // 모든 역명을 저장할 배열
 
         // CSV 파일 로드 및 병합
         const loadCSV = async (url) => {
@@ -64,7 +65,11 @@
         // 파일 로드 및 병합
         Promise.all([loadCSV(file1), loadCSV(file2)]).then(results => {
             data = results[0].concat(results[1]); // 두 파일 병합
-            console.log("Loaded data:", data); // 로드된 데이터 확인
+            console.log("Loaded data (first 5 rows):", data.slice(0, 5)); // 로드된 데이터의 첫 5행 출력
+
+            // 모든 역명을 추출하여 배열에 저장
+            stationList = [...new Set(data.map(row => row['역명'] ? row['역명'].trim() : ""))].filter(Boolean);
+            console.log("Station list:", stationList); // 확인용 출력
             alert("CSV Files Loaded!");
         }).catch(error => {
             console.error("Error loading files:", error);
@@ -81,13 +86,19 @@
                 return;
             }
 
+            // 역명이 유효하지 않으면 팝업 표시
+            if (!stationList.includes(stationName)) {
+                alert("올바른 역명을 입력하세요.");
+                return;
+            }
+
             console.log(`Searching for date: ${inputDate}, hour: ${inputHour}, station: ${stationName}`); // 검색 조건 확인
 
             // 필터링: 날짜, 시간, 역명을 기준으로 데이터 검색
             const filteredData = data.filter(row => {
                 const rowDate = new Date(row['일시']).toLocaleDateString('en-CA').slice(5); // mm-dd 형식
                 const rowHour = new Date(row['일시']).getHours(); // 시간 추출
-                const rowStation = row['역명'].trim(); // 역명에서 공백 제거
+                const rowStation = row['역명'] ? row['역명'].trim() : ""; // 역명이 존재하면 공백 제거, 없으면 빈 문자열
                 console.log(`Row date: ${rowDate}, Row hour: ${rowHour}, Station: ${rowStation}`); // 각 행의 날짜, 시간, 역명 확인
                 return rowDate === inputDate && rowHour == inputHour && rowStation === stationName;
             });
