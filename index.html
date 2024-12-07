@@ -1,217 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Passenger Search</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
-        }
-
-        h1 {
-            color: #444;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 30px auto;
-            padding: 20px;
-            background: #ffffff;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
-
-        label {
-            display: block;
-            margin: 10px 0 5px;
-            font-weight: bold;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0 20px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
-
-        button {
-            width: 100%;
-            background: #007BFF;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            font-size: 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        button:hover {
-            background: #0056b3;
-        }
-
-        #results {
-            margin-top: 20px;
-            padding: 10px;
-            background: #f9f9f9;
-            border-left: 4px solid #007BFF;
-            border-radius: 4px;
-        }
-
-        #results p {
-            margin: 0;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        footer {
-            text-align: center;
-            padding: 10px 0;
-            font-size: 14px;
-            color: #666;
-            margin-top: 20px;
-        }
-
-        footer a {
-            color: #007BFF;
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>지하철 검색</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .search-container {
+      margin-bottom: 20px;
+    }
+    .favorites-container button {
+      margin: 5px;
+    }
+    .result {
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Passenger Search</h1>
-    <div class="container">
-        <label for="date">Enter Date (mm-dd):</label>
-        <input type="text" id="date" placeholder="01-01">
+  <h1>지하철 정보 검색 및 즐겨찾기</h1>
 
-        <label for="hour">Enter Hour (0-23):</label>
-        <input type="number" id="hour" placeholder="6" min="0" max="23">
+  <div class="search-container">
+    <label for="station-search">역 이름 검색:</label>
+    <input type="text" id="station-search" placeholder="예: 강남역">
+    <button id="search-button">검색</button>
+    <button id="add-favorite-button">즐겨찾기에 추가</button>
+  </div>
 
-        <label for="station">Enter Station Name:</label>
-        <input type="text" id="station" placeholder="서울역">
+  <div class="favorites-container" id="favorites-container">
+    <h3>즐겨찾기</h3>
+    <p>즐겨찾은 역이 여기에 표시됩니다.</p>
+  </div>
 
-        <button id="search">Search</button>
+  <div class="result">
+    <h3>검색 결과</h3>
+    <div id="result">검색 결과가 여기에 표시됩니다.</div>
+  </div>
 
-        <div id="results"></div>
-    </div>
+  <div class="ad-container" id="ad-container">
+    <h3>맞춤형 광고</h3>
+    <p id="ad-content">광고가 여기에 표시됩니다.</p>
+  </div>
 
-    <footer>
-        <p>Created with ❤️ by <a href="#">Your Name</a></p>
-    </footer>
-
-    <script>
-        let data = [];
-        let stationList = []; // 모든 역명을 저장할 배열
-
-        // CSV 파일 로드 및 병합
-        const loadCSV = async (url) => {
-            return new Promise((resolve, reject) => {
-                Papa.parse(url, {
-                    download: true,
-                    header: true,
-                    complete: function(results) {
-                        resolve(results.data);
-                    },
-                    error: function(error) {
-                        reject(error);
-                    }
-                });
-            });
-        };
-
-        // 데이터 파일 경로
-        const file1 = "데이터파일/우대권병합데이터06.csv";
-        const file2 = "데이터파일/우대권병합데이터12.csv";
-
-        // 파일 로드 및 병합
-        Promise.all([loadCSV(file1), loadCSV(file2)]).then(results => {
-            data = results[0].concat(results[1]); // 두 파일 병합
-            console.log("Loaded data (first 5 rows):", data.slice(0, 5)); // 로드된 데이터의 첫 5행 출력
-
-            // 모든 역명을 추출하여 배열에 저장
-            stationList = [...new Set(data.map(row => row['역명'] ? row['역명'].trim() : ""))].filter(Boolean);
-            console.log("Station list:", stationList); // 확인용 출력
-            alert("CSV Files Loaded!");
-        }).catch(error => {
-            console.error("Error loading files:", error);
-        });
-
-        // 검색 버튼 클릭 이벤트
-        document.getElementById('search').addEventListener('click', function() {
-            const inputDate = document.getElementById('date').value; // 사용자가 입력한 날짜
-            const inputHour = document.getElementById('hour').value; // 사용자가 입력한 시간
-            const stationName = document.getElementById('station').value.trim(); // 사용자가 입력한 역명 (공백 제거)
-
-            if (!inputDate || !inputHour || !stationName) {
-                document.getElementById('results').textContent = "Please enter date, hour, and station name.";
-                return;
-            }
-
-            // "잠시만 기다려주세요" 메시지 표시
-            document.getElementById('results').textContent = "잠시만 기다려주세요...";
-
-            // 검색 로직 실행
-            setTimeout(() => {
-                // 역명 리스트 확인 및 비교
-                console.log("Station list:", stationList); // 로드된 역명 리스트 출력
-                if (!stationList.some(station => station.toLowerCase() === stationName.toLowerCase())) {
-                    alert("올바른 역명을 입력하세요.");
-                    document.getElementById('results').textContent = ""; // 메시지 초기화
-                    return;
-                }
-
-                console.log(`Searching for date: ${inputDate}, hour: ${inputHour}, station: ${stationName}`); // 검색 조건 확인
-
-                // 필터링: 날짜, 시간, 역명을 기준으로 데이터 검색
-                const filteredData = data.filter(row => {
-                    const rowDate = row['일시'] ? new Date(row['일시']).toLocaleDateString('en-CA').slice(5) : ""; // mm-dd 형식
-                    const rowHour = row['일시'] ? new Date(row['일시']).getHours() : null; // 시간
-                    const rowStation = row['역명'] ? row['역명'].trim() : ""; // 역명이 존재하면 공백 제거
-
-                    console.log(`Row date: ${rowDate}, Row hour: ${rowHour}, Station: ${rowStation}`); // 각 행의 날짜, 시간, 역명 확인
-                    return rowDate === inputDate && rowHour == inputHour && rowStation.toLowerCase() === stationName.toLowerCase();
-                });
-
-                console.log("Filtered data:", filteredData); // 필터링된 데이터 확인
-
-                // 총 인원수 계산
-                const totalPassengers = filteredData.reduce((sum, row) => sum + parseInt(row['인원수'] || 0), 0);
-
-                // 노약자 좌석 수 결정
-                const elderlySeatCount = totalPassengers >= 170 ? 27 : 12;
-
-                // 결과 표시
-                if (filteredData.length > 0) {
-                    document.getElementById('results').innerHTML = `
-                        <p><strong>Station:</strong> ${stationName}</p>
-                        <p><strong>Date:</strong> ${inputDate}</p>
-                        <p><strong>Hour:</strong> ${inputHour}:00</p>
-                        <p><strong>Total Passengers:</strong> ${totalPassengers}</p>
-                        <p><strong>Elderly Seats:</strong> ${elderlySeatCount} seats</p>
-                    `;
-                } else {
-                    document.getElementById('results').innerHTML = `
-                        <p>No data found for station: ${stationName}</p>
-                        <p>on date: ${inputDate} at hour: ${inputHour}:00</p>
-                    `;
-                }
-            }, 1000); // 1초 딜레이 추가
-        });
-    </script>
+  <script src="scripts.js"></script>
 </body>
 </html>
