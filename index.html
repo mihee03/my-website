@@ -566,6 +566,14 @@
         <script>
             let currentLat = 37.5665, currentLng = 126.9780;  // 서울시청 좌표 (예시로 서울시청을 사용)
 
+            window.onload = function() {
+                // #map 요소 확인
+                const mapElement = document.getElementById('map');
+                if (!mapElement) {
+                    console.error("#map 요소를 찾을 수 없습니다.");
+                    return;
+                }
+                           
             // 네이버 지도 초기화
             const map = new naver.maps.Map('map', {
                 center: new naver.maps.LatLng(currentLat, currentLng), // 서울 중심
@@ -578,7 +586,8 @@
                 map: map,
                 title: "현재 위치"
             });
-
+            console.log("지도 초기화 완료");
+        };
             // 검색 API 요청
             async function searchPlaces(query) {
                 const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // CORS Proxy URL
@@ -1316,7 +1325,7 @@
 
     <!-- 에티켓 홍보 -->
     <section id="etiquette">
-        
+
         <style>
             body {
                 font-family: 'Arial', sans-serif;
@@ -1333,7 +1342,7 @@
                 left: 0;
                 width: 100%;
                 background-color: #f9f9f9;
-                padding: 10px 0;
+                padding: 20px 0;
                 box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
                 display: flex;
                 justify-content: center;
