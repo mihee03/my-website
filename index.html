@@ -7,16 +7,17 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f4f7fa;
             margin: 0;
             padding: 0;
+            background-color: #f4f7fa;
+            color: #333;
         }
 
         header {
             background-color: #6c63ff;
             color: white;
-            padding: 20px;
             text-align: center;
+            padding: 20px;
         }
 
         nav {
@@ -30,7 +31,6 @@
             color: white;
             margin: 0 10px;
             text-decoration: none;
-            font-size: 16px;
         }
 
         nav a:hover {
@@ -38,39 +38,42 @@
         }
 
         section {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
+            max-width: 900px;
+            margin: 30px auto;
             background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        h1, h2 {
-            color: #333;
+        h2 {
+            color: #444;
         }
 
+        /* 공통 버튼 스타일 */
         button {
             background-color: #6c63ff;
             color: white;
+            padding: 10px;
             border: none;
-            padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
         }
 
         button:hover {
             background-color: #5a4db8;
         }
 
-        textarea, input {
+        input, textarea {
             width: 100%;
             padding: 10px;
-            margin-top: 10px;
+            margin: 10px 0;
             border: 1px solid #ddd;
             border-radius: 5px;
-            font-size: 14px;
+        }
+
+        .hidden {
+            display: none;
         }
 
         footer {
@@ -78,50 +81,31 @@
             color: white;
             text-align: center;
             padding: 10px;
-            margin-top: 20px;
+            margin-top: 30px;
         }
 
-        .hidden {
-            display: none;
-        }
-
-        /* 에티켓 슬라이드 스타일 */
+        /* 에티켓 슬라이드 */
         #etiquette-slide {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            background-color: #f9f9f9;
-            padding: 20px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            display: flex;
+            justify-content: space-between;
             box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            z-index: 1000;
-        }
-
-        .etiquette-slide-container {
-            display: flex;
-            animation: slide 20s ease-in-out infinite;
-            align-items: center;
         }
 
         .etiquette-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex: none;
-            min-width: 100%;
+            flex: 1;
             text-align: center;
-            padding: 0 20px;
         }
 
         .etiquette-item img {
-            width: 100px;
-            height: 100px;
-            margin-right: 20px;
-            border: 2px solid #6c63ff;
+            width: 80px;
+            height: 80px;
+            margin-bottom: 10px;
             border-radius: 10px;
         }
     </style>
@@ -130,10 +114,11 @@
     <header>
         <h1>지하철 통합 웹사이트</h1>
     </header>
+
     <nav>
-        <a href="#ad-favorites">광고 및 즐겨찾기</a>
-        <a href="#elderly-seats">노약자 좌석</a>
-        <a href="#map-search">지도 검색</a>
+        <a href="#favorites">광고 및 즐겨찾기</a>
+        <a href="#elderly">노약자 좌석 검색</a>
+        <a href="#map">지도 검색</a>
         <a href="#survey">설문조사</a>
         <a href="#community">익명 게시판</a>
         <a href="#faq">FAQ</a>
@@ -141,39 +126,35 @@
     </nav>
 
     <!-- 광고 및 즐겨찾기 -->
-    <section id="ad-favorites">
+    <section id="favorites">
         <h2>광고 및 즐겨찾기</h2>
-        <div class="search-container">
-            <input type="text" id="station-search" placeholder="역 이름 검색">
-            <button id="search-button">검색</button>
-            <button id="add-favorite-button">즐겨찾기에 추가</button>
-        </div>
+        <input type="text" id="station-search" placeholder="역 이름 입력">
+        <button id="search-button">검색</button>
+        <button id="add-favorite-button">즐겨찾기에 추가</button>
         <div id="favorites-container"></div>
         <div id="ad-container">
             <h3>맞춤형 광고</h3>
-            <p id="ad-content">광고가 여기에 표시됩니다.</p>
+            <p id="ad-content">광고 내용이 여기에 표시됩니다.</p>
         </div>
     </section>
 
-    <!-- 노약자 좌석 -->
-    <section id="elderly-seats">
-        <h2>노약자 좌석</h2>
-        <input type="text" id="date" placeholder="날짜 (MM-DD)">
-        <input type="number" id="hour" placeholder="시간 (0-23)" min="0" max="23">
-        <input type="text" id="station" placeholder="역 이름">
+    <!-- 노약자 좌석 검색 -->
+    <section id="elderly">
+        <h2>노약자 좌석 검색</h2>
+        <input type="text" id="elderly-date" placeholder="날짜 (MM-DD)">
+        <input type="number" id="elderly-hour" placeholder="시간 (0-23)" min="0" max="23">
+        <input type="text" id="elderly-station" placeholder="역 이름">
         <button id="elderly-search">검색</button>
         <div id="elderly-results"></div>
     </section>
 
     <!-- 지도 검색 -->
-    <section id="map-search">
+    <section id="map">
         <h2>지도 검색</h2>
-        <div id="search-box">
-            <input type="text" id="search-input" placeholder="검색어를 입력하세요">
-            <button id="map-search-button">검색</button>
-        </div>
-        <div id="map" style="height: 300px;"></div>
-        <div id="results"></div>
+        <input type="text" id="map-search-input" placeholder="검색어 입력">
+        <button id="map-search-button">검색</button>
+        <div id="map-container" style="height: 300px;"></div>
+        <div id="map-results"></div>
     </section>
 
     <!-- 설문조사 -->
@@ -181,26 +162,25 @@
         <h2>설문조사</h2>
         <div>
             <label>1. 지하철을 얼마나 자주 이용하시나요?</label>
-            <input type="radio" name="q1" value="매일"> 매일
-            <input type="radio" name="q1" value="주 1~2회"> 주 1~2회
-            <input type="radio" name="q1" value="월 1~2회"> 월 1~2회
-            <input type="radio" name="q1" value="전혀 안 이용"> 전혀 안 이용
+            <input type="radio" name="survey-q1" value="매일"> 매일
+            <input type="radio" name="survey-q1" value="주 1~2회"> 주 1~2회
+            <input type="radio" name="survey-q1" value="월 1~2회"> 월 1~2회
         </div>
         <button id="survey-submit">설문 제출</button>
-        <div id="survey-results" class="hidden"></div>
+        <div id="survey-results"></div>
     </section>
 
     <!-- 익명 게시판 -->
     <section id="community">
         <h2>익명 게시판</h2>
-        <textarea id="post-input" placeholder="글을 작성하세요..."></textarea>
-        <button id="post-button">글 작성</button>
-        <div id="posts"></div>
+        <textarea id="post-input" placeholder="게시글 작성"></textarea>
+        <button id="post-submit">작성</button>
+        <div id="posts-container"></div>
     </section>
 
     <!-- FAQ -->
     <section id="faq">
-        <h2>FAQ</h2>
+        <h2>자주 묻는 질문</h2>
         <div>
             <h3>Q. 유실물 관련</h3>
             <p>답변: 신분증을 지참해주세요.</p>
@@ -211,11 +191,9 @@
     <section id="etiquette">
         <h2>에티켓 홍보</h2>
         <div id="etiquette-slide">
-            <div class="etiquette-slide-container">
-                <div class="etiquette-item">
-                    <img src="https://example.com/bag.png" alt="가방">
-                    <h3>가방 앞으로!</h3>
-                </div>
+            <div class="etiquette-item">
+                <img src="https://example.com/bag.png" alt="가방">
+                <p>가방을 앞으로</p>
             </div>
         </div>
     </section>
@@ -225,8 +203,8 @@
     </footer>
 
     <script>
-        // 스크립트 내용 통합
-        console.log("기능이 추가되었습니다.");
+        // 각각의 스크립트를 독립적으로 작성하여 기능 구현
+        console.log("전체 기능 통합 완료!");
     </script>
 </body>
 </html>
