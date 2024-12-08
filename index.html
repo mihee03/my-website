@@ -1,131 +1,4 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>지하철톡톡</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
-        }
-
-        header {
-            background-color: #666;
-            color: #fff;
-            padding: 20px 0;
-            text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 28px;
-        }
-
-        header p {
-            margin: 5px 0;
-            font-size: 14px;
-        }
-
-        nav {
-            margin-top: 10px;
-        }
-
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            margin: 0 10px;
-            padding: 5px 10px;
-            border-radius: 5px;
-            background-color: #444;
-            font-size: 14px;
-            transition: background-color 0.3s;
-        }
-
-        nav a:hover {
-            background-color: #333;
-        }
-
-        .section {
-            padding: 40px 20px;
-            margin: 20px auto;
-            background: #fff;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            max-width: 800px;
-        }
-
-        .section h2 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: #495057;
-            text-align: center;
-        }
-
-        label, input, button {
-            display: block;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-
-        input, button {
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        button {
-            background-color: #666;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #444;
-        }
-
-        #results, .favorites-container {
-            padding: 15px;
-            background: #f9f9f9;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            margin-top: 10px;
-        }
-
-        .favorites-container button {
-            background-color: #999;
-        }
-
-        .favorites-container button:hover {
-            background-color: #777;
-        }
-    </style>
-</head>
-<body>
-
-<header>
-    <h1>지하철톡톡</h1>
-    <p>아래 기능을 클릭하면 해당 섹션으로 이동합니다</p>
-    <nav>
-        <a href="#ad-favorites">광고 및 즐겨찾기</a>
-        <a href="#elderly-seats">노약자좌석 개수 조정</a>
-        <a href="#search-feature">검색기능</a>
-        <a href="#survey">설문조사</a>
-        <a href="#anonymous-board">익명게시판</a>
-        <a href="#faq">자주묻는질문</a>
-    </nav>
-</header>
-
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -232,8 +105,6 @@
   </style>
 </head>
 <body>
-
-<section id="ad-favorites" class="section">
   <h2>지하철 정보 검색 및 즐겨찾기</h2>
 
   <div class="fa-container">
@@ -425,7 +296,7 @@
       }
     });
   </script>
-    </body>
+</body>
 </html>
 
 <!DOCTYPE html>
@@ -528,9 +399,6 @@
     </style>
 </head>
 <body>
-</section>
-
-<section id="elderly-seats" class="section">
     <h2>노약자 좌석 수 검색</h2>
     <div class="el-container">
         <label for="el-date" class="el-label">Enter Date (mm-dd):</label>
@@ -628,7 +496,7 @@
             }, 1000);
         });
     </script>
-    </body>
+</body>
 </html>
 
 <!DOCTYPE html>
@@ -742,9 +610,6 @@
     </style>
 </head>
 <body>
-</section>
-
-<section id="search-feature" class="section">
     <h2>지하철 검색</h2>
 
     <div id="ser-search-box">
@@ -802,7 +667,7 @@
         async function serAddressToCoordinates(address) {
             const serProxyUrl = "https://cors-anywhere.herokuapp.com/";
             const serGeocodingUrl = `https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${encodeURIComponent(address)}`;
-
+            
             try {
                 const serResponse = await fetch(serProxyUrl + serGeocodingUrl, {
                     headers: {
@@ -810,7 +675,7 @@
                         "X-NCP-APIGW-API-KEY": "Bv9U3RvBVIJHhH73zysQJhSn4OtwiW1jZyhTpzEV",
                     },
                 });
-
+        
                 if (serResponse.ok) {
                     const serData = await serResponse.json();
                     if (serData.addresses.length > 0) {
@@ -857,7 +722,7 @@
 
                 if (serLatLng) {
                     serAddMarker(serLatLng.lat, serLatLng.lng, place.title.replace(/<[^>]+>/g, ""));
-
+                    
                     document.getElementById("ser-results").innerHTML += `
                         <div class="ser-result-item">
                             <strong>${place.title.replace(/<[^>]+>/g, "")}</strong><br>
@@ -878,7 +743,7 @@
             }
         });
     </script>
-    </body>
+</body>
 </html>
 
 <!DOCTYPE html>
@@ -988,10 +853,8 @@
     </style>
 </head>
 <body>
-</section>
 
     <div id="sur-survey-section">
-        <section id="survey" class="section">
         <h2>설문조사</h2>
         <!-- 설문 항목들 -->
         <div class="sur-question">
@@ -1016,7 +879,7 @@
         </div>
 
         <button id="sur-survey-submit" class="sur-survey-button">설문 제출</button>
-        </div>
+    </div>
 
     <!-- 설문 통계 -->
     <div id="sur-survey-statistics" style="display:none;">
@@ -1058,8 +921,8 @@
 
             for (let surQuestion in surSurveyResults) {
                 const surResultItem = document.createElement("li");
-                surResultItem.textContent = `${surQuestion === 'surQ1' ? '1. 지하철을 얼마나 자주 이용하시나요?' :
-                                          surQuestion === 'surQ2' ? '2. 지하철을 이용할 때 가장 불편한 점은 무엇인가요?' :
+                surResultItem.textContent = `${surQuestion === 'surQ1' ? '1. 지하철을 얼마나 자주 이용하시나요?' : 
+                                          surQuestion === 'surQ2' ? '2. 지하철을 이용할 때 가장 불편한 점은 무엇인가요?' : 
                                           '3. 기타 피드백'} - `;
 
                 if (surQuestion !== 'surQ3') {
@@ -1189,17 +1052,15 @@
     </style>
 </head>
 <body>
-</section>
     <!-- 커뮤니티 공간 -->
     <div id="po-community-section">
-        <section id="anonymous-board" class="section">
         <h2>익명 게시판</h2>
         <div id="po-posts"></div>
         <div>
             <textarea id="po-post-input" class="po-textarea" placeholder="글을 작성해보세요..."></textarea>
             <button id="po-post-button" class="po-button">글 작성</button>
         </div>
-        </div>
+    </div>
 
     <script>
         // 게시글 저장 배열
@@ -1387,10 +1248,8 @@
     </style>
 </head>
 <body>
-</section>
 
     <div class="que-section">
-        <section id="faq" class="section">
         <h2>자주 묻는 질문</h2>
 
         <!-- 질문 1 -->
@@ -1440,7 +1299,7 @@
                 </div>
             </div>
         </div>
-        </div>
+    </div>
 
     <script>
         function queToggleAnswer(id) {
@@ -1541,7 +1400,7 @@
     </style>
 </head>
 <body>
-</section>
+
     <div id="use-etiquette-slide">
         <div class="use-etiquette-slide-container">
             <div class="use-etiquette-item">
