@@ -512,18 +512,27 @@
                 /* 지도 스타일 */
                 #map {
                     width: 100%;
-                    height: 250px;
+                    height: 500px;
                     max-width: 100%;
                     margin: 0 auto;
                     display: block;
+                    position: relative;
                 }
 
                 /* 검색 박스 */
                 #search-box {
-                    margin: 20px auto;
+                    position: absolute; /* 지도 위에 표시되도록 설정 */
+                    top: 20px; /* 상단에서 간격 */
+                    left: 50%;
+                    transform: translateX(-50%);
+                    z-index: 10; /* 지도보다 위에 표시되도록 설정 */
                     text-align: center;
                     max-width: 800px;
                     width: 100%;
+                    background-color: rgba(255, 255, 255, 0.9); /* 배경 투명도 조절 */
+                    padding: 10px;
+                    border-radius: 5px;
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
                 }
 
                 #search-input {
