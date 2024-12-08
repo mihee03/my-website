@@ -10,77 +10,90 @@
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f7fa;
+            background-color: #e9ecef; /* 회색 배경 */
             color: #333;
         }
 
-        /* 지도 스타일 */
-        #map {
-            width: 100%;
-            height: 500px;
-            max-width: 100%;
-            margin: 0 auto;
-            display: block;
+        h1 {
+            text-align: center;
+            background-color: #495057; /* 짙은 회색 */
+            color: #fff;
+            padding: 20px;
+            margin: 0;
+            font-size: 24px;
         }
 
-        /* 검색 박스 */
         #search-box {
             margin: 20px auto;
             text-align: center;
             max-width: 800px;
-            width: 100%;
+            padding: 15px;
+            background-color: #ffffff; /* 흰색 배경 */
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 */
+            border-radius: 8px;
         }
 
         #search-input {
-            width: 70%;
+            width: 60%;
             padding: 10px;
             font-size: 16px;
-            border: 1px solid #ddd;
+            border: 1px solid #ced4da;
             border-radius: 5px;
             margin-right: 10px;
+            box-sizing: border-box;
         }
 
         #search-button {
             padding: 10px 20px;
-            background-color: #6c63ff;
-            color: white;
+            background-color: #6c757d; /* 중간 회색 */
+            color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            transition: background-color 0.3s ease;
         }
 
         #search-button:hover {
-            background-color: #5a4db8;
+            background-color: #495057; /* 짙은 회색 */
         }
 
-        /* 검색 결과 리스트 스타일 */
+        #map {
+            width: 90%;
+            height: 400px;
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: #adb5bd; /* 밝은 회색 */
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
         #results {
             margin: 20px auto;
-            padding: 10px;
-            background-color: white;
-            border-radius: 10px;
-            width: 90%;
+            padding: 15px;
+            background-color: #ffffff; /* 흰색 배경 */
+            border-radius: 8px;
             max-width: 800px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .result-item {
             margin-bottom: 15px;
             padding: 15px;
-            background-color: #f9f9f9;
+            background-color: #f8f9fa; /* 매우 밝은 회색 */
             border-radius: 8px;
-            border: 1px solid #ddd;
+            border: 1px solid #ced4da;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .result-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .result-item a {
             text-decoration: none;
-            color: #6c63ff;
+            color: #495057; /* 짙은 회색 */
             font-weight: bold;
         }
 
@@ -88,23 +101,15 @@
             text-decoration: underline;
         }
 
-        .result-item p {
-            margin: 5px 0;
-        }
-
-        /* 화면 반응형 설정 */
         @media (max-width: 768px) {
             #search-input {
-                width: 60%;
-            }
-            #search-button {
-                width: 30%;
+                width: 50%; /* 모바일에서 입력 필드 크기 조정 */
             }
         }
-
     </style>
 </head>
 <body>
+    <h1>지하철 검색</h1>
 
     <div id="search-box">
         <input type="text" id="search-input" placeholder="검색어를 입력하세요" />
@@ -146,8 +151,8 @@
 
                 if (response.ok) {
                     const data = await response.json();
-                    console.log('API Response:', data); // API 응답 확인
-                    displayResults(data.items); // 검색 결과를 화면에 표시
+                    console.log('API Response:', data);
+                    displayResults(data.items);
                 } else {
                     console.error('API 호출 실패:', response.statusText);
                     alert("검색 결과를 불러오는 데 실패했습니다.");
@@ -157,9 +162,9 @@
                 alert("API 요청 중 오류가 발생했습니다.");
             }
         }
-        // Geocoding API를 이용해 주소를 좌표로 변환하는 함수
+
         async function addressToCoordinates(address) {
-            const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // CORS Proxy
+            const proxyUrl = "https://cors-anywhere.herokuapp.com/";
             const geocodingUrl = `https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${encodeURIComponent(address)}`;
             
             try {
@@ -191,44 +196,32 @@
                 return null;
             }
         }
-        
-        // 지도에 마커를 추가하는 함수
+
         function addMarker(lat, lng, title) {
             const marker = new naver.maps.Marker({
-                position: new naver.maps.LatLng(lat, lng), // 마커 위치
-                map: map, // 지도 객체
-                title: title, // 마커에 표시될 제목
+                position: new naver.maps.LatLng(lat, lng),
+                map: map,
+                title: title
             });
-        
-            // 마커 클릭 이벤트 (정보창 표시)
+
             const infoWindow = new naver.maps.InfoWindow({
-                content: `<div><strong>${title}</strong></div>`, // 정보창 내용
+                content: `<div><strong>${title}</strong></div>`
             });
-        
+
             naver.maps.Event.addListener(marker, "click", () => {
-                infoWindow.open(map, marker); // 마커 클릭 시 정보창 열기
+                infoWindow.open(map, marker);
             });
         }
-        
-        // 검색 결과를 지도에 표시하는 함수
+
         async function displayResults(places) {
-            // 이전 결과 초기화
             document.getElementById("results").innerHTML = "";
-        
-            // 마커 배열
-            const markers = [];
-        
+
             for (const place of places) {
-                let latLng;
-        
-                // 주소를 좌표로 변환
-                latLng = await addressToCoordinates(place.address);
-        
+                const latLng = await addressToCoordinates(place.address);
+
                 if (latLng) {
-                    // 지도에 마커 추가
                     addMarker(latLng.lat, latLng.lng, place.title.replace(/<[^>]+>/g, ""));
                     
-                    // 검색 결과 목록 추가
                     document.getElementById("results").innerHTML += `
                         <div class="result-item">
                             <strong>${place.title.replace(/<[^>]+>/g, "")}</strong><br>
@@ -239,29 +232,15 @@
                 }
             }
         }
-        
-        // 검색 버튼 클릭 이벤트
+
         document.getElementById("search-button").addEventListener("click", () => {
             const query = document.getElementById("search-input").value;
             if (query.trim()) {
-                searchPlaces(query.trim()); // 검색 실행
-            } else {
-                alert("검색어를 입력하세요!");
-            }
-        });
-
-
-
-        // 검색 버튼 클릭 이벤트
-        document.getElementById("search-button").addEventListener("click", () => {
-            const query = document.getElementById("search-input").value;
-            if (query.trim()) {
-                searchPlaces(query.trim()); // 검색 실행
+                searchPlaces(query.trim());
             } else {
                 alert("검색어를 입력하세요!");
             }
         });
     </script>
-
 </body>
 </html>
