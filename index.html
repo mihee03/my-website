@@ -1,57 +1,142 @@
-#광고 및 즐겨찾기
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>지하철 검색</title>
+  <title>지하철 정보 검색 및 즐겨찾기</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 20px;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0; /* 전체 배경 회색 */
+      color: #333;
     }
-    .search-container {
+
+    h1 {
+      text-align: center;
+      padding: 20px 0;
+      background-color: #666; /* 헤더 배경 진한 회색 */
+      color: #fff;
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    .search-container, .favorites-container, .result, .ad-container {
       margin-bottom: 20px;
     }
-    .favorites-container button {
-      margin: 5px;
-    }
-    .result {
-      margin-top: 20px;
-    }
-    img {
+
+    label {
       display: block;
-      margin-top: 10px;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #666; /* 버튼 회색 */
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 10px;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #444; /* 버튼 호버 시 더 진한 회색 */
+    }
+
+    .favorites-container {
+      padding: 10px;
+      background: #f9f9f9; /* 연한 회색 배경 */
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .favorites-container button {
+      background-color: #999;
+      color: white;
+      margin: 5px 0;
+    }
+
+    .favorites-container button:hover {
+      background-color: #777;
+    }
+
+    .result, .ad-container {
+      padding: 15px;
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .result h3, .ad-container h3 {
+      margin-top: 0;
+      color: #555;
+    }
+
+    .ad-container img {
+      display: block;
+      margin: 10px auto 0;
+      max-width: 100%;
+      border-radius: 5px;
     }
   </style>
 </head>
 <body>
   <h1>지하철 정보 검색 및 즐겨찾기</h1>
 
-  <div class="search-container">
-    <label for="station-search">역 이름 검색:</label>
-    <input type="text" id="station-search" placeholder="예: 강남역">
-    <button id="search-button">검색</button>
-    <button id="add-favorite-button">즐겨찾기에 추가</button>
-  </div>
+  <div class="container">
+    <!-- 검색 영역 -->
+    <div class="search-container">
+      <label for="station-search">역 이름 검색:</label>
+      <input type="text" id="station-search" placeholder="예: 강남역">
+      <button id="search-button">검색</button>
+      <button id="add-favorite-button">즐겨찾기에 추가</button>
+    </div>
 
-  <div class="favorites-container" id="favorites-container">
-    <h3>즐겨찾기</h3>
-    <p>즐겨찾은 역이 여기에 표시됩니다.</p>
-  </div>
+    <!-- 즐겨찾기 영역 -->
+    <div class="favorites-container" id="favorites-container">
+      <h3>즐겨찾기</h3>
+      <p>즐겨찾은 역이 여기에 표시됩니다.</p>
+    </div>
 
-  <div class="result">
-    <h3>검색 결과</h3>
-    <div id="result">검색 결과가 여기에 표시됩니다.</div>
-  </div>
+    <!-- 검색 결과 영역 -->
+    <div class="result">
+      <h3>검색 결과</h3>
+      <div id="result">검색 결과가 여기에 표시됩니다.</div>
+    </div>
 
-  <div class="ad-container" id="ad-container">
-    <h3>맞춤형 광고</h3>
-    <p id="ad-content">광고가 여기에 표시됩니다.</p>
+    <!-- 광고 영역 -->
+    <div class="ad-container" id="ad-container">
+      <h3>맞춤형 광고</h3>
+      <p id="ad-content">광고가 여기에 표시됩니다.</p>
+    </div>
   </div>
 
   <script>
+    // JavaScript 로직은 요청하신 코드 그대로 사용합니다.
     let jsonData;
 
     // JSON 파일 로드
