@@ -157,11 +157,11 @@
                 alert("API 요청 중 오류가 발생했습니다.");
             }
         }
-        // 주소를 좌표로 변환하는 함수
+        // Geocoding API를 이용해 주소를 좌표로 변환하는 함수
         async function addressToCoordinates(address) {
-            const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+            const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // CORS Proxy
             const geocodingUrl = `https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${encodeURIComponent(address)}`;
-        
+            
             try {
                 const response = await fetch(proxyUrl + geocodingUrl, {
                     headers: {
@@ -191,48 +191,43 @@
                 return null;
             }
         }
-
-        // 검색 결과를 지도와 페이지에 표시하는 함수
+        
+        // 지도에 마커를 추가하는 함수
+        function addMarker(lat, lng, title) {
+            const marker = new naver.maps.Marker({
+                position: new naver.maps.LatLng(lat, lng), // 마커 위치
+                map: map, // 지도 객체
+                title: title, // 마커에 표시될 제목
+            });
+        
+            // 마커 클릭 이벤트 (정보창 표시)
+            const infoWindow = new naver.maps.InfoWindow({
+                content: `<div><strong>${title}</strong></div>`, // 정보창 내용
+            });
+        
+            naver.maps.Event.addListener(marker, "click", () => {
+                infoWindow.open(map, marker); // 마커 클릭 시 정보창 열기
+            });
+        }
+        
+        // 검색 결과를 지도에 표시하는 함수
         async function displayResults(places) {
             // 이전 결과 초기화
             document.getElementById("results").innerHTML = "";
         
-            // 마커 배열 초기화
+            // 마커 배열
             const markers = [];
         
             for (const place of places) {
                 let latLng;
         
-                // 좌표 정보가 없으면 Geocoding API를 호출
-                if (!place.mapx || !place.mapy) {
-                    latLng = await addressToCoordinates(place.address);
-                } else {
-                    latLng = {
-                        lat: parseFloat(place.mapy),
-                        lng: parseFloat(place.mapx),
-                    };
-                }
+                // 주소를 좌표로 변환
+                latLng = await addressToCoordinates(place.address);
         
                 if (latLng) {
                     // 지도에 마커 추가
-                    const marker = new naver.maps.Marker({
-                        position: new naver.maps.LatLng(latLng.lat, latLng.lng),
-                        map: map,
-                        title: place.title.replace(/<[^>]+>/g, "") // HTML 태그 제거
-                    });
-        
-                    // 마커 클릭 이벤트 (정보창 표시)
-                    const infoWindow = new naver.maps.InfoWindow({
-                        content: `<div><strong>${place.title}</strong><br>${place.address}</div>`
-                    });
-        
-                    naver.maps.Event.addListener(marker, "click", () => {
-                        infoWindow.open(map, marker);
-                    });
-        
-                    // 마커 배열에 추가
-                    markers.push(marker);
-        
+                    addMarker(latLng.lat, latLng.lng, place.title.replace(/<[^>]+>/g, ""));
+                    
                     // 검색 결과 목록 추가
                     document.getElementById("results").innerHTML += `
                         <div class="result-item">
@@ -243,17 +238,18 @@
                     `;
                 }
             }
-        
-            // 지도에 마커 표시
-            showMarkers(markers);
         }
         
-        // 마커 표시 함수
-        function showMarkers(markers) {
-            markers.forEach(marker => {
-                marker.setMap(map); // 마커를 지도에 표시
-            });
-        }
+        // 검색 버튼 클릭 이벤트
+        document.getElementById("search-button").addEventListener("click", () => {
+            const query = document.getElementById("search-input").value;
+            if (query.trim()) {
+                searchPlaces(query.trim()); // 검색 실행
+            } else {
+                alert("검색어를 입력하세요!");
+            }
+        });
+
 
 
         // 검색 버튼 클릭 이벤트
