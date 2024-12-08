@@ -291,13 +291,13 @@
                     background-color: #f4f4f9;
                     color: #333;
                 }
-
+            
                 h1 {
                     color: #444;
                     text-align: center;
                     padding: 20px;
                 }
-
+            
                 .container {
                     max-width: 600px;
                     margin: 30px auto;
@@ -305,14 +305,15 @@
                     background: #ffffff;
                     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
                     border-radius: 8px;
+                    box-sizing: border-box; /* 추가 */
                 }
-
+            
                 label {
                     display: block;
                     margin: 10px 0 5px;
                     font-weight: bold;
                 }
-
+            
                 input {
                     width: 100%;
                     padding: 10px;
@@ -320,9 +321,9 @@
                     border: 1px solid #ccc;
                     border-radius: 4px;
                     font-size: 14px;
-                    box-sizing: border-box;
+                    box-sizing: border-box; /* 추가 */
                 }
-
+            
                 button {
                     width: 100%;
                     background: #007BFF;
@@ -333,26 +334,28 @@
                     border-radius: 4px;
                     cursor: pointer;
                     transition: background 0.3s;
+                    box-sizing: border-box; /* 추가 */
                 }
-
+            
                 button:hover {
                     background: #0056b3;
                 }
-
+            
                 #results {
                     margin-top: 20px;
                     padding: 10px;
                     background: #f9f9f9;
                     border-left: 4px solid #007BFF;
                     border-radius: 4px;
+                    box-sizing: border-box; /* 추가 */
                 }
-
+            
                 #results p {
                     margin: 0;
                     font-size: 14px;
                     line-height: 1.5;
                 }
-
+            
                 footer {
                     text-align: center;
                     padding: 10px 0;
@@ -360,35 +363,17 @@
                     color: #666;
                     margin-top: 20px;
                 }
-
+            
                 footer a {
                     color: #007BFF;
                     text-decoration: none;
                 }
-
+            
                 footer a:hover {
                     text-decoration: underline;
                 }
             </style>
-        </head>
-        <body>
-            <h1>Passenger Search</h1>
-            <div class="container">
-                <label for="date">Enter Date (mm-dd):</label>
-                <input type="text" id="date" placeholder="01-01">
 
-                <label for="hour">Enter Hour (0-23):</label>
-                <input type="number" id="hour" placeholder="6" min="0" max="23">
-
-                <label for="station">Enter Station Name:</label>
-                <input type="text" id="station" placeholder="서울역">
-
-                <button id="search">Search</button>
-
-                <div id="results"></div>
-            </div>
-
-            <script>
                 let data = [];
                 let stationList = []; // 모든 역명을 저장할 배열
 
