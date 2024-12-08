@@ -110,14 +110,14 @@
   <div class="container">
     <!-- 검색 영역 -->
     <div class="search-container">
-      <label for="station-search">역 이름 검색:</label>
-      <input type="text" id="station-search" placeholder="예: 강남역">
-      <button id="search-button">검색</button>
-      <button id="add-favorite-button">즐겨찾기에 추가</button>
+      <label for="fa-station-search">역 이름 검색:</label>
+      <input type="text" id="fa-station-search" placeholder="예: 강남역">
+      <button id="fa-search-button">검색</button>
+      <button id="fa-add-favorite-button">즐겨찾기에 추가</button>
     </div>
 
     <!-- 즐겨찾기 영역 -->
-    <div class="favorites-container" id="favorites-container">
+    <div class="favorites-container" id="fa-favorites-container">
       <h3>즐겨찾기</h3>
       <p>즐겨찾은 역이 여기에 표시됩니다.</p>
     </div>
@@ -125,19 +125,19 @@
     <!-- 검색 결과 영역 -->
     <div class="result">
       <h3>검색 결과</h3>
-      <div id="result">검색 결과가 여기에 표시됩니다.</div>
+      <div id="fa-result">검색 결과가 여기에 표시됩니다.</div>
     </div>
 
     <!-- 광고 영역 -->
-    <div class="ad-container" id="ad-container">
+    <div class="ad-container" id="fa-ad-container">
       <h3>맞춤형 광고</h3>
-      <p id="ad-content">광고가 여기에 표시됩니다.</p>
+      <p id="fa-ad-content">광고가 여기에 표시됩니다.</p>
     </div>
   </div>
 
   <script>
     // JavaScript 로직은 요청하신 코드 그대로 사용합니다.
-    let jsonData;
+    let faJsonData;
 
     // JSON 파일 로드
     fetch('./승객_예상_데이터.json')
@@ -148,8 +148,8 @@
         return response.json();
       })
       .then(data => {
-        jsonData = data;
-        console.log("JSON 데이터 로드 성공:", jsonData);
+        faJsonData = data;
+        console.log("JSON 데이터 로드 성공:", faJsonData);
       })
       .catch(error => console.error("JSON 데이터 로드 실패:", error));
 
@@ -164,69 +164,69 @@
     }
 
     // 즐겨찾기 데이터
-    let favorites = [];
+    let faFavorites = [];
 
     // 즐겨찾기 업데이트 함수
-    function updateFavorites() {
-      const favoritesContainer = document.getElementById('favorites-container');
-      favoritesContainer.innerHTML = '<h3>즐겨찾기</h3>';
+    function faUpdateFavorites() {
+      const faFavoritesContainer = document.getElementById('fa-favorites-container');
+      faFavoritesContainer.innerHTML = '<h3>즐겨찾기</h3>';
 
-      favorites.forEach((station, index) => {
+      faFavorites.forEach((station, index) => {
         const buttonWrapper = document.createElement('div');
         buttonWrapper.style.marginBottom = '10px';
 
         const button = document.createElement('button');
         button.textContent = station;
         button.addEventListener('click', () => {
-          document.getElementById('station-search').value = station;
-          document.getElementById('search-button').click();
+          document.getElementById('fa-station-search').value = station;
+          document.getElementById('fa-search-button').click();
         });
 
         const removeButton = document.createElement('button');
         removeButton.textContent = '❌';
         removeButton.addEventListener('click', () => {
-          favorites.splice(index, 1);
-          updateFavorites();
+          faFavorites.splice(index, 1);
+          faUpdateFavorites();
         });
 
         buttonWrapper.appendChild(button);
         buttonWrapper.appendChild(removeButton);
-        favoritesContainer.appendChild(buttonWrapper);
+        faFavoritesContainer.appendChild(buttonWrapper);
       });
     }
 
     // 즐겨찾기 추가 버튼 이벤트
-    document.getElementById('add-favorite-button').addEventListener('click', () => {
-      const stationName = document.getElementById('station-search').value.trim();
+    document.getElementById('fa-add-favorite-button').addEventListener('click', () => {
+      const stationName = document.getElementById('fa-station-search').value.trim();
 
       if (!stationName) {
         alert('역 이름을 입력해주세요!');
         return;
       }
-      if (favorites.includes(stationName)) {
+      if (faFavorites.includes(stationName)) {
         alert('이미 즐겨찾기에 추가된 역입니다!');
         return;
       }
-      if (favorites.length >= 3) {
+      if (faFavorites.length >= 3) {
         alert('즐겨찾기는 최대 3개까지만 추가할 수 있습니다.');
         return;
       }
 
-      favorites.push(stationName);
-      updateFavorites();
+      faFavorites.push(stationName);
+      faUpdateFavorites();
     });
 
     // 검색 버튼 클릭 이벤트
-    document.getElementById('search-button').addEventListener('click', () => {
-      const stationName = document.getElementById('station-search').value.trim();
+    document.getElementById('fa-search-button').addEventListener('click', () => {
+      const stationName = document.getElementById('fa-station-search').value.trim();
 
       if (!stationName) {
-        document.getElementById('result').textContent = "역 이름을 입력해주세요.";
+        document.getElementById('fa-result').textContent = "역 이름을 입력해주세요.";
         return;
       }
 
-      if (!jsonData) {
-        document.getElementById('result').textContent = "JSON 데이터가 아직 로드되지 않았습니다.";
+      if (!faJsonData) {
+        document.getElementById('fa-result').textContent = "JSON 데이터가 아직 로드되지 않았습니다.";
         return;
       }
 
@@ -234,12 +234,12 @@
       const { day, timeSlot } = getCurrentDayAndTimeSlot();
 
       // JSON 데이터 필터링
-      const results = jsonData.filter(item =>
+      const results = faJsonData.filter(item =>
         item.역명 === stationName && item.요일 === day
       );
 
       if (results.length === 0) {
-        document.getElementById('result').textContent = "해당 조건에 맞는 데이터가 없습니다.";
+        document.getElementById('fa-result').textContent = "해당 조건에 맞는 데이터가 없습니다.";
         return;
       }
 
@@ -254,7 +254,7 @@
       output.forEach(item => {
         resultHtml += `- ${item.유형}: ${item.인원수}<br>`;
       });
-      document.getElementById('result').innerHTML = resultHtml;
+      document.getElementById('fa-result').innerHTML = resultHtml;
 
       // 맞춤형 광고 표시
       const highestType = output.reduce((a, b) => {
@@ -268,7 +268,7 @@
         청소년: "청소년을 위한 특별 프로모션 광고"
       };
 
-      const adContent = document.getElementById('ad-content');
+      const adContent = document.getElementById('fa-ad-content');
       adContent.textContent = ads[highestType] || "광고 데이터가 없습니다.";
 
       // 광고 이미지 표시
