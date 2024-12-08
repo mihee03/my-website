@@ -22,7 +22,7 @@
       font-size: 24px;
     }
 
-    .container {
+    .fa-container {
       max-width: 800px;
       margin: 20px auto;
       padding: 20px;
@@ -31,17 +31,17 @@
       border-radius: 8px;
     }
 
-    .search-container, .favorites-container, .result, .ad-container {
+    .fa-search-container, .fa-favorites-container, .fa-result, .fa-ad-container {
       margin-bottom: 20px;
     }
 
-    label {
+    .fa-label {
       display: block;
       margin-bottom: 8px;
       font-weight: bold;
     }
 
-    input {
+    .fa-input {
       width: 100%;
       padding: 10px;
       border: 1px solid #ccc;
@@ -51,7 +51,7 @@
       font-size: 16px;
     }
 
-    button {
+    .fa-button {
       background-color: #666; /* 버튼 회색 */
       color: white;
       border: none;
@@ -63,40 +63,40 @@
       transition: background 0.3s ease;
     }
 
-    button:hover {
+    .fa-button:hover {
       background-color: #444; /* 버튼 호버 시 더 진한 회색 */
     }
 
-    .favorites-container {
+    .fa-favorites-container {
       padding: 10px;
       background: #f9f9f9; /* 연한 회색 배경 */
       border: 1px solid #ddd;
       border-radius: 5px;
     }
 
-    .favorites-container button {
+    .fa-favorites-container .fa-button {
       background-color: #999;
       color: white;
       margin: 5px 0;
     }
 
-    .favorites-container button:hover {
+    .fa-favorites-container .fa-button:hover {
       background-color: #777;
     }
 
-    .result, .ad-container {
+    .fa-result, .fa-ad-container {
       padding: 15px;
       background: #f9f9f9;
       border: 1px solid #ddd;
       border-radius: 5px;
     }
 
-    .result h3, .ad-container h3 {
+    .fa-result h3, .fa-ad-container h3 {
       margin-top: 0;
       color: #555;
     }
 
-    .ad-container img {
+    .fa-ad-container img {
       display: block;
       margin: 10px auto 0;
       max-width: 100%;
@@ -107,29 +107,29 @@
 <body>
   <h1>지하철 정보 검색 및 즐겨찾기</h1>
 
-  <div class="container">
+  <div class="fa-container">
     <!-- 검색 영역 -->
-    <div class="search-container">
-      <label for="fa-station-search">역 이름 검색:</label>
-      <input type="text" id="fa-station-search" placeholder="예: 강남역">
-      <button id="fa-search-button">검색</button>
-      <button id="fa-add-favorite-button">즐겨찾기에 추가</button>
+    <div class="fa-search-container">
+      <label for="fa-station-search" class="fa-label">역 이름 검색:</label>
+      <input type="text" id="fa-station-search" class="fa-input" placeholder="예: 강남역">
+      <button id="fa-search-button" class="fa-button">검색</button>
+      <button id="fa-add-favorite-button" class="fa-button">즐겨찾기에 추가</button>
     </div>
 
     <!-- 즐겨찾기 영역 -->
-    <div class="favorites-container" id="fa-favorites-container">
+    <div class="fa-favorites-container" id="fa-favorites-container">
       <h3>즐겨찾기</h3>
       <p>즐겨찾은 역이 여기에 표시됩니다.</p>
     </div>
 
     <!-- 검색 결과 영역 -->
-    <div class="result">
+    <div class="fa-result">
       <h3>검색 결과</h3>
       <div id="fa-result">검색 결과가 여기에 표시됩니다.</div>
     </div>
 
     <!-- 광고 영역 -->
-    <div class="ad-container" id="fa-ad-container">
+    <div class="fa-ad-container" id="fa-ad-container">
       <h3>맞춤형 광고</h3>
       <p id="fa-ad-content">광고가 여기에 표시됩니다.</p>
     </div>
@@ -154,7 +154,7 @@
       .catch(error => console.error("JSON 데이터 로드 실패:", error));
 
     // 현재 요일과 시간대 계산 함수
-    function getCurrentDayAndTimeSlot() {
+    function faGetCurrentDayAndTimeSlot() {
       const now = new Date();
       const days = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
       const day = days[now.getDay()];
@@ -177,6 +177,7 @@
 
         const button = document.createElement('button');
         button.textContent = station;
+        button.className = "fa-button";
         button.addEventListener('click', () => {
           document.getElementById('fa-station-search').value = station;
           document.getElementById('fa-search-button').click();
@@ -184,6 +185,7 @@
 
         const removeButton = document.createElement('button');
         removeButton.textContent = '❌';
+        removeButton.className = "fa-button";
         removeButton.addEventListener('click', () => {
           faFavorites.splice(index, 1);
           faUpdateFavorites();
@@ -231,7 +233,7 @@
       }
 
       // 현재 요일과 시간대 계산
-      const { day, timeSlot } = getCurrentDayAndTimeSlot();
+      const { day, timeSlot } = faGetCurrentDayAndTimeSlot();
 
       // JSON 데이터 필터링
       const results = faJsonData.filter(item =>
@@ -268,8 +270,8 @@
         청소년: "청소년을 위한 특별 프로모션 광고"
       };
 
-      const adContent = document.getElementById('fa-ad-content');
-      adContent.textContent = ads[highestType] || "광고 데이터가 없습니다.";
+      const faAdContent = document.getElementById('fa-ad-content');
+      faAdContent.textContent = ads[highestType] || "광고 데이터가 없습니다.";
 
       // 광고 이미지 표시
       const adImages = {
@@ -286,11 +288,11 @@
         adImageElement.style.maxWidth = "100%";
 
         // 기존 이미지 제거 후 새로운 이미지 추가
-        const existingImage = adContent.nextElementSibling;
+        const existingImage = faAdContent.nextElementSibling;
         if (existingImage) {
           existingImage.remove();
         }
-        adContent.insertAdjacentElement('afterend', adImageElement);
+        faAdContent.insertAdjacentElement('afterend', adImageElement);
       }
     });
   </script>
@@ -322,7 +324,7 @@
             font-size: 24px;
         }
 
-        .container {
+        .el-container {
             max-width: 600px;
             margin: 20px auto;
             padding: 20px;
@@ -331,13 +333,13 @@
             border-radius: 8px;
         }
 
-        label {
+        .el-label {
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
         }
 
-        input {
+        .el-input {
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
@@ -347,7 +349,7 @@
             box-sizing: border-box;
         }
 
-        button {
+        .el-button {
             width: 100%;
             background-color: #666; /* 버튼 배경색 */
             color: white;
@@ -359,7 +361,7 @@
             transition: background 0.3s ease;
         }
 
-        button:hover {
+        .el-button:hover {
             background-color: #444; /* 버튼 호버 색상 */
         }
 
@@ -398,17 +400,17 @@
 </head>
 <body>
     <h1>노약자 좌석 수 검색</h1>
-    <div class="container">
-        <label for="el-date">Enter Date (mm-dd):</label>
-        <input type="text" id="el-date" placeholder="01-01">
+    <div class="el-container">
+        <label for="el-date" class="el-label">Enter Date (mm-dd):</label>
+        <input type="text" id="el-date" class="el-input" placeholder="01-01">
 
-        <label for="el-hour">Enter Hour (6-23):</label>
-        <input type="number" id="el-hour" placeholder="6" min="0" max="23">
+        <label for="el-hour" class="el-label">Enter Hour (6-23):</label>
+        <input type="number" id="el-hour" class="el-input" placeholder="6" min="0" max="23">
 
-        <label for="el-station">Enter Station Name:</label>
-        <input type="text" id="el-station" placeholder="예:서울역">
+        <label for="el-station" class="el-label">Enter Station Name:</label>
+        <input type="text" id="el-station" class="el-input" placeholder="예:서울역">
 
-        <button id="el-search">Search</button>
+        <button id="el-search" class="el-button">Search</button>
 
         <div id="el-results"></div>
     </div>
@@ -449,11 +451,11 @@
 
         // 검색 버튼 클릭 이벤트
         document.getElementById('el-search').addEventListener('click', function() {
-            const elInputDate = document.getElementById('el-date').value; // 날짜 입력
-            const elInputHour = document.getElementById('el-hour').value; // 시간 입력
-            const elStationName = document.getElementById('el-station').value.trim(); // 역명 입력
+            const inputDate = document.getElementById('el-date').value; // 날짜 입력
+            const inputHour = document.getElementById('el-hour').value; // 시간 입력
+            const stationName = document.getElementById('el-station').value.trim(); // 역명 입력
 
-            if (!elInputDate || !elInputHour || !elStationName) {
+            if (!inputDate || !inputHour || !stationName) {
                 document.getElementById('el-results').textContent = "날짜, 시간, 역명을 모두 입력해주세요.";
                 return;
             }
@@ -461,34 +463,34 @@
             document.getElementById('el-results').textContent = "검색 중...";
 
             setTimeout(() => {
-                if (!elStationList.some(station => station.toLowerCase() === elStationName.toLowerCase())) {
+                if (!elStationList.some(station => station.toLowerCase() === stationName.toLowerCase())) {
                     alert("올바른 역명을 입력하세요.");
                     document.getElementById('el-results').textContent = "";
                     return;
                 }
 
-                const elFilteredData = elData.filter(row => {
-                    const elRowDate = row['일시'] ? new Date(row['일시']).toLocaleDateString('en-CA').slice(5) : "";
-                    const elRowHour = row['일시'] ? new Date(row['일시']).getHours() : null;
-                    const elRowStation = row['역명'] ? row['역명'].trim() : "";
-                    return elRowDate === elInputDate && elRowHour == elInputHour && elRowStation.toLowerCase() === elStationName.toLowerCase();
+                const filteredData = elData.filter(row => {
+                    const rowDate = row['일시'] ? new Date(row['일시']).toLocaleDateString('en-CA').slice(5) : "";
+                    const rowHour = row['일시'] ? new Date(row['일시']).getHours() : null;
+                    const rowStation = row['역명'] ? row['역명'].trim() : "";
+                    return rowDate === inputDate && rowHour == inputHour && rowStation.toLowerCase() === stationName.toLowerCase();
                 });
 
-                const elTotalPassengers = elFilteredData.reduce((sum, row) => sum + parseInt(row['인원수'] || 0), 0);
-                const elElderlySeatCount = elTotalPassengers >= 170 ? 27 : 12;
+                const totalPassengers = filteredData.reduce((sum, row) => sum + parseInt(row['인원수'] || 0), 0);
+                const elderlySeatCount = totalPassengers >= 170 ? 27 : 12;
 
-                if (elFilteredData.length > 0) {
+                if (filteredData.length > 0) {
                     document.getElementById('el-results').innerHTML = `
-                        <p><strong>Station:</strong> ${elStationName}</p>
-                        <p><strong>Date:</strong> ${elInputDate}</p>
-                        <p><strong>Hour:</strong> ${elInputHour}:00</p>
-                        <p><strong>Total Passengers:</strong> ${elTotalPassengers}</p>
-                        <p><strong>Elderly Seats:</strong> ${elElderlySeatCount} seats</p>
+                        <p><strong>Station:</strong> ${stationName}</p>
+                        <p><strong>Date:</strong> ${inputDate}</p>
+                        <p><strong>Hour:</strong> ${inputHour}:00</p>
+                        <p><strong>Total Passengers:</strong> ${totalPassengers}</p>
+                        <p><strong>Elderly Seats:</strong> ${elderlySeatCount} seats</p>
                     `;
                 } else {
                     document.getElementById('el-results').innerHTML = `
-                        <p>No data found for station: ${elStationName}</p>
-                        <p>on date: ${elInputDate} at hour: ${elInputHour}:00</p>
+                        <p>No data found for station: ${stationName}</p>
+                        <p>on date: ${inputDate} at hour: ${inputHour}:00</p>
                     `;
                 }
             }, 1000);
@@ -496,3 +498,4 @@
     </script>
 </body>
 </html>
+
