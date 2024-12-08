@@ -508,16 +508,16 @@
                     background-color: #f4f7fa;
                     color: #333;
                 }
-    
+
                 /* 지도 스타일 */
                 #map {
                     width: 100%;
-                    height: 500px;
+                    height: 250px;
                     max-width: 100%;
                     margin: 0 auto;
                     display: block;
                 }
-    
+
                 /* 검색 박스 */
                 #search-box {
                     margin: 20px auto;
@@ -525,7 +525,7 @@
                     max-width: 800px;
                     width: 100%;
                 }
-    
+
                 #search-input {
                     width: 70%;
                     padding: 10px;
@@ -534,7 +534,7 @@
                     border-radius: 5px;
                     margin-right: 10px;
                 }
-    
+
                 #search-button {
                     padding: 10px 20px;
                     background-color: #6c63ff;
@@ -544,11 +544,11 @@
                     cursor: pointer;
                     font-size: 16px;
                 }
-    
+
                 #search-button:hover {
                     background-color: #5a4db8;
                 }
-    
+
                 /* 검색 결과 리스트 스타일 */
                 #results {
                     margin: 20px auto;
@@ -558,7 +558,7 @@
                     width: 90%;
                     max-width: 800px;
                 }
-    
+
                 .result-item {
                     margin-bottom: 15px;
                     padding: 15px;
@@ -567,26 +567,26 @@
                     border: 1px solid #ddd;
                     transition: transform 0.3s ease, box-shadow 0.3s ease;
                 }
-    
+
                 .result-item:hover {
                     transform: translateY(-5px);
                     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                 }
-    
+
                 .result-item a {
                     text-decoration: none;
                     color: #6c63ff;
                     font-weight: bold;
                 }
-    
+
                 .result-item a:hover {
                     text-decoration: underline;
                 }
-    
+
                 .result-item p {
                     margin: 5px 0;
                 }
-    
+
                 /* 화면 반응형 설정 */
                 @media (max-width: 768px) {
                     #search-input {
@@ -596,41 +596,41 @@
                         width: 30%;
                     }
                 }
-    
+
             </style>
         </head>
         <body>
-    
+
             <div id="search-box">
                 <input type="text" id="search-input" placeholder="검색어를 입력하세요" />
                 <button id="map-search-button">검색</button>
             </div>
-    
+
             <div id="naver-map"></div>
-    
+
             <div id="map-results"></div>
-    
+
             <script>
                 let currentLat = 37.5665, currentLng = 126.9780;  // 서울시청 좌표 (예시로 서울시청을 사용)
-    
+
                 // 네이버 지도 초기화
                 const map = new naver.maps.Map('map', {
                     center: new naver.maps.LatLng(currentLat, currentLng), // 서울 중심
                     zoom: 12
                 });
-    
+
                 // 사용자 위치를 임의로 설정 (예: 서울시청)
                 const userMarker = new naver.maps.Marker({
                     position: new naver.maps.LatLng(currentLat, currentLng),
                     map: map,
                     title: "현재 위치"
                 });
-    
+
                 // 검색 API 요청
                 async function searchPlaces(query) {
                     const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // CORS Proxy URL
                     const url = `https://openapi.naver.com/v1/search/local.json?query=${encodeURIComponent(query)}&display=5&start=1&sort=random`;
-    
+
                     try {
                         const response = await fetch(proxyUrl + url, {
                             headers: {
@@ -638,7 +638,7 @@
                                 "X-Naver-Client-Secret": "y4iSS_jPQq"
                             }
                         });
-    
+
                         if (response.ok) {
                             const data = await response.json();
                             displayResults(data.items); // 검색 결과를 화면에 표시
@@ -650,7 +650,7 @@
                         alert("API 요청 중 오류가 발생했습니다.");
                     }
                 }
-    
+
                 // 두 지점 간의 거리 계산 (Haversine Formula)
                 function calculateDistance(lat1, lng1, lat2, lng2) {
                     const R = 6371; // 지구 반지름 (킬로미터)
@@ -662,24 +662,24 @@
                     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
                     return R * c; // 거리(km)
                 }
-    
+
                 function toRad(deg) {
                     return deg * (Math.PI / 180);
                 }
-    
+
                 // 검색 결과를 지도와 페이지에 표시하는 함수
                 function displayResults(places) {
                     // 이전 결과 초기화
                     document.getElementById("results").innerHTML = "";
-    
+
                     // 마커 배열
                     const markers = [];
-    
+
                     places.forEach(place => {
                         // mapy, mapx 값이 있는지 확인
                         if (place.mapy && place.mapx) {
                             const distance = calculateDistance(currentLat, currentLng, place.mapy, place.mapx);
-    
+
                             // 10km 이내의 장소만 필터링
                             if (distance <= 10) {
                                 // 지도에 마커 추가
@@ -688,19 +688,19 @@
                                     map: map,
                                     title: place.title.replace(/<[^>]+>/g, "") // HTML 태그 제거
                                 });
-    
+
                                 // 마커 클릭 이벤트 (정보창 표시)
                                 const infoWindow = new naver.maps.InfoWindow({
                                     content: `<div><strong>${place.title}</strong><br>${place.address}</div>`
                                 });
-    
+
                                 naver.maps.Event.addListener(marker, "click", () => {
                                     infoWindow.open(map, marker);
                                 });
-    
+
                                 // 마커 배열에 추가
                                 markers.push(marker);
-    
+
                                 // 검색 결과 목록 추가
                                 document.getElementById("results").innerHTML += `
                                     <div class="result-item">
@@ -712,18 +712,18 @@
                             }
                         }
                     });
-    
+
                     // 지도에 마커 표시
                     showMarkers(markers);
                 }
-    
+
                 // 마커 표시 함수
                 function showMarkers(markers) {
                     markers.forEach(marker => {
                         marker.setMap(map);  // 마커 표시
                     });
                 }
-    
+
                 // 검색 버튼 클릭 이벤트
                 document.getElementById("search-button").addEventListener("click", () => {
                     const query = document.getElementById("search-input").value;
@@ -734,7 +734,7 @@
                     }
                 });
             </script>
-    
+
         </body>
         </html>
     </section>
