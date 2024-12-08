@@ -133,15 +133,21 @@
 
         // 검색 API 요청
         async function searchPlaces(query) {
-            const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // CORS Proxy URL
-            const url = `https://openapi.naver.com/v1/search/local.json?query=${encodeURIComponent(query)}&display=5&start=1&sort=random`;
+            const url = `/api/search-local`;
 
             try {
-                const response = await fetch(proxyUrl + url, {
+                const response = await fetch(url, {
                     headers: {
-                        "X-Naver-Client-Id": "2il85btNfU6KvdvFEPYu",
-                        "X-Naver-Client-Secret": "y4iSS_jPQq"
-                    }
+                        "X-Naver-Client-Id": import.meta.env.VITE_APP_SUBWAY_CLIENT_ID,
+                        "X-Naver-Client-Secret": import.meta.env.VITE_APP_SUBWAY_CLIENT_SECRET,
+                    },
+                    method: "GET",
+                    params: {
+                        query: query,
+                        display: 5,
+                        start: 1,
+                        sort: "random",
+                    },
                 });
 
                 if (response.ok) {
