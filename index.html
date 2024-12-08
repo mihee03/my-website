@@ -148,12 +148,14 @@
 
                 if (response.ok) {
                     const data = await response.json();
+                    console.log('API Response:', data); // API 응답 확인
                     displayResults(data.items); // 검색 결과를 화면에 표시
                 } else {
+                    console.error('API 호출 실패:', response.statusText);
                     alert("검색 결과를 불러오는 데 실패했습니다.");
                 }
             } catch (error) {
-                console.error("Error:", error);
+                console.error("API 요청 중 오류 발생:", error);
                 alert("API 요청 중 오류가 발생했습니다.");
             }
         }
