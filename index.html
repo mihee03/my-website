@@ -59,7 +59,7 @@
         }
 
         .qa-item button {
-            background-color: #6c757d;
+            background-color: #6c757d; /* 중간 회색 */
             color: white;
             padding: 8px 16px;
             border: none;
@@ -69,7 +69,7 @@
         }
 
         .qa-item button:hover {
-            background-color: #495057;
+            background-color: #495057; /* 짙은 회색 */
         }
 
         .answer-box {
@@ -90,10 +90,11 @@
             border: 1px solid #dee2e6;
             font-size: 14px;
             background-color: #ffffff; /* 흰색 */
+            box-sizing: border-box; /* 크기 계산 문제 방지 */
         }
 
         .qa-answer button {
-            background-color: #6c63ff; /* 보라색 */
+            background-color: #adb5bd; /* 회색 */
             color: white;
             padding: 10px 20px;
             border: none;
@@ -104,7 +105,7 @@
         }
 
         .qa-answer button:hover {
-            background-color: #5a4db8; /* 보라색 강조 */
+            background-color: #868e96; /* 진한 회색 */
         }
     </style>
 </head>
@@ -137,7 +138,7 @@
 
             <!-- 답변 박스 -->
             <div class="answer-box" id="answer-box-2">
-                <p>아침 시간대 출입문과 승강장 안전문을 개방한 상태로 역에 정차해 있는 경우는 크게 4가지가 있습니다: 열차 간격 조정, 민원 처리, 신호 오류, 차량 고장 등 다양한 이유로 정차할 수 있습니다.</p>
+                <p>아침 시간대 열차 간격 조정, 민원 처리, 신호 오류, 차량 고장 등 다양한 이유로 역에 정차할 수 있습니다.</p>
                 <div class="qa-answer">
                     <textarea placeholder="시민 참여 답변..."></textarea>
                     <button onclick="submitAnswer(2)">답변 제출</button>
@@ -153,7 +154,7 @@
 
             <!-- 답변 박스 -->
             <div class="answer-box" id="answer-box-3">
-                <p>호선별 자전거칸 수는 1호선: 5개, 2호선: 3개, 3호선: 5개, 4호선: 10개, 5호선: 26개 등입니다.</p>
+                <p>1호선: 5개, 2호선: 3개, 3호선: 5개 등 호선마다 자전거칸 수가 다릅니다.</p>
                 <div class="qa-answer">
                     <textarea placeholder="시민 참여 답변..."></textarea>
                     <button onclick="submitAnswer(3)">답변 제출</button>
@@ -165,18 +166,14 @@
     <script>
         function toggleAnswer(id) {
             const answerBox = document.getElementById('answer-box-' + id);
-            if (answerBox.style.display === 'block') {
-                answerBox.style.display = 'none';
-            } else {
-                answerBox.style.display = 'block';
-            }
+            answerBox.style.display = answerBox.style.display === 'block' ? 'none' : 'block';
         }
 
         function submitAnswer(id) {
             const answerText = document.querySelector(`#answer-box-${id} textarea`).value;
-            if (answerText.trim() !== "") {
+            if (answerText.trim()) {
                 alert("답변이 제출되었습니다!");
-                document.querySelector(`#answer-box-${id} textarea`).value = ""; // 텍스트 초기화
+                document.querySelector(`#answer-box-${id} textarea`).value = ""; // 초기화
             } else {
                 alert("답변을 입력해주세요.");
             }
