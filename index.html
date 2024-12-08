@@ -296,3 +296,203 @@
   </script>
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>노약자 좌석 수 검색</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 20px;
+            background-color: #666; /* 헤더 배경색 */
+            color: white;
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            background-color: #666; /* 버튼 배경색 */
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #444; /* 버튼 호버 색상 */
+        }
+
+        #el-results {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-left: 4px solid #666; /* 강조된 결과 영역 */
+            border-radius: 5px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #el-results p {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background-color: #444;
+            color: white;
+            margin-top: 20px;
+        }
+
+        footer a {
+            color: #ffdd57;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>노약자 좌석 수 검색</h1>
+    <div class="container">
+        <label for="el-date">Enter Date (mm-dd):</label>
+        <input type="text" id="el-date" placeholder="01-01">
+
+        <label for="el-hour">Enter Hour (6-23):</label>
+        <input type="number" id="el-hour" placeholder="6" min="0" max="23">
+
+        <label for="el-station">Enter Station Name:</label>
+        <input type="text" id="el-station" placeholder="예:서울역">
+
+        <button id="el-search">Search</button>
+
+        <div id="el-results"></div>
+    </div>
+
+    <script>
+        let elData = [];
+        let elStationList = []; // 모든 역명을 저장할 배열
+
+        // CSV 파일 로드 및 병합
+        const elLoadCSV = async (url) => {
+            return new Promise((resolve, reject) => {
+                Papa.parse(url, {
+                    download: true,
+                    header: true,
+                    complete: function(results) {
+                        resolve(results.data);
+                    },
+                    error: function(error) {
+                        reject(error);
+                    }
+                });
+            });
+        };
+
+        // 데이터 파일 경로
+        const elFile1 = "데이터파일/우대권병합데이터06.csv";
+        const elFile2 = "데이터파일/우대권병합데이터12.csv";
+
+        // 파일 로드 및 병합
+        Promise.all([elLoadCSV(elFile1), elLoadCSV(elFile2)]).then(results => {
+            elData = results[0].concat(results[1]); // 두 파일 병합
+            elStationList = [...new Set(elData.map(row => row['역명'] ? row['역명'].trim() : ""))].filter(Boolean);
+            console.log("Station list:", elStationList);
+            alert("CSV Files Loaded!");
+        }).catch(error => {
+            console.error("Error loading files:", error);
+        });
+
+        // 검색 버튼 클릭 이벤트
+        document.getElementById('el-search').addEventListener('click', function() {
+            const elInputDate = document.getElementById('el-date').value; // 날짜 입력
+            const elInputHour = document.getElementById('el-hour').value; // 시간 입력
+            const elStationName = document.getElementById('el-station').value.trim(); // 역명 입력
+
+            if (!elInputDate || !elInputHour || !elStationName) {
+                document.getElementById('el-results').textContent = "날짜, 시간, 역명을 모두 입력해주세요.";
+                return;
+            }
+
+            document.getElementById('el-results').textContent = "검색 중...";
+
+            setTimeout(() => {
+                if (!elStationList.some(station => station.toLowerCase() === elStationName.toLowerCase())) {
+                    alert("올바른 역명을 입력하세요.");
+                    document.getElementById('el-results').textContent = "";
+                    return;
+                }
+
+                const elFilteredData = elData.filter(row => {
+                    const elRowDate = row['일시'] ? new Date(row['일시']).toLocaleDateString('en-CA').slice(5) : "";
+                    const elRowHour = row['일시'] ? new Date(row['일시']).getHours() : null;
+                    const elRowStation = row['역명'] ? row['역명'].trim() : "";
+                    return elRowDate === elInputDate && elRowHour == elInputHour && elRowStation.toLowerCase() === elStationName.toLowerCase();
+                });
+
+                const elTotalPassengers = elFilteredData.reduce((sum, row) => sum + parseInt(row['인원수'] || 0), 0);
+                const elElderlySeatCount = elTotalPassengers >= 170 ? 27 : 12;
+
+                if (elFilteredData.length > 0) {
+                    document.getElementById('el-results').innerHTML = `
+                        <p><strong>Station:</strong> ${elStationName}</p>
+                        <p><strong>Date:</strong> ${elInputDate}</p>
+                        <p><strong>Hour:</strong> ${elInputHour}:00</p>
+                        <p><strong>Total Passengers:</strong> ${elTotalPassengers}</p>
+                        <p><strong>Elderly Seats:</strong> ${elElderlySeatCount} seats</p>
+                    `;
+                } else {
+                    document.getElementById('el-results').innerHTML = `
+                        <p>No data found for station: ${elStationName}</p>
+                        <p>on date: ${elInputDate} at hour: ${elInputHour}:00</p>
+                    `;
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
