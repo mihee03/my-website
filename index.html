@@ -3,182 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>자주 묻는 질문</title>
+    <title>지하철 이용 에티켓</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f8f9fa; /* 연한 회색 배경 */
             margin: 0;
             padding: 0;
+            background-color: #f8f9fa; /* 연한 회색 배경 */
             color: #495057; /* 중간 회색 */
         }
 
-        .qa-section {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 20px;
-            background: #ffffff; /* 흰색 배경 */
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .qa-section h2 {
-            font-size: 28px;
-            font-weight: bold;
-            color: #343a40; /* 짙은 회색 */
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .qa-item {
-            padding: 20px;
-            background: #f1f3f5; /* 연한 회색 */
-            margin-bottom: 15px;
-            border-radius: 8px;
-            border-left: 5px solid #6c757d; /* 중간 회색 */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .qa-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* 강조 효과 */
-        }
-
-        .qa-item h3 {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #343a40;
-        }
-
-        .qa-item p {
-            font-size: 16px;
-            color: #495057;
-            margin-bottom: 10px;
-        }
-
-        .qa-item button {
-            background-color: #6c757d; /* 중간 회색 */
-            color: white;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .qa-item button:hover {
-            background-color: #495057; /* 짙은 회색 */
-        }
-
-        .answer-box {
-            display: none;
-            margin-top: 10px;
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #dee2e6;
-        }
-
-        .qa-answer textarea {
+        /* 배너 스타일 */
+        #etiquette-slide {
+            position: fixed;
+            bottom: 0;
+            left: 0;
             width: 100%;
-            height: 80px;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 5px;
-            border: 1px solid #dee2e6;
-            font-size: 14px;
-            background-color: #ffffff; /* 흰색 */
-            box-sizing: border-box; /* 크기 계산 문제 방지 */
+            background-color: #e9ecef; /* 밝은 회색 */
+            padding: 20px 0;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
         }
 
-        .qa-answer button {
-            background-color: #adb5bd; /* 회색 */
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: background-color 0.3s ease;
+        .etiquette-slide-container {
+            display: flex;
+            animation: slide 20s linear infinite; /* 20초 동안 슬라이드 */
+            align-items: center;
         }
 
-        .qa-answer button:hover {
-            background-color: #868e96; /* 진한 회색 */
+        .etiquette-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: none;
+            min-width: 100%;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .etiquette-item img {
+            width: 100px; /* 이미지 크기 */
+            height: 100px;
+            margin-right: 20px; /* 이미지와 텍스트 간격 */
+            border: 2px solid #ced4da; /* 회색 테두리 */
+            border-radius: 10px; /* 둥근 테두리 */
+            background-color: #ffffff; /* 흰색 배경 */
+        }
+
+        .etiquette-item h3 {
+            font-size: 18px; /* 텍스트 크기 */
+            margin: 0;
+            color: #495057; /* 중간 회색 텍스트 */
+        }
+
+        /* 애니메이션 */
+        @keyframes slide {
+            0% {
+                transform: translateX(100%);
+            }
+            25% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(-100%);
+            }
+            75% {
+                transform: translateX(-200%);
+            }
+            100% {
+                transform: translateX(-300%);
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="qa-section">
-        <h2>자주 묻는 질문</h2>
-
-        <!-- 질문 1 -->
-        <div class="qa-item">
-            <h3>Q1. 유실물을 찾으러 갈 때 필요한 서류는 무엇인가요?</h3>
-            <p>지하철 이용에 관한 자주 묻는 질문입니다.</p>
-            <button class="show-answer" onclick="toggleAnswer(1)">답변 보기</button>
-
-            <!-- 답변 박스 -->
-            <div class="answer-box" id="answer-box-1">
-                <p>유실물 인도시 본인 확인이 가능한 신분증을 지참하여 고객안전실 또는 유실물센터로 방문해주시기 바랍니다.</p>
-                <div class="qa-answer">
-                    <textarea placeholder="시민 참여 답변..."></textarea>
-                    <button onclick="submitAnswer(1)">답변 제출</button>
-                </div>
+    <div id="etiquette-slide">
+        <div class="etiquette-slide-container">
+            <div class="etiquette-item">
+                <img src="https://raw.githubusercontent.com/mihee03/my-website/main/홍보물사진/책가방.png" alt="책가방">
+                <h3>붐비는 열차에서는 가방을 앞으로</h3>
             </div>
-        </div>
-
-        <!-- 질문 2 -->
-        <div class="qa-item">
-            <h3>Q2. 아침에 열차가 잘 가다가 역에 서 있는 이유가 무엇인가요?</h3>
-            <p>지하철 관련 질문</p>
-            <button class="show-answer" onclick="toggleAnswer(2)">답변 보기</button>
-
-            <!-- 답변 박스 -->
-            <div class="answer-box" id="answer-box-2">
-                <p>아침 시간대 열차 간격 조정, 민원 처리, 신호 오류, 차량 고장 등 다양한 이유로 역에 정차할 수 있습니다.</p>
-                <div class="qa-answer">
-                    <textarea placeholder="시민 참여 답변..."></textarea>
-                    <button onclick="submitAnswer(2)">답변 제출</button>
-                </div>
+            <div class="etiquette-item">
+                <img src="https://raw.githubusercontent.com/mihee03/my-website/main/홍보물사진/휴대폰 소리.png" alt="휴대폰 소리">
+                <h3>큰 소리로 통화하거나 떠들지 않기</h3>
             </div>
-        </div>
-
-        <!-- 질문 3 -->
-        <div class="qa-item">
-            <h3>Q3. 호선별 자전거칸 수는 몇 개일까요?</h3>
-            <p>서비스 관련 질문</p>
-            <button class="show-answer" onclick="toggleAnswer(3)">답변 보기</button>
-
-            <!-- 답변 박스 -->
-            <div class="answer-box" id="answer-box-3">
-                <p>1호선: 5개, 2호선: 3개, 3호선: 5개 등 호선마다 자전거칸 수가 다릅니다.</p>
-                <div class="qa-answer">
-                    <textarea placeholder="시민 참여 답변..."></textarea>
-                    <button onclick="submitAnswer(3)">답변 제출</button>
-                </div>
+            <div class="etiquette-item">
+                <img src="https://raw.githubusercontent.com/mihee03/my-website/main/홍보물사진/음식.png" alt="음식">
+                <h3>열차 안에서 음식물 먹지 않기</h3>
+            </div>
+            <div class="etiquette-item">
+                <img src="https://raw.githubusercontent.com/mihee03/my-website/main/홍보물사진/넘어짐.png" alt="넘어짐">
+                <h3>보행 중이거나 열차 승하차시엔 스마트폰 사용하지 않기</h3>
             </div>
         </div>
     </div>
-
-    <script>
-        function toggleAnswer(id) {
-            const answerBox = document.getElementById('answer-box-' + id);
-            answerBox.style.display = answerBox.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function submitAnswer(id) {
-            const answerText = document.querySelector(`#answer-box-${id} textarea`).value;
-            if (answerText.trim()) {
-                alert("답변이 제출되었습니다!");
-                document.querySelector(`#answer-box-${id} textarea`).value = ""; // 초기화
-            } else {
-                alert("답변을 입력해주세요.");
-            }
-        }
-    </script>
 
 </body>
 </html>
