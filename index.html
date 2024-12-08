@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>익명 게시판</title>
+    <title>자주 묻는 질문</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -13,174 +13,175 @@
             color: #495057; /* 중간 회색 */
         }
 
-        #community-section {
+        .qa-section {
+            max-width: 800px;
             margin: 40px auto;
             padding: 20px;
-            max-width: 700px;
             background: #ffffff; /* 흰색 배경 */
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        #community-section:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* 강조 효과 */
-        }
-
-        #community-section h2 {
-            font-size: 26px;
+        .qa-section h2 {
+            font-size: 28px;
             font-weight: bold;
             color: #343a40; /* 짙은 회색 */
             margin-bottom: 20px;
             text-align: center;
-            border-bottom: 2px solid #dee2e6;
-            padding-bottom: 10px;
         }
 
-        .post {
-            margin-bottom: 20px;
-            padding: 15px;
+        .qa-item {
+            padding: 20px;
             background: #f1f3f5; /* 연한 회색 */
+            margin-bottom: 15px;
             border-radius: 8px;
-            border: 1px solid #dee2e6;
+            border-left: 5px solid #6c757d; /* 중간 회색 */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .post .content {
+        .qa-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* 강조 효과 */
+        }
+
+        .qa-item h3 {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #343a40;
+        }
+
+        .qa-item p {
             font-size: 16px;
             color: #495057;
-            font-weight: bold;
             margin-bottom: 10px;
         }
 
-        .post .comments {
-            margin-top: 10px;
-            padding-left: 15px;
-        }
-
-        .comment {
-            margin-top: 10px;
-            padding: 10px;
-            background: #e9ecef; /* 밝은 회색 */
+        .qa-item button {
+            background-color: #6c757d;
+            color: white;
+            padding: 8px 16px;
+            border: none;
             border-radius: 5px;
-            border-left: 5px solid #6c757d; /* 중간 회색 */
-            color: #495057;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
-        textarea {
+        .qa-item button:hover {
+            background-color: #495057;
+        }
+
+        .answer-box {
+            display: none;
+            margin-top: 10px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+
+        .qa-answer textarea {
             width: 100%;
             height: 80px;
             padding: 10px;
             margin-top: 10px;
             border-radius: 5px;
             border: 1px solid #dee2e6;
-            box-sizing: border-box;
-            resize: none;
             font-size: 14px;
-            background-color: #f8f9fa; /* 연한 배경 */
+            background-color: #ffffff; /* 흰색 */
         }
 
-        button {
-            background-color: #6c757d; /* 중간 회색 */
+        .qa-answer button {
+            background-color: #6c63ff; /* 보라색 */
             color: white;
-            padding: 10px 15px;
+            padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
-            font-size: 14px;
-        }
-
-        button:hover {
-            background-color: #495057; /* 짙은 회색 */
-        }
-
-        .comment-button {
             margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .qa-answer button:hover {
+            background-color: #5a4db8; /* 보라색 강조 */
         }
     </style>
 </head>
 <body>
-    <!-- 커뮤니티 공간 -->
-    <div id="community-section">
-        <h2>익명 게시판</h2>
-        <div id="posts"></div>
-        <div>
-            <textarea id="post-input" placeholder="글을 작성해보세요..."></textarea>
-            <button id="post-button">글 작성</button>
+
+    <div class="qa-section">
+        <h2>자주 묻는 질문</h2>
+
+        <!-- 질문 1 -->
+        <div class="qa-item">
+            <h3>Q1. 유실물을 찾으러 갈 때 필요한 서류는 무엇인가요?</h3>
+            <p>지하철 이용에 관한 자주 묻는 질문입니다.</p>
+            <button class="show-answer" onclick="toggleAnswer(1)">답변 보기</button>
+
+            <!-- 답변 박스 -->
+            <div class="answer-box" id="answer-box-1">
+                <p>유실물 인도시 본인 확인이 가능한 신분증을 지참하여 고객안전실 또는 유실물센터로 방문해주시기 바랍니다.</p>
+                <div class="qa-answer">
+                    <textarea placeholder="시민 참여 답변..."></textarea>
+                    <button onclick="submitAnswer(1)">답변 제출</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 질문 2 -->
+        <div class="qa-item">
+            <h3>Q2. 아침에 열차가 잘 가다가 역에 서 있는 이유가 무엇인가요?</h3>
+            <p>지하철 관련 질문</p>
+            <button class="show-answer" onclick="toggleAnswer(2)">답변 보기</button>
+
+            <!-- 답변 박스 -->
+            <div class="answer-box" id="answer-box-2">
+                <p>아침 시간대 출입문과 승강장 안전문을 개방한 상태로 역에 정차해 있는 경우는 크게 4가지가 있습니다: 열차 간격 조정, 민원 처리, 신호 오류, 차량 고장 등 다양한 이유로 정차할 수 있습니다.</p>
+                <div class="qa-answer">
+                    <textarea placeholder="시민 참여 답변..."></textarea>
+                    <button onclick="submitAnswer(2)">답변 제출</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 질문 3 -->
+        <div class="qa-item">
+            <h3>Q3. 호선별 자전거칸 수는 몇 개일까요?</h3>
+            <p>서비스 관련 질문</p>
+            <button class="show-answer" onclick="toggleAnswer(3)">답변 보기</button>
+
+            <!-- 답변 박스 -->
+            <div class="answer-box" id="answer-box-3">
+                <p>호선별 자전거칸 수는 1호선: 5개, 2호선: 3개, 3호선: 5개, 4호선: 10개, 5호선: 26개 등입니다.</p>
+                <div class="qa-answer">
+                    <textarea placeholder="시민 참여 답변..."></textarea>
+                    <button onclick="submitAnswer(3)">답변 제출</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // 게시글 저장 배열
-        let posts = [];
-
-        document.getElementById("post-button").addEventListener("click", () => {
-            const postContent = document.getElementById("post-input").value.trim();
-            if (postContent) {
-                const newPost = {
-                    id: posts.length + 1,
-                    content: postContent,
-                    comments: []
-                };
-                posts.push(newPost);
-                displayPosts();
-                document.getElementById("post-input").value = ""; // 입력창 초기화
+        function toggleAnswer(id) {
+            const answerBox = document.getElementById('answer-box-' + id);
+            if (answerBox.style.display === 'block') {
+                answerBox.style.display = 'none';
             } else {
-                alert("글을 입력해주세요.");
+                answerBox.style.display = 'block';
             }
-        });
+        }
 
-        // 게시글과 댓글 표시 함수
-        function displayPosts() {
-            const postsContainer = document.getElementById("posts");
-            postsContainer.innerHTML = ""; // 기존 게시글 초기화
-
-            posts.forEach(post => {
-                const postDiv = document.createElement("div");
-                postDiv.classList.add("post");
-
-                const postContent = document.createElement("div");
-                postContent.classList.add("content");
-                postContent.textContent = `익명글 ${post.id}: ${post.content}`;
-                postDiv.appendChild(postContent);
-
-                // 댓글 입력창
-                const commentInput = document.createElement("textarea");
-                commentInput.placeholder = "댓글을 작성해보세요...";
-                postDiv.appendChild(commentInput);
-
-                const commentButton = document.createElement("button");
-                commentButton.classList.add("comment-button");
-                commentButton.textContent = "댓글 작성";
-                postDiv.appendChild(commentButton);
-
-                commentButton.addEventListener("click", () => {
-                    const commentContent = commentInput.value.trim();
-                    if (commentContent) {
-                        post.comments.push(commentContent);
-                        commentInput.value = ""; // 댓글 입력창 초기화
-                        displayPosts();
-                    } else {
-                        alert("댓글을 입력해주세요.");
-                    }
-                });
-
-                // 댓글 표시
-                const commentsDiv = document.createElement("div");
-                commentsDiv.classList.add("comments");
-                post.comments.forEach(comment => {
-                    const commentDiv = document.createElement("div");
-                    commentDiv.classList.add("comment");
-                    commentDiv.textContent = comment;
-                    commentsDiv.appendChild(commentDiv);
-                });
-
-                postDiv.appendChild(commentsDiv);
-                postsContainer.appendChild(postDiv);
-            });
+        function submitAnswer(id) {
+            const answerText = document.querySelector(`#answer-box-${id} textarea`).value;
+            if (answerText.trim() !== "") {
+                alert("답변이 제출되었습니다!");
+                document.querySelector(`#answer-box-${id} textarea`).value = ""; // 텍스트 초기화
+            } else {
+                alert("답변을 입력해주세요.");
+            }
         }
     </script>
+
 </body>
 </html>
