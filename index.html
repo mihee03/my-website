@@ -1,1512 +1,213 @@
+#광고 및 즐겨찾기
+
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>지하철 통합 웹사이트</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f7fa;
-            color: #333;
-        }
-        header {
-            background-color: #6c63ff;
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-        nav {
-            background-color: #333;
-            color: white;
-            padding: 10px;
-            text-align: center;
-        }
-        nav a {
-            color: white;
-            margin: 0 10px;
-            text-decoration: none;
-        }
-        nav a:hover {
-            text-decoration: underline;
-        }
-        section {
-            max-width: 900px;
-            margin: 30px auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
-            color: #444;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>지하철 검색</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .search-container {
+      margin-bottom: 20px;
+    }
+    .favorites-container button {
+      margin: 5px;
+    }
+    .result {
+      margin-top: 20px;
+    }
+    img {
+      display: block;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>지하철 통합 웹사이트</h1>
-    </header>
-    <nav>
-        <a href="#favorites">광고 및 즐겨찾기</a>
-        <a href="#elderly">노약자 좌석 조정</a>
-        <a href="#map">지도 검색</a>
-        <a href="#survey">설문조사</a>
-        <a href="#community">익명 게시판</a>
-        <a href="#faq">FAQ</a>
-        <a href="#etiquette">에티켓 홍보</a>
-    </nav>
-
-    <!-- 광고 및 즐겨찾기 -->
-    <section id="favorites">
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>지하철 검색</title>
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              margin: 20px;
-            }
-            .search-container {
-              margin-bottom: 20px;
-            }
-            .favorites-container button {
-              margin: 5px;
-            }
-            .result {
-              margin-top: 20px;
-            }
-            img {
-              display: block;
-              margin-top: 10px;
-            }
-          </style>
-        </head>
-        <body>
-          <h1>지하철 정보 검색 및 즐겨찾기</h1>
-
-          <div class="search-container">
-            <label for="station-search">역 이름 검색:</label>
-            <input type="text" id="station-search" placeholder="예: 강남역">
-            <button id="search-button">검색</button>
-            <button id="add-favorite-button">즐겨찾기에 추가</button>
-          </div>
-
-          <div class="favorites-container" id="favorites-container">
-            <h3>즐겨찾기</h3>
-            <p>즐겨찾은 역이 여기에 표시됩니다.</p>
-          </div>
-
-          <div class="result">
-            <h3>검색 결과</h3>
-            <div id="result">검색 결과가 여기에 표시됩니다.</div>
-          </div>
-
-          <div class="ad-container" id="ad-container">
-            <h3>맞춤형 광고</h3>
-            <p id="ad-content">광고가 여기에 표시됩니다.</p>
-          </div>
-
-          <script>
-            let jsonData;
-
-            // JSON 파일 로드
-            fetch('./승객_예상_데이터.json')
-              .then(response => {
-                if (!response.ok) {
-                  throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-              })
-              .then(data => {
-                jsonData = data;
-                console.log("JSON 데이터 로드 성공:", jsonData);
-              })
-              .catch(error => console.error("JSON 데이터 로드 실패:", error));
-
-            // 현재 요일과 시간대 계산 함수
-            function getCurrentDayAndTimeSlot() {
-              const now = new Date();
-              const days = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
-              const day = days[now.getDay()];
-              const hour = now.getHours();
-              const timeSlot = `${hour.toString().padStart(2, '0')}-${(hour + 1).toString().padStart(2, '0')}시간대`;
-              return { day, timeSlot };
-            }
-
-            // 즐겨찾기 데이터
-            let favorites = [];
-
-            // 즐겨찾기 업데이트 함수
-            function updateFavorites() {
-              const favoritesContainer = document.getElementById('favorites-container');
-              favoritesContainer.innerHTML = '<h3>즐겨찾기</h3>';
-
-              favorites.forEach((station, index) => {
-                const buttonWrapper = document.createElement('div');
-                buttonWrapper.style.marginBottom = '10px';
-
-                const button = document.createElement('button');
-                button.textContent = station;
-                button.addEventListener('click', () => {
-                  document.getElementById('station-search').value = station;
-                  document.getElementById('search-button').click();
-                });
-
-                const removeButton = document.createElement('button');
-                removeButton.textContent = '❌';
-                removeButton.addEventListener('click', () => {
-                  favorites.splice(index, 1);
-                  updateFavorites();
-                });
-
-                buttonWrapper.appendChild(button);
-                buttonWrapper.appendChild(removeButton);
-                favoritesContainer.appendChild(buttonWrapper);
-              });
-            }
-
-            // 즐겨찾기 추가 버튼 이벤트
-            document.getElementById('add-favorite-button').addEventListener('click', () => {
-              const stationName = document.getElementById('station-search').value.trim();
-
-              if (!stationName) {
-                alert('역 이름을 입력해주세요!');
-                return;
-              }
-              if (favorites.includes(stationName)) {
-                alert('이미 즐겨찾기에 추가된 역입니다!');
-                return;
-              }
-              if (favorites.length >= 3) {
-                alert('즐겨찾기는 최대 3개까지만 추가할 수 있습니다.');
-                return;
-              }
-
-              favorites.push(stationName);
-              updateFavorites();
-            });
-
-            // 검색 버튼 클릭 이벤트
-            document.getElementById('search-button').addEventListener('click', () => {
-              const stationName = document.getElementById('station-search').value.trim();
-
-              if (!stationName) {
-                document.getElementById('result').textContent = "역 이름을 입력해주세요.";
-                return;
-              }
-
-              if (!jsonData) {
-                document.getElementById('result').textContent = "JSON 데이터가 아직 로드되지 않았습니다.";
-                return;
-              }
-
-              // 현재 요일과 시간대 계산
-              const { day, timeSlot } = getCurrentDayAndTimeSlot();
-
-              // JSON 데이터 필터링
-              const results = jsonData.filter(item =>
-                item.역명 === stationName && item.요일 === day
-              );
-
-              if (results.length === 0) {
-                document.getElementById('result').textContent = "해당 조건에 맞는 데이터가 없습니다.";
-                return;
-              }
-
-              // 시간대 데이터 추출
-              const output = results.map(item => ({
-                유형: item.승객유형,
-                인원수: item[timeSlot] || "데이터 없음"
-              }));
-
-              // 결과 표시
-              let resultHtml = `<strong>${stationName}</strong> (${day}, ${timeSlot}):<br>`;
-              output.forEach(item => {
-                resultHtml += `- ${item.유형}: ${item.인원수}<br>`;
-              });
-              document.getElementById('result').innerHTML = resultHtml;
-
-              // 맞춤형 광고 표시
-              const highestType = output.reduce((a, b) => {
-                if (a && b) return a.인원수 > b.인원수 ? a : b;
-                return b;
-              }, null)?.유형;
-
-              const ads = {
-                일반: "일반인을 위한 지하철 안전 캠페인 광고",
-                어린이: "어린이를 위한 지하철 예절 광고",
-                청소년: "청소년을 위한 특별 프로모션 광고"
-              };
-
-              const adContent = document.getElementById('ad-content');
-              adContent.textContent = ads[highestType] || "광고 데이터가 없습니다.";
-
-              // 광고 이미지 표시
-              const adImages = {
-                일반: ["./img/일반광고-1.png", "./img/일반광고-2.png"],
-                어린이: ["./img/어린이광고-1.png", "./img/어린이광고-2.png"],
-                청소년: ["./img/청소년광고-1.png", "./img/청소년광고-2.png"]
-              };
-
-              if (highestType && adImages[highestType]) {
-                const randomImage = adImages[highestType][Math.floor(Math.random() * adImages[highestType].length)];
-                const adImageElement = document.createElement('img');
-                adImageElement.src = randomImage;
-                adImageElement.alt = `${highestType} 광고 이미지`;
-                adImageElement.style.maxWidth = "100%";
-
-                // 기존 이미지 제거 후 새로운 이미지 추가
-                const existingImage = adContent.nextElementSibling;
-                if (existingImage) {
-                  existingImage.remove();
-                }
-                adContent.insertAdjacentElement('afterend', adImageElement);
-              }
-            });
-          </script>
-        </body>
-        </html>
-    </section>
-
-    <!-- 노약자 좌석 조정 -->
-    <section id="elderly">
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Passenger Search</title>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    margin: 0;
-                    padding: 0;
-                    background-color: #f4f4f9;
-                    color: #333;
-                }
-
-                h1 {
-                    color: #444;
-                    text-align: center;
-                    padding: 20px;
-                }
-
-                .container {
-                    max-width: 600px;
-                    margin: 30px auto;
-                    padding: 20px;
-                    background: #ffffff;
-                    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-                    border-radius: 8px;
-                }
-
-                label {
-                    display: block;
-                    margin: 10px 0 5px;
-                    font-weight: bold;
-                }
-
-                input {
-                    width: 100%;
-                    padding: 10px;
-                    margin: 5px 0 20px;
-                    border: 1px solid #ccc;
-                    border-radius: 4px;
-                    font-size: 14px;
-                    box-sizing: border-box;
-                }
-
-                button {
-                    width: 100%;
-                    background: #007BFF;
-                    color: white;
-                    border: none;
-                    padding: 10px 15px;
-                    font-size: 16px;
-                    border-radius: 4px;
-                    cursor: pointer;
-                    transition: background 0.3s;
-                }
-
-                button:hover {
-                    background: #0056b3;
-                }
-
-                #results {
-                    margin-top: 20px;
-                    padding: 10px;
-                    background: #f9f9f9;
-                    border-left: 4px solid #007BFF;
-                    border-radius: 4px;
-                }
-
-                #results p {
-                    margin: 0;
-                    font-size: 14px;
-                    line-height: 1.5;
-                }
-
-                footer {
-                    text-align: center;
-                    padding: 10px 0;
-                    font-size: 14px;
-                    color: #666;
-                    margin-top: 20px;
-                }
-
-                footer a {
-                    color: #007BFF;
-                    text-decoration: none;
-                }
-
-                footer a:hover {
-                    text-decoration: underline;
-                }
-            </style>
-        </head>
-        <body>
-            <h1>Passenger Search</h1>
-            <div class="container">
-                <label for="date">Enter Date (mm-dd):</label>
-                <input type="text" id="date" placeholder="01-01">
-
-                <label for="hour">Enter Hour (0-23):</label>
-                <input type="number" id="hour" placeholder="6" min="0" max="23">
-
-                <label for="station">Enter Station Name:</label>
-                <input type="text" id="station" placeholder="서울역">
-
-                <button id="search">Search</button>
-
-                <div id="results"></div>
-            </div>
-
-            <script>
-                let data = [];
-                let stationList = []; // 모든 역명을 저장할 배열
-
-                // CSV 파일 로드 및 병합
-                const loadCSV = async (url) => {
-                    return new Promise((resolve, reject) => {
-                        Papa.parse(url, {
-                            download: true,
-                            header: true,
-                            complete: function(results) {
-                                resolve(results.data);
-                            },
-                            error: function(error) {
-                                reject(error);
-                            }
-                        });
-                    });
-                };
-
-                // 데이터 파일 경로
-                const file1 = "데이터파일/우대권병합데이터06.csv";
-                const file2 = "데이터파일/우대권병합데이터12.csv";
-
-                // 파일 로드 및 병합
-                Promise.all([loadCSV(file1), loadCSV(file2)]).then(results => {
-                    data = results[0].concat(results[1]); // 두 파일 병합
-                    console.log("Loaded data (first 5 rows):", data.slice(0, 5)); // 로드된 데이터의 첫 5행 출력
-
-                    // 모든 역명을 추출하여 배열에 저장
-                    stationList = [...new Set(data.map(row => row['역명'] ? row['역명'].trim() : ""))].filter(Boolean);
-                    console.log("Station list:", stationList); // 확인용 출력
-                    alert("CSV Files Loaded!");
-                }).catch(error => {
-                    console.error("Error loading files:", error);
-                });
-
-                // 검색 버튼 클릭 이벤트
-                document.getElementById('search').addEventListener('click', function() {
-                    const inputDate = document.getElementById('date').value; // 사용자가 입력한 날짜
-                    const inputHour = document.getElementById('hour').value; // 사용자가 입력한 시간
-                    const stationName = document.getElementById('station').value.trim(); // 사용자가 입력한 역명 (공백 제거)
-
-                    if (!inputDate || !inputHour || !stationName) {
-                        document.getElementById('results').textContent = "Please enter date, hour, and station name.";
-                        return;
-                    }
-
-                    // "잠시만 기다려주세요" 메시지 표시
-                    document.getElementById('results').textContent = "잠시만 기다려주세요...";
-
-                    // 검색 로직 실행
-                    setTimeout(() => {
-                        // 역명 리스트 확인 및 비교
-                        console.log("Station list:", stationList); // 로드된 역명 리스트 출력
-                        if (!stationList.some(station => station.toLowerCase() === stationName.toLowerCase())) {
-                            alert("올바른 역명을 입력하세요.");
-                            document.getElementById('results').textContent = ""; // 메시지 초기화
-                            return;
-                        }
-
-                        console.log(`Searching for date: ${inputDate}, hour: ${inputHour}, station: ${stationName}`); // 검색 조건 확인
-
-                        // 필터링: 날짜, 시간, 역명을 기준으로 데이터 검색
-                        const filteredData = data.filter(row => {
-                            const rowDate = row['일시'] ? new Date(row['일시']).toLocaleDateString('en-CA').slice(5) : ""; // mm-dd 형식
-                            const rowHour = row['일시'] ? new Date(row['일시']).getHours() : null; // 시간
-                            const rowStation = row['역명'] ? row['역명'].trim() : ""; // 역명이 존재하면 공백 제거
-
-                            console.log(`Row date: ${rowDate}, Row hour: ${rowHour}, Station: ${rowStation}`); // 각 행의 날짜, 시간, 역명 확인
-                            return rowDate === inputDate && rowHour == inputHour && rowStation.toLowerCase() === stationName.toLowerCase();
-                        });
-
-                        console.log("Filtered data:", filteredData); // 필터링된 데이터 확인
-
-                        // 총 인원수 계산
-                        const totalPassengers = filteredData.reduce((sum, row) => sum + parseInt(row['인원수'] || 0), 0);
-
-                        // 노약자 좌석 수 결정
-                        const elderlySeatCount = totalPassengers >= 170 ? 27 : 12;
-
-                        // 결과 표시
-                        if (filteredData.length > 0) {
-                            document.getElementById('results').innerHTML = `
-                                <p><strong>Station:</strong> ${stationName}</p>
-                                <p><strong>Date:</strong> ${inputDate}</p>
-                                <p><strong>Hour:</strong> ${inputHour}:00</p>
-                                <p><strong>Total Passengers:</strong> ${totalPassengers}</p>
-                                <p><strong>Elderly Seats:</strong> ${elderlySeatCount} seats</p>
-                            `;
-                        } else {
-                            document.getElementById('results').innerHTML = `
-                                <p>No data found for station: ${stationName}</p>
-                                <p>on date: ${inputDate} at hour: ${inputHour}:00</p>
-                            `;
-                        }
-                    }, 1000); // 1초 딜레이 추가
-                });
-            </script>
-        </body>
-        </html>
-    </section>
-
-    <!-- 지도 검색 -->
-    <section id="map">
-        <!DOCTYPE html>
-        <html lang="ko">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>지하철 검색</title>
-            <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=h1ch1c9q07"></script>
-            <style>
-                body {
-                    font-family: 'Arial', sans-serif;
-                    margin: 0;
-                    padding: 0;
-                    background-color: #f4f7fa;
-                    color: #333;
-                }
-
-                /* 지도 스타일 */
-                #map {
-                    width: 100%;
-                    height: 500px;
-                    max-width: 100%;
-                    margin: 0 auto;
-                    display: block;
-                    position: relative;
-                }
-
-                /* 검색 박스 */
-                #search-box {
-                    position: absolute; /* 지도 위에 표시되도록 설정 */
-                    top: 20px; /* 상단에서 간격 */
-                    left: 50%;
-                    transform: translateX(-50%);
-                    z-index: 10; /* 지도보다 위에 표시되도록 설정 */
-                    text-align: center;
-                    margin-top: -20px; /* 검색 바를 위로 이동 */
-                    max-width: 800px;
-                    width: 100%;
-                    background-color: rgba(255, 255, 255, 0.9); /* 배경 투명도 조절 */
-                    padding: 10px;
-                    border-radius: 5px;
-                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                }
-
-                #search-input {
-                    width: 70%;
-                    padding: 10px;
-                    font-size: 16px;
-                    border: 1px solid #ddd;
-                    border-radius: 5px;
-                    margin-right: 10px;
-                }
-
-                #search-button {
-                    padding: 10px 20px;
-                    background-color: #6c63ff;
-                    color: white;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                    font-size: 16px;
-                }
-
-                #search-button:hover {
-                    background-color: #5a4db8;
-                }
-
-                /* 검색 결과 리스트 스타일 */
-                #results {
-                    margin: 20px auto;
-                    padding: 10px;
-                    background-color: white;
-                    border-radius: 10px;
-                    width: 90%;
-                    max-width: 800px;
-                }
-
-                .result-item {
-                    margin-bottom: 15px;
-                    padding: 15px;
-                    background-color: #f9f9f9;
-                    border-radius: 8px;
-                    border: 1px solid #ddd;
-                    transition: transform 0.3s ease, box-shadow 0.3s ease;
-                }
-
-                .result-item:hover {
-                    transform: translateY(-5px);
-                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                }
-
-                .result-item a {
-                    text-decoration: none;
-                    color: #6c63ff;
-                    font-weight: bold;
-                }
-
-                .result-item a:hover {
-                    text-decoration: underline;
-                }
-
-                .result-item p {
-                    margin: 5px 0;
-                }
-
-                /* 화면 반응형 설정 */
-                @media (max-width: 768px) {
-                    #search-input {
-                        width: 60%;
-                    }
-                    #search-button {
-                        width: 30%;
-                    }
-                }
-
-            </style>
-        </head>
-        <body>
-
-            <div id="search-box">
-                <input type="text" id="search-input" placeholder="검색어를 입력하세요" />
-                <button id="map-search-button">검색</button>
-            </div>
-
-            <div id="naver-map"></div>
-
-            <div id="map-results"></div>
-
-            <script>
-                let currentLat = 37.5665, currentLng = 126.9780;  // 서울시청 좌표 (예시로 서울시청을 사용)
-
-                // 네이버 지도 초기화
-                const map = new naver.maps.Map('map', {
-                    center: new naver.maps.LatLng(currentLat, currentLng), // 서울 중심
-                    zoom: 12
-                });
-
-                // 사용자 위치를 임의로 설정 (예: 서울시청)
-                const userMarker = new naver.maps.Marker({
-                    position: new naver.maps.LatLng(currentLat, currentLng),
-                    map: map,
-                    title: "현재 위치"
-                });
-
-                // 검색 API 요청
-                async function searchPlaces(query) {
-                    const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // CORS Proxy URL
-                    const url = `https://openapi.naver.com/v1/search/local.json?query=${encodeURIComponent(query)}&display=5&start=1&sort=random`;
-
-                    try {
-                        const response = await fetch(proxyUrl + url, {
-                            headers: {
-                                "X-Naver-Client-Id": "2il85btNfU6KvdvFEPYu",
-                                "X-Naver-Client-Secret": "y4iSS_jPQq"
-                            }
-                        });
-
-                        if (response.ok) {
-                            const data = await response.json();
-                            displayResults(data.items); // 검색 결과를 화면에 표시
-                        } else {
-                            alert("검색 결과를 불러오는 데 실패했습니다.");
-                        }
-                    } catch (error) {
-                        console.error("Error:", error);
-                        alert("API 요청 중 오류가 발생했습니다.");
-                    }
-                }
-
-                // 두 지점 간의 거리 계산 (Haversine Formula)
-                function calculateDistance(lat1, lng1, lat2, lng2) {
-                    const R = 6371; // 지구 반지름 (킬로미터)
-                    const dLat = toRad(lat2 - lat1);
-                    const dLng = toRad(lng2 - lng1);
-                    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                              Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-                              Math.sin(dLng / 2) * Math.sin(dLng / 2);
-                    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-                    return R * c; // 거리(km)
-                }
-
-                function toRad(deg) {
-                    return deg * (Math.PI / 180);
-                }
-
-                // 검색 결과를 지도와 페이지에 표시하는 함수
-                function displayResults(places) {
-                    // 이전 결과 초기화
-                    document.getElementById("results").innerHTML = "";
-
-                    // 마커 배열
-                    const markers = [];
-
-                    places.forEach(place => {
-                        // mapy, mapx 값이 있는지 확인
-                        if (place.mapy && place.mapx) {
-                            const distance = calculateDistance(currentLat, currentLng, place.mapy, place.mapx);
-
-                            // 10km 이내의 장소만 필터링
-                            if (distance <= 10) {
-                                // 지도에 마커 추가
-                                const marker = new naver.maps.Marker({
-                                    position: new naver.maps.LatLng(place.mapy, place.mapx),
-                                    map: map,
-                                    title: place.title.replace(/<[^>]+>/g, "") // HTML 태그 제거
-                                });
-
-                                // 마커 클릭 이벤트 (정보창 표시)
-                                const infoWindow = new naver.maps.InfoWindow({
-                                    content: `<div><strong>${place.title}</strong><br>${place.address}</div>`
-                                });
-
-                                naver.maps.Event.addListener(marker, "click", () => {
-                                    infoWindow.open(map, marker);
-                                });
-
-                                // 마커 배열에 추가
-                                markers.push(marker);
-
-                                // 검색 결과 목록 추가
-                                document.getElementById("results").innerHTML += `
-                                    <div class="result-item">
-                                        <strong>${place.title.replace(/<[^>]+>/g, "")}</strong><br>
-                                        ${place.address}<br>
-                                        <a href="${place.link}" target="_blank">상세보기</a>
-                                    </div>
-                                `;
-                            }
-                        }
-                    });
-
-                    // 지도에 마커 표시
-                    showMarkers(markers);
-                }
-
-                // 마커 표시 함수
-                function showMarkers(markers) {
-                    markers.forEach(marker => {
-                        marker.setMap(map);  // 마커 표시
-                    });
-                }
-
-                // 검색 버튼 클릭 이벤트
-                document.getElementById("search-button").addEventListener("click", () => {
-                    const query = document.getElementById("search-input").value;
-                    if (query.trim()) {
-                        searchPlaces(query.trim()); // 검색 실행
-                    } else {
-                        alert("검색어를 입력하세요!");
-                    }
-                });
-            </script>
-
-        </body>
-        </html>
-    </section>
-
-    <!-- 설문조사 -->
-    <section id="survey">
-        <!DOCTYPE html>
-        <html lang="ko">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>설문조사</title>
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    background-color: #f7f7f7;
-                    margin: 0;
-                    padding: 0;
-                    color: #333;
-                }
-
-                #survey-section {
-                    margin-top: 40px;
-                    padding: 20px;
-                    background: white;
-                    border-radius: 10px;
-                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                    max-width: 600px;
-                    margin: 20px auto;
-                }
-
-                h2 {
-                    font-size: 24px;
-                    font-weight: 600;
-                    color: #333;
-                    margin-bottom: 15px;
-                }
-
-                .question {
-                    margin-bottom: 15px;
-                }
-
-                .question label {
-                    font-size: 18px;
-                    display: block;
-                    margin-bottom: 5px;
-                }
-
-                .question input {
-                    margin-right: 10px;
-                }
-
-                .survey-button {
-                    background-color: #ff6347;
-                    color: white;
-                    padding: 10px 20px;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                    transition: background-color 0.3s ease;
-                }
-
-                .survey-button:hover {
-                    background-color: #e5533d;
-                }
-
-                #survey-statistics {
-                    margin-top: 30px;
-                    padding: 20px;
-                    background-color: #f4f7fa;
-                    border-radius: 10px;
-                }
-
-                #survey-statistics h3 {
-                    font-size: 20px;
-                    font-weight: 600;
-                    color: #333;
-                }
-
-                #survey-statistics ul {
-                    list-style-type: none;
-                    padding: 0;
-                }
-
-                #survey-statistics ul li {
-                    margin-bottom: 10px;
-                }
-            </style>
-        </head>
-        <body>
-
-            <div id="survey-section">
-                <h2>설문조사</h2>
-                <!-- 설문 항목들 -->
-                <div class="question">
-                    <label>1. 지하철을 얼마나 자주 이용하시나요?</label>
-                    <input type="radio" name="q1" value="매일"> 매일
-                    <input type="radio" name="q1" value="주 1~2회"> 주 1~2회
-                    <input type="radio" name="q1" value="월 1~2회"> 월 1~2회
-                    <input type="radio" name="q1" value="전혀 안 이용"> 전혀 안 이용
-                </div>
-
-                <div class="question">
-                    <label>2. 지하철을 이용할 때 가장 불편한 점은 무엇인가요?</label>
-                    <input type="radio" name="q2" value="혼잡"> 혼잡
-                    <input type="radio" name="q2" value="환승이 복잡"> 환승이 복잡
-                    <input type="radio" name="q2" value="지하철 배차 시간 불확실"> 지하철 배차 시간 불확실
-                    <input type="radio" name="q2" value="기타"> 기타
-                </div>
-
-                <div class="question">
-                    <label>3. 기타 피드백</label>
-                    <textarea name="q3" id="q3-feedback" placeholder="기타 불편한 점이나 피드백을 남겨주세요..." rows="4"></textarea>
-                </div>
-
-                <button id="survey-submit" class="survey-button">설문 제출</button>
-            </div>
-
-            <!-- 설문 통계 -->
-            <div id="survey-statistics" style="display:none;">
-                <h3>설문 결과</h3>
-                <ul id="survey-results">
-                    <!-- 통계 결과가 여기에 표시됩니다 -->
-                </ul>
-            </div>
-
-            <script>
-                // 설문 데이터 저장
-                const surveyResults = {
-                    q1: { '매일': 0, '주 1~2회': 0, '월 1~2회': 0, '전혀 안 이용': 0 },
-                    q2: { '혼잡': 0, '환승이 복잡': 0, '지하철 배차 시간 불확실': 0, '기타': 0 },
-                    q3: [] // 3번 기타 피드백은 배열로 저장
-                };
-
-                // 설문 제출 이벤트
-                document.getElementById("survey-submit").addEventListener("click", () => {
-                    const q1Answer = document.querySelector('input[name="q1"]:checked');
-                    const q2Answer = document.querySelector('input[name="q2"]:checked');
-                    const q3Answer = document.getElementById("q3-feedback").value.trim();
-
-                    if (!q1Answer || !q2Answer) {
-                        alert("모든 질문에 답해주세요.");
-                        return;
-                    }
-
-                    // 선택된 답변 저장
-                    surveyResults.q1[q1Answer.value]++;
-                    surveyResults.q2[q2Answer.value]++;
-                    if (q3Answer) {
-                        surveyResults.q3.push(q3Answer); // 기타 피드백 저장
-                    }
-
-                    // 설문 결과 화면 표시
-                    displaySurveyStatistics();
-
-                    // 설문 제출 후 체크된 항목 초기화
-                    resetSurveyForm();
-                });
-
-                // 설문 통계 표시
-                function displaySurveyStatistics() {
-                    // 통계 영역 보이게 하기
-                    document.getElementById("survey-statistics").style.display = 'block';
-
-                    // 통계 결과를 ul에 추가
-                    const resultsList = document.getElementById("survey-results");
-                    resultsList.innerHTML = ""; // 이전 통계 삭제
-
-                    // 각 질문의 결과를 표시
-                    for (let question in surveyResults) {
-                        const resultItem = document.createElement("li");
-                        resultItem.textContent = `${question === 'q1' ? '1. 지하철을 얼마나 자주 이용하시나요?' :
-                                                  question === 'q2' ? '2. 지하철을 이용할 때 가장 불편한 점은 무엇인가요?' :
-                                                  '3. 기타 피드백'} - `;
-
-                        // 각 답변별 통계 표시
-                        if (question !== 'q3') {
-                            const answers = surveyResults[question];
-                            for (let answer in answers) {
-                                resultItem.textContent += `${answer}: ${answers[answer]}명, `;
-                            }
-                        } else {
-                            // 3번 기타 피드백 출력
-                            const feedback = surveyResults.q3.length > 0 ? surveyResults.q3.join(", ") : "없음";
-                            resultItem.textContent += feedback;
-                        }
-
-                        resultsList.appendChild(resultItem);
-                    }
-                }
-
-                // 설문 폼 초기화
-                function resetSurveyForm() {
-                    // 모든 라디오 버튼 초기화
-                    const radioButtons = document.querySelectorAll('input[type="radio"]');
-                    radioButtons.forEach(button => {
-                        button.checked = false;
-                    });
-
-                    // 텍스트 영역 초기화
-                    document.getElementById("q3-feedback").value = "";
-                }
-            </script>
-
-        </body>
-        </html>
-    </section>
-
-    <!-- 익명 게시판 -->
-    <section id="community">
-        <!DOCTYPE html>
-        <html lang="ko">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>익명 게시판</title>
-            <style>
-                body {
-                    font-family: 'Arial', sans-serif;
-                    background-color: #f4f7fa;
-                    margin: 0;
-                    padding: 0;
-                }
-
-                /* 커뮤니티 영역 스타일 */
-                #community-section {
-                    margin: 40px auto;
-                    padding: 20px;
-                    max-width: 800px;
-                    background: white;
-                    border-radius: 10px;
-                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-                }
-
-                #community-section h2 {
-                    font-size: 28px;
-                    font-weight: bold;
-                    color: #333;
-                    margin-bottom: 20px;
-                    border-bottom: 2px solid #ddd;
-                    padding-bottom: 10px;
-                }
-
-                /* 게시글 스타일 */
-                .post {
-                    margin-bottom: 20px;
-                    padding: 15px;
-                    background: #fafafa;
-                    border-radius: 8px;
-                    border: 1px solid #ddd;
-                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-                }
-
-                .post .content {
-                    font-size: 16px;
-                    color: #333;
-                }
-
-                .post .comments {
-                    margin-top: 10px;
-                    padding-left: 20px;
-                }
-
-                .comment {
-                    margin-top: 5px;
-                    padding: 10px;
-                    background: #f1f1f1;
-                    border-radius: 5px;
-                    border-left: 5px solid #6c63ff;
-                }
-
-                /* 글 작성 영역 */
-                .post textarea {
-                    width: 100%;
-                    height: 80px;
-                    padding: 10px;
-                    margin-top: 10px;
-                    border-radius: 5px;
-                    border: 1px solid #ddd;
-                    box-sizing: border-box;
-                    resize: none;
-                    font-size: 14px;
-                }
-
-                .post button {
-                    background-color: #6c63ff;
-                    color: white;
-                    padding: 10px 20px;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                    margin-top: 10px;
-                    transition: background-color 0.3s ease;
-                }
-
-                .post button:hover {
-                    background-color: #5a4db8;
-                }
-
-                /* 글 작성 입력창 스타일 */
-                #post-input {
-                    width: 100%;
-                    height: 80px;
-                    padding: 10px;
-                    margin-top: 10px;
-                    border-radius: 5px;
-                    border: 1px solid #ddd;
-                    box-sizing: border-box;
-                    resize: none;
-                    font-size: 14px;
-                }
-
-                #post-button {
-                    background-color: #6c63ff;
-                    color: white;
-                    padding: 10px 20px;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                    margin-top: 10px;
-                    transition: background-color 0.3s ease;
-                }
-
-                #post-button:hover {
-                    background-color: #5a4db8;
-                }
-
-                /* 댓글 버튼 스타일 */
-                .comment-button {
-                    background-color: #6c63ff;
-                    color: white;
-                    padding: 8px 16px;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                    transition: background-color 0.3s ease;
-                }
-
-                .comment-button:hover {
-                    background-color: #5a4db8;
-                }
-
-            </style>
-        </head>
-        <body>
-            <!-- 커뮤니티 공간 -->
-            <div id="community-section">
-                <h2>익명 게시판</h2>
-                <div id="posts"></div>
-                <div>
-                    <textarea id="post-input" placeholder="글을 작성해보세요..." style="width: 100%; height: 80px;"></textarea>
-                    <button id="post-button" style="padding: 5px 10px;">글 작성</button>
-                </div>
-            </div>
-
-            <script>
-                // 커뮤니티 게시글 작성
-                let posts = []; // 게시글을 저장하는 배열
-                document.getElementById("post-button").addEventListener("click", () => {
-                    const postContent = document.getElementById("post-input").value.trim();
-                    if (postContent) {
-                        const newPost = {
-                            id: posts.length + 1,
-                            content: postContent,
-                            comments: [] // 댓글을 저장할 배열
-                        };
-                        posts.push(newPost);
-                        displayPosts(); // 게시글 새로 고침
-                        document.getElementById("post-input").value = ""; // 글 입력창 초기화
-                    } else {
-                        alert("글을 입력해주세요.");
-                    }
-                });
-
-                // 게시글과 댓글 표시
-                function displayPosts() {
-                    const postsContainer = document.getElementById("posts");
-                    postsContainer.innerHTML = ""; // 기존 게시글 초기화
-
-                    posts.forEach(post => {
-                        const postDiv = document.createElement("div");
-                        postDiv.classList.add("post");
-
-                        const postTitle = document.createElement("div");
-                        postTitle.classList.add("content");
-                        postTitle.textContent = `익명글 ${post.id}: ${post.content}`;
-                        postDiv.appendChild(postTitle);
-
-                        // 댓글 작성 부분
-                        const commentInput = document.createElement("textarea");
-                        commentInput.placeholder = "댓글을 작성해보세요...";
-                        postDiv.appendChild(commentInput);
-
-                        const commentButton = document.createElement("button");
-                        commentButton.classList.add("comment-button");
-                        commentButton.textContent = "댓글 작성";
-                        postDiv.appendChild(commentButton);
-
-                        // 댓글 작성 기능
-                        commentButton.addEventListener("click", () => {
-                            const commentContent = commentInput.value.trim();
-                            if (commentContent) {
-                                post.comments.push(commentContent);
-                                commentInput.value = ""; // 댓글 입력창 초기화
-                                displayPosts(); // 댓글 추가 후 게시글 새로 고침
-                            } else {
-                                alert("댓글을 입력해주세요.");
-                            }
-                        });
-
-                        // 댓글 표시
-                        const commentsDiv = document.createElement("div");
-                        commentsDiv.classList.add("comments");
-                        post.comments.forEach(comment => {
-                            const commentDiv = document.createElement("div");
-                            commentDiv.classList.add("comment");
-                            commentDiv.textContent = comment;
-                            commentsDiv.appendChild(commentDiv);
-                        });
-                        postDiv.appendChild(commentsDiv);
-                        postsContainer.appendChild(postDiv);
-                    });
-                }
-            </script>
-        </body>
-        </html>
-    </section>
-
-    <!-- FAQ -->
-    <section id="faq">
-        <!DOCTYPE html>
-        <html lang="ko">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>자주 묻는 질문</title>
-            <style>
-                body {
-                    font-family: 'Arial', sans-serif;
-                    background-color: #f4f7fa;
-                    margin: 0;
-                    padding: 0;
-                }
-
-                .qa-section {
-                    max-width: 800px;
-                    margin: 40px auto;
-                    padding: 20px;
-                    background: white;
-                    border-radius: 10px;
-                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                }
-
-                .qa-section h2 {
-                    font-size: 28px;
-                    font-weight: 600;
-                    color: #333;
-                    margin-bottom: 20px;
-                }
-
-                .qa-item {
-                    padding: 20px;
-                    background: #fafafa;
-                    margin-bottom: 15px;
-                    border-radius: 8px;
-                    border-left: 5px solid #4CAF50;
-                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-                }
-
-                .qa-item h3 {
-                    font-size: 20px;
-                    font-weight: 600;
-                    margin-bottom: 10px;
-                }
-
-                .qa-item p {
-                    font-size: 16px;
-                    color: #555;
-                    margin-bottom: 10px;
-                }
-
-                .qa-item button {
-                    background-color: #4CAF50;
-                    color: white;
-                    padding: 8px 16px;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                    transition: background-color 0.3s ease;
-                }
-
-                .qa-item button:hover {
-                    background-color: #45a049;
-                }
-
-                .qa-answer {
-                    margin-top: 10px;
-                    padding-left: 20px;
-                    border-left: 3px solid #ddd;
-                }
-
-                .qa-answer textarea {
-                    width: 90%;
-                    height: 80px;
-                    padding: 10px;
-                    margin-top: 10px;
-                    border-radius: 5px;
-                    border: 1px solid #ddd;
-                    font-size: 14px;
-                }
-
-                .qa-answer button {
-                    background-color: #6c63ff;
-                    color: white;
-                    padding: 10px 20px;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                    margin-top: 10px;
-                    transition: background-color 0.3s ease;
-                }
-
-                .qa-answer button:hover {
-                    background-color: #5a4db8;
-                }
-
-                .qa-item:hover {
-                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                }
-
-                .answer-box {
-                    display: none;
-                    margin-top: 10px;
-                    background: #f9f9f9;
-                    padding: 10px;
-                    border-radius: 5px;
-                    border: 1px solid #ddd;
-                }
-
-                .show-answer {
-                    background-color: #6c63ff;
-                    color: white;
-                    padding: 8px 16px;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                    margin-top: 10px;
-                }
-
-                .show-answer:hover {
-                    background-color: #5a4db8;
-                }
-            </style>
-        </head>
-        <body>
-
-            <div class="qa-section">
-                <h2>자주 묻는 질문</h2>
-
-                <!-- 질문 1 -->
-                <div class="qa-item">
-                    <h3>Q1. 유실물을 찾으러 갈때 필요한 서류는 무엇인가요?</h3>
-                    <p>지하철 이용에 관한 자주 묻는 질문입니다.</p>
-                    <button class="show-answer" onclick="toggleAnswer(1)">답변 보기</button>
-
-                    <!-- 답변 박스 -->
-                    <div class="answer-box" id="answer-box-1">
-                        <p>유실물 인도시 본인 확인이 가능한 신분증을 지참하여 고객안전실 또는 유실물센터로 방문해주시기 바랍니다.</p>
-                        <div class="qa-answer">
-                            <textarea placeholder="시민 참여 답변..."></textarea>
-                            <button onclick="submitAnswer(1)">답변 제출</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 질문 2 -->
-                <div class="qa-item">
-                    <h3>Q2. 아침에 열차가 잘 가다가 역에 서있는 이유가 뭐에요?</h3>
-                    <p>지하철 관련 질문</p>
-                    <button class="show-answer" onclick="toggleAnswer(2)">답변 보기</button>
-
-                    <!-- 답변 박스 -->
-                    <div class="answer-box" id="answer-box-2">
-                        <p>"아침 시간대 출입문과 승강장 안전문을 개방한 상태로 역에 정차해 있는 경우는 크게 4가지가 있습니다.
-        1.앞 뒤 열차와의 균등한 열차 간격을 조정하기 위해 정차 하는 경우(관제센터에 의한 운전정리 등)
-        2.앞 열차가 앞 역을 발차하지 못해 정차 하는 경우
-        3.응급환자 발생 등 민원 처리를 위해 정차 하는 경우
-        4.신호 오류 및 차량 고장 등 안전 운행을 위해 정차하는 경우가 있습니다.</p>
-                        <div class="qa-answer">
-                            <textarea placeholder="시민 참여 답변..."></textarea>
-                            <button onclick="submitAnswer(2)">답변 제출</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 질문 3 -->
-                <div class="qa-item">
-                    <h3>Q3. 호선별 자전거칸 수는 몇 개일까요?</h3>
-                    <p>서비스 관련 질문</p>
-                    <button class="show-answer" onclick="toggleAnswer(3)">답변 보기</button>
-
-                    <!-- 답변 박스 -->
-                    <div class="answer-box" id="answer-box-3">
-                        <p>[2023년 10월 31일 기준]
-
-        1호선: 16개 편성 중 5개 편성
-        2호선: 84개 편성 중 3개 편성
-        3호선: 47개 편성 중 5개 편성
-        4호선: 52개 편성 중 10개 편성
-        5호선: 80개 편성 중 26개 편성
-        6호선: 39개 편성 중 5개 편성
-        7호선: 72개 편성 중 31개 편성
-        8호선: 20개 편성 중 5개 편성</p>
-                        <div class="qa-answer">
-                            <textarea placeholder="시민 참여 답변..."></textarea>
-                            <button onclick="submitAnswer(3)">답변 제출</button>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <script>
-                // 답변 박스를 토글하는 함수
-                function toggleAnswer(id) {
-                    const answerBox = document.getElementById('answer-box-' + id);
-                    if (answerBox.style.display === 'block') {
-                        answerBox.style.display = 'none';
-                    } else {
-                        answerBox.style.display = 'block';
-                    }
-                }
-
-                // 답변 제출 함수
-                function submitAnswer(id) {
-                    const answerText = document.querySelector(`#answer-box-${id} textarea`).value;
-                    if (answerText.trim() !== "") {
-                        alert("답변이 제출되었습니다!");
-                        // 제출 후 텍스트박스 초기화
-                        document.querySelector(`#answer-box-${id} textarea`).value = "";
-                    } else {
-                        alert("답변을 입력해주세요.");
-                    }
-                }
-            </script>
-
-        </body>
-        </html>
-    </section>
-
-    <!-- 에티켓 홍보 -->
-    <section id="etiquette">
-       <!DOCTYPE html>
-        <html lang="ko">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>지하철 이용 에티켓</title>
-            <style>
-                body {
-                    font-family: 'Arial', sans-serif;
-                    margin: 0;
-                    padding: 0;
-                    background-color: #f4f7fa;
-                    color: #333;
-                }
-
-                /* 배너 스타일 */
-                #etiquette-slide {
-                    position: fixed;
-                    bottom: 0;
-                    left: 0;
-                    width: 100%;
-                    background-color: #f9f9f9;
-                    padding: 20px 0;
-                    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    overflow: hidden;
-                    z-index: 1000;
-                }
-
-                .etiquette-slide-container {
-                    display: flex;
-                    animation: slide 20s ease-in-out infinite; /* 20초에 한 번씩 슬라이드 */
-                    align-items: center;
-                }
-
-                .etiquette-item {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    flex: none;
-                    min-width: 100%;
-                    text-align: center;
-                    padding: 0 20px;
-                }
-
-                .etiquette-item img {
-                    width: 100px; /* 이미지 크기 조정 */
-                    height: 100px;
-                    margin-right: 20px; /* 이미지와 텍스트 간격 */
-                    border: 2px solid #6c63ff; /* 테두리 색상 */
-                    border-radius: 10px; /* 테두리 둥글게 */
-                }
-
-                .etiquette-item h3 {
-                    font-size: 22px; /* 텍스트 크기 조정 */
-                    margin: 0;
-                }
-
-                /* 애니메이션 */
-                @keyframes slide {
-                    0% {
-                        transform: translateX(100%);
-                    }
-                    25% {
-                        transform: translateX(0);
-                    }
-                    50% {
-                        transform: translateX(-100%);
-                    }
-                    75% {
-                        transform: translateX(-200%);
-                    }
-                    100% {
-                        transform: translateX(-300%);
-                    }
-                }
-            </style>
-        </head>
-        <body>
-
-            <div id="etiquette-slide">
-                <div class="etiquette-slide-container">
-                    <div class="etiquette-item">
-                        <img src="https://raw.githubusercontent.com/mihee03/my-website/main/홍보물사진/책가방.png" alt="책가방">
-                        <h3>붐비는 열차에서는 가방을 앞으로</h3>
-                    </div>
-                    <div class="etiquette-item">
-                        <img src="https://raw.githubusercontent.com/mihee03/my-website/main/홍보물사진/휴대폰 소리.png" alt="휴대폰 소리">
-                        <h3>큰 소리로 통화하거나 떠들지 않기</h3>
-                    </div>
-                    <div class="etiquette-item">
-                        <img src="https://raw.githubusercontent.com/mihee03/my-website/main/홍보물사진/음식.png" alt="음식">
-                        <h3>열차 안에서 음식물 먹지 않기</h3>
-                    </div>
-                    <div class="etiquette-item">
-                        <img src="https://raw.githubusercontent.com/mihee03/my-website/main/홍보물사진/넘어짐.png" alt="넘어짐">
-                        <h3>보행 중이거나 열차 승하차시엔 스마트폰 사용하지 않기</h3>
-                    </div>
-                </div>
-            </div>
-
-        </body>
-        </html>
-
-    </section>
-
-    <footer>
-        <p>지하철 통합 웹사이트 - 2024</p>
-    </footer>
+  <h1>지하철 정보 검색 및 즐겨찾기</h1>
+
+  <div class="search-container">
+    <label for="station-search">역 이름 검색:</label>
+    <input type="text" id="station-search" placeholder="예: 강남역">
+    <button id="search-button">검색</button>
+    <button id="add-favorite-button">즐겨찾기에 추가</button>
+  </div>
+
+  <div class="favorites-container" id="favorites-container">
+    <h3>즐겨찾기</h3>
+    <p>즐겨찾은 역이 여기에 표시됩니다.</p>
+  </div>
+
+  <div class="result">
+    <h3>검색 결과</h3>
+    <div id="result">검색 결과가 여기에 표시됩니다.</div>
+  </div>
+
+  <div class="ad-container" id="ad-container">
+    <h3>맞춤형 광고</h3>
+    <p id="ad-content">광고가 여기에 표시됩니다.</p>
+  </div>
+
+  <script>
+    let jsonData;
+
+    // JSON 파일 로드
+    fetch('./승객_예상_데이터.json')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        jsonData = data;
+        console.log("JSON 데이터 로드 성공:", jsonData);
+      })
+      .catch(error => console.error("JSON 데이터 로드 실패:", error));
+
+    // 현재 요일과 시간대 계산 함수
+    function getCurrentDayAndTimeSlot() {
+      const now = new Date();
+      const days = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+      const day = days[now.getDay()];
+      const hour = now.getHours();
+      const timeSlot = `${hour.toString().padStart(2, '0')}-${(hour + 1).toString().padStart(2, '0')}시간대`;
+      return { day, timeSlot };
+    }
+
+    // 즐겨찾기 데이터
+    let favorites = [];
+
+    // 즐겨찾기 업데이트 함수
+    function updateFavorites() {
+      const favoritesContainer = document.getElementById('favorites-container');
+      favoritesContainer.innerHTML = '<h3>즐겨찾기</h3>';
+
+      favorites.forEach((station, index) => {
+        const buttonWrapper = document.createElement('div');
+        buttonWrapper.style.marginBottom = '10px';
+
+        const button = document.createElement('button');
+        button.textContent = station;
+        button.addEventListener('click', () => {
+          document.getElementById('station-search').value = station;
+          document.getElementById('search-button').click();
+        });
+
+        const removeButton = document.createElement('button');
+        removeButton.textContent = '❌';
+        removeButton.addEventListener('click', () => {
+          favorites.splice(index, 1);
+          updateFavorites();
+        });
+
+        buttonWrapper.appendChild(button);
+        buttonWrapper.appendChild(removeButton);
+        favoritesContainer.appendChild(buttonWrapper);
+      });
+    }
+
+    // 즐겨찾기 추가 버튼 이벤트
+    document.getElementById('add-favorite-button').addEventListener('click', () => {
+      const stationName = document.getElementById('station-search').value.trim();
+
+      if (!stationName) {
+        alert('역 이름을 입력해주세요!');
+        return;
+      }
+      if (favorites.includes(stationName)) {
+        alert('이미 즐겨찾기에 추가된 역입니다!');
+        return;
+      }
+      if (favorites.length >= 3) {
+        alert('즐겨찾기는 최대 3개까지만 추가할 수 있습니다.');
+        return;
+      }
+
+      favorites.push(stationName);
+      updateFavorites();
+    });
+
+    // 검색 버튼 클릭 이벤트
+    document.getElementById('search-button').addEventListener('click', () => {
+      const stationName = document.getElementById('station-search').value.trim();
+
+      if (!stationName) {
+        document.getElementById('result').textContent = "역 이름을 입력해주세요.";
+        return;
+      }
+
+      if (!jsonData) {
+        document.getElementById('result').textContent = "JSON 데이터가 아직 로드되지 않았습니다.";
+        return;
+      }
+
+      // 현재 요일과 시간대 계산
+      const { day, timeSlot } = getCurrentDayAndTimeSlot();
+
+      // JSON 데이터 필터링
+      const results = jsonData.filter(item =>
+        item.역명 === stationName && item.요일 === day
+      );
+
+      if (results.length === 0) {
+        document.getElementById('result').textContent = "해당 조건에 맞는 데이터가 없습니다.";
+        return;
+      }
+
+      // 시간대 데이터 추출
+      const output = results.map(item => ({
+        유형: item.승객유형,
+        인원수: item[timeSlot] || "데이터 없음"
+      }));
+
+      // 결과 표시
+      let resultHtml = `<strong>${stationName}</strong> (${day}, ${timeSlot}):<br>`;
+      output.forEach(item => {
+        resultHtml += `- ${item.유형}: ${item.인원수}<br>`;
+      });
+      document.getElementById('result').innerHTML = resultHtml;
+
+      // 맞춤형 광고 표시
+      const highestType = output.reduce((a, b) => {
+        if (a && b) return a.인원수 > b.인원수 ? a : b;
+        return b;
+      }, null)?.유형;
+
+      const ads = {
+        일반: "일반인을 위한 지하철 안전 캠페인 광고",
+        어린이: "어린이를 위한 지하철 예절 광고",
+        청소년: "청소년을 위한 특별 프로모션 광고"
+      };
+
+      const adContent = document.getElementById('ad-content');
+      adContent.textContent = ads[highestType] || "광고 데이터가 없습니다.";
+
+      // 광고 이미지 표시
+      const adImages = {
+        일반: ["./img/일반광고-1.png", "./img/일반광고-2.png"],
+        어린이: ["./img/어린이광고-1.png", "./img/어린이광고-2.png"],
+        청소년: ["./img/청소년광고-1.png", "./img/청소년광고-2.png"]
+      };
+
+      if (highestType && adImages[highestType]) {
+        const randomImage = adImages[highestType][Math.floor(Math.random() * adImages[highestType].length)];
+        const adImageElement = document.createElement('img');
+        adImageElement.src = randomImage;
+        adImageElement.alt = `${highestType} 광고 이미지`;
+        adImageElement.style.maxWidth = "100%";
+
+        // 기존 이미지 제거 후 새로운 이미지 추가
+        const existingImage = adContent.nextElementSibling;
+        if (existingImage) {
+          existingImage.remove();
+        }
+        adContent.insertAdjacentElement('afterend', adImageElement);
+      }
+    });
+  </script>
 </body>
 </html>
