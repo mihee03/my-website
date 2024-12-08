@@ -1,4 +1,102 @@
 <!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지하철톡톡</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #495057;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #495057;
+            color: white;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2em;
+            margin: 0;
+        }
+
+        header p {
+            margin: 10px 0 0;
+            font-size: 0.9em;
+        }
+
+        nav {
+            margin-top: 60px; /* 헤더 아래 위치 */
+            text-align: center;
+            background-color: #e9ecef;
+            padding: 10px 0;
+        }
+
+        nav a {
+            margin: 0 15px;
+            font-size: 0.9em;
+            color: #495057;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #343a40;
+        }
+
+        section {
+            padding: 100px 20px;
+            margin: 20px auto;
+            max-width: 800px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        section h2 {
+            margin-top: 0;
+            font-size: 1.5em;
+            color: #343a40;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #495057;
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>지하철톡톡</h1>
+    <p>아래 기능 이름을 클릭하면 해당 기능으로 이동합니다</p>
+</header>
+
+<nav>
+    <a href="#ad-favorites">광고 및 즐겨찾기</a>
+    <a href="#elderly-seats">노약자좌석 개수 조정</a>
+    <a href="#search-feature">검색기능</a>
+    <a href="#survey">설문조사</a>
+    <a href="#anonymous-board">익명게시판</a>
+    <a href="#faq">자주묻는질문</a>
+    <a href="#etiquette">에티켓 홍보</a>
+</nav>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -105,8 +203,10 @@
   </style>
 </head>
 <body>
-  <h2>지하철 정보 검색 및 즐겨찾기</h2>
 
+  <section id="ad-favorites">
+  <h2>지하철 정보 검색 및 즐겨찾기</h2>
+  <p>이곳은 광고 및 즐겨찾기 기능이 포함된 섹션입니다.</p>
   <div class="fa-container">
     <!-- 검색 영역 -->
     <div class="fa-search-container">
@@ -399,7 +499,10 @@
     </style>
 </head>
 <body>
+
+<section id="elderly-seats">
     <h2>노약자 좌석 수 검색</h2>
+    <p>이곳은 노약자 좌석 개수 조정 섹션입니다.</p>
     <div class="el-container">
         <label for="el-date" class="el-label">Enter Date (mm-dd):</label>
         <input type="text" id="el-date" class="el-input" placeholder="01-01">
@@ -610,8 +713,10 @@
     </style>
 </head>
 <body>
+  
+<section id="search-feature">
     <h2>지하철 검색</h2>
-
+    <p>이곳은 검색기능 섹션입니다.</p>
     <div id="ser-search-box">
         <input type="text" id="ser-search-input" placeholder="검색어를 입력하세요" />
         <button id="ser-search-button">검색</button>
@@ -1054,7 +1159,9 @@
 <body>
     <!-- 커뮤니티 공간 -->
     <div id="po-community-section">
+      <section id="anonymous-board">
         <h2>익명 게시판</h2>
+        <p>이곳은 익명게시판 섹션입니다.</p>
         <div id="po-posts"></div>
         <div>
             <textarea id="po-post-input" class="po-textarea" placeholder="글을 작성해보세요..."></textarea>
@@ -1250,7 +1357,9 @@
 <body>
 
     <div class="que-section">
+      <section id="faq">
         <h2>자주 묻는 질문</h2>
+        <p>이곳은 자주묻는질문 섹션입니다.</p>
 
         <!-- 질문 1 -->
         <div class="que-item">
