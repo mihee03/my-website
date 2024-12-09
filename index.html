@@ -1,3 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<header>
+    <h1>지하철 톡톡</h1>
+    <nav>
+        <button id="btn-ad-favorites">광고 및 즐겨찾기</button>
+        <button id="btn-elderly-seats">노약자 좌석</button>
+        <button id="btn-search-feature">검색 기능</button>
+        <button id="btn-survey">설문 조사</button>
+        <button id="btn-anonymous-board">익명 게시판</button>
+        <button id="btn-faq">자주 묻는 질문</button>
+    </nav>
+</header>
+<style>
+    header {
+        text-align: center;
+        padding: 20px;
+        background-color: #495057; /* 짙은 회색 */
+        color: white;
+        position: sticky; /* 화면 상단 고정 */
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+        font-size: 2em;
+        margin: 0;
+    }
+
+    nav {
+        margin-top: 10px;
+    }
+
+    nav button {
+        margin: 5px;
+        padding: 10px 15px;
+        font-size: 14px;
+        border: none;
+        border-radius: 5px;
+        background-color: #343a40; /* 버튼 배경색 */
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    nav button:hover {
+        background-color: #6c757d; /* 버튼 호버 색상 */
+    }
+</style>
+<script>
+    document.getElementById('btn-ad-favorites').addEventListener('click', () => {
+        document.getElementById('ad-favorites').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.getElementById('btn-elderly-seats').addEventListener('click', () => {
+        document.getElementById('elderly-seats').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.getElementById('btn-search-feature').addEventListener('click', () => {
+        document.getElementById('search-feature').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.getElementById('btn-survey').addEventListener('click', () => {
+        document.getElementById('survey').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.getElementById('btn-anonymous-board').addEventListener('click', () => {
+        document.getElementById('anonymous-board').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.getElementById('btn-faq').addEventListener('click', () => {
+        document.getElementById('faq').scrollIntoView({ behavior: 'smooth' });
+    });
+</script>
+<html>
+  
 fa
 <section id="ad-favorites">
 <!DOCTYPE html>
