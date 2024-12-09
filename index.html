@@ -51,7 +51,7 @@
 <script>
     function scrollToSection(sectionId) {
         const section = document.getElementById(sectionId);
-        const offset = -100; // 스크롤 위치를 덜 내려가도록 오프셋 조정
+        const offset = -100; 
         const sectionPosition = section.getBoundingClientRect().top + window.pageYOffset + offset;
 
         window.scrollTo({
@@ -359,9 +359,9 @@
       }, null)?.유형;
 
       const ads = {
-        일반: "일반인을 위한 지하철 안전 캠페인 광고",
-        어린이: "어린이를 위한 지하철 예절 광고",
-        청소년: "청소년을 위한 특별 프로모션 광고"
+        일반: "일반인을 위한 지하철 광고",
+        어린이: "어린이를 위한 지하철 광고",
+        청소년: "청소년을 위한 광고"
       };
 
       const faAdContent = document.getElementById('fa-ad-content');
