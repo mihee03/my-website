@@ -5,106 +5,102 @@ fa
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>지하철 정보 검색 및 즐겨찾기</title>
+  <title>지하철  정보 검색 및 즐겨찾기</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f0f0f0; /* 전체 배경 회색 */
-      color: #333;
-    }
-
-    h1 {
-      text-align: center;
-      padding: 20px 0;
-      background-color: #666; /* 헤더 배경 진한 회색 */
-      color: #fff;
-      margin: 0;
-      font-size: 24px;
-    }
-
-    .fa-container {
-      max-width: 800px;
-      margin: 20px auto;
-      padding: 20px;
-      background: #fff;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-    }
-
-    .fa-search-container, .fa-favorites-container, .fa-result, .fa-ad-container {
-      margin-bottom: 20px;
-    }
-
-    .fa-label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-    }
-
-    .fa-input {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      margin-bottom: 10px;
-      box-sizing: border-box;
-      font-size: 16px;
-    }
-
-    .fa-button {
-      background-color: #666; /* 버튼 회색 */
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      font-size: 16px;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-right: 10px;
-      transition: background 0.3s ease;
-    }
-
-    .fa-button:hover {
-      background-color: #444; /* 버튼 호버 시 더 진한 회색 */
-    }
-
-    .fa-favorites-container {
-      padding: 10px;
-      background: #f9f9f9; /* 연한 회색 배경 */
-      border: 1px solid #ddd;
-      border-radius: 5px;
-    }
-
-    .fa-favorites-container .fa-button {
-      background-color: #999;
-      color: white;
-      margin: 5px 0;
-    }
-
-    .fa-favorites-container .fa-button:hover {
-      background-color: #777;
-    }
-
-    .fa-result, .fa-ad-container {
-      padding: 15px;
-      background: #f9f9f9;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-    }
-
-    .fa-result h3, .fa-ad-container h3 {
-      margin-top: 0;
-      color: #555;
-    }
-
-    .fa-ad-container img {
-      display: block;
-      margin: 10px auto 0;
-      max-width: 100%;
-      border-radius: 5px;
-    }
+      body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #f0f0f0; /* 전체 배경 회색 */
+          color: #333;
+      }
+  
+      h1 {
+          text-align: center;
+          padding: 20px 0;
+          background-color: #666; /* 헤더 배경 진한 회색 */
+          color: #ffffff; /* 흰색 텍스트 */
+          margin: 0;
+          font-size: 24px;
+      }
+  
+      .fa-container {
+          max-width: 800px;
+          margin: 20px auto;
+          padding: 20px;
+          background: #ffffff; /* 흰색 배경 */
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 */
+          border-radius: 8px;
+      }
+  
+      .fa-label {
+          display: block;
+          margin-bottom: 8px;
+          font-weight: bold;
+      }
+  
+      .fa-input {
+          width: 100%;
+          padding: 10px;
+          margin-bottom: 10px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          font-size: 16px;
+          box-sizing: border-box;
+      }
+  
+      .fa-button {
+          background-color: #666; /* 버튼 배경색 */
+          color: #ffffff; /* 흰색 텍스트 */
+          border: none;
+          padding: 10px 15px;
+          font-size: 16px;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background 0.3s ease;
+      }
+  
+      .fa-button:hover {
+          background-color: #444; /* 버튼 호버 색상 */
+      }
+  
+      .fa-favorites-container {
+          padding: 10px;
+          background: #f9f9f9; /* 연한 회색 배경 */
+          border: 1px solid #ddd;
+          border-radius: 5px;
+      }
+  
+      .fa-favorites-container .fa-button {
+          background-color: #999; /* 중간 회색 */
+          color: white;
+          margin: 5px 0;
+      }
+  
+      .fa-favorites-container .fa-button:hover {
+          background-color: #777; /* 버튼 호버 시 더 진한 회색 */
+      }
+  
+      .fa-result, .fa-ad-container {
+          padding: 15px;
+          background: #f9f9f9; /* 연한 회색 배경 */
+          border: 1px solid #ddd;
+          border-radius: 5px;
+      }
+  
+      .fa-result h3, .fa-ad-container h3 {
+          margin-top: 0;
+          color: #555; /* 진한 회색 텍스트 */
+      }
+  
+      .fa-ad-container img {
+          display: block;
+          margin: 10px auto 0;
+          max-width: 100%;
+          border-radius: 5px;
+      }
   </style>
+
 </head>
 <body>
   <h1>지하철 정보 검색 및 즐겨찾기</h1>
@@ -300,3 +296,207 @@ fa
   </script>
 </body>
 </html>
+
+/*el*/
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>노약자 좌석 수 검색</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0; /* 전체 배경 회색 */
+            color: #333;
+        }
+    
+        h1 {
+            text-align: center;
+            padding: 20px;
+            background-color: #666; /* 헤더 배경색 */
+            color: #ffffff; /* 흰색 텍스트 */
+            margin: 0;
+            font-size: 24px;
+        }
+    
+        .el-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #ffffff; /* 흰색 배경 */
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 */
+            border-radius: 8px;
+        }
+    
+        .el-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+    
+        .el-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+    
+        .el-button {
+            width: 100%;
+            background-color: #666; /* 버튼 배경색 */
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+    
+        .el-button:hover {
+            background-color: #444; /* 버튼 호버 색상 */
+        }
+    
+        #el-results {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9; /* 연한 회색 배경 */
+            border-left: 4px solid #666; /* 강조된 결과 영역 */
+            border-radius: 5px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 */
+        }
+    
+        #el-results p {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+    
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background-color: #444; /* 진한 회색 배경 */
+            color: white;
+            margin-top: 20px;
+        }
+    
+        footer a {
+            color: #ffdd57; /* 노란색 링크 */
+            text-decoration: none;
+        }
+    
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+</head>
+<body>
+    <h1>노약자 좌석 수 검색</h1>
+    <div class="el-container">
+        <label for="el-date" class="el-label">Enter Date (mm-dd):</label>
+        <input type="text" id="el-date" class="el-input" placeholder="01-01">
+
+        <label for="el-hour" class="el-label">Enter Hour (6-23):</label>
+        <input type="number" id="el-hour" class="el-input" placeholder="6" min="0" max="23">
+
+        <label for="el-station" class="el-label">Enter Station Name:</label>
+        <input type="text" id="el-station" class="el-input" placeholder="예:서울역">
+
+        <button id="el-search" class="el-button">Search</button>
+
+        <div id="el-results"></div>
+    </div>
+
+    <script>
+        let elData = [];
+        let elStationList = []; // 모든 역명을 저장할 배열
+
+        // CSV 파일 로드 및 병합
+        const elLoadCSV = async (url) => {
+            return new Promise((resolve, reject) => {
+                Papa.parse(url, {
+                    download: true,
+                    header: true,
+                    complete: function(results) {
+                        resolve(results.data);
+                    },
+                    error: function(error) {
+                        reject(error);
+                    }
+                });
+            });
+        };
+
+        // 데이터 파일 경로
+        const elFile1 = "데이터파일/우대권병합데이터06.csv";
+        const elFile2 = "데이터파일/우대권병합데이터12.csv";
+
+        // 파일 로드 및 병합
+        Promise.all([elLoadCSV(elFile1), elLoadCSV(elFile2)]).then(results => {
+            elData = results[0].concat(results[1]); // 두 파일 병합
+            elStationList = [...new Set(elData.map(row => row['역명'] ? row['역명'].trim() : ""))].filter(Boolean);
+            console.log("Station list:", elStationList);
+            alert("CSV Files Loaded!");
+        }).catch(error => {
+            console.error("Error loading files:", error);
+        });
+
+        // 검색 버튼 클릭 이벤트
+        document.getElementById('el-search').addEventListener('click', function() {
+            const inputDate = document.getElementById('el-date').value; // 날짜 입력
+            const inputHour = document.getElementById('el-hour').value; // 시간 입력
+            const stationName = document.getElementById('el-station').value.trim(); // 역명 입력
+
+            if (!inputDate || !inputHour || !stationName) {
+                document.getElementById('el-results').textContent = "날짜, 시간, 역명을 모두 입력해주세요.";
+                return;
+            }
+
+            document.getElementById('el-results').textContent = "검색 중...";
+
+            setTimeout(() => {
+                if (!elStationList.some(station => station.toLowerCase() === stationName.toLowerCase())) {
+                    alert("올바른 역명을 입력하세요.");
+                    document.getElementById('el-results').textContent = "";
+                    return;
+                }
+
+                const filteredData = elData.filter(row => {
+                    const rowDate = row['일시'] ? new Date(row['일시']).toLocaleDateString('en-CA').slice(5) : "";
+                    const rowHour = row['일시'] ? new Date(row['일시']).getHours() : null;
+                    const rowStation = row['역명'] ? row['역명'].trim() : "";
+                    return rowDate === inputDate && rowHour == inputHour && rowStation.toLowerCase() === stationName.toLowerCase();
+                });
+
+                const totalPassengers = filteredData.reduce((sum, row) => sum + parseInt(row['인원수'] || 0), 0);
+                const elderlySeatCount = totalPassengers >= 170 ? 27 : 12;
+
+                if (filteredData.length > 0) {
+                    document.getElementById('el-results').innerHTML = `
+                        <p><strong>Station:</strong> ${stationName}</p>
+                        <p><strong>Date:</strong> ${inputDate}</p>
+                        <p><strong>Hour:</strong> ${inputHour}:00</p>
+                        <p><strong>Total Passengers:</strong> ${totalPassengers}</p>
+                        <p><strong>Elderly Seats:</strong> ${elderlySeatCount} seats</p>
+                    `;
+                } else {
+                    document.getElementById('el-results').innerHTML = `
+                        <p>No data found for station: ${stationName}</p>
+                        <p>on date: ${inputDate} at hour: ${inputHour}:00</p>
+                    `;
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
+
