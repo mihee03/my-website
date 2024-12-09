@@ -542,7 +542,7 @@
             elData = results[0].concat(results[1]); // 두 파일 병합
             elStationList = [...new Set(elData.map(row => row['역명'] ? row['역명'].trim() : ""))].filter(Boolean);
             console.log("Station list:", elStationList);
-            alert("CSV Files Loaded!");
+            alert("환영핑");
         }).catch(error => {
             console.error("Error loading files:", error);
         });
