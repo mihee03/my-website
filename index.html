@@ -198,7 +198,7 @@ fa
     <!-- 검색 영역 -->
     <div class="fa-search-container">
       <label for="fa-station-search" class="fa-label">역 이름 검색:</label>
-      <input type="text" id="fa-station-search" class="fa-input" placeholder="예: 강남역">
+      <input type="text" id="fa-station-search" class="fa-input" placeholder="예: 서울역">
       <button id="fa-search-button" class="fa-button">검색</button>
       <button id="fa-add-favorite-button" class="fa-button">즐겨찾기에 추가</button>
     </div>
@@ -493,13 +493,13 @@ fa
 <body>
     <h1>노약자 좌석 수 검색</h1>
     <div class="el-container">
-        <label for="el-date" class="el-label">Enter Date (mm-dd):</label>
+        <label for="el-date" class="el-label">날짜를 입력하세요 (mm-dd):</label>
         <input type="text" id="el-date" class="el-input" placeholder="01-01">
 
-        <label for="el-hour" class="el-label">Enter Hour (6-23):</label>
+        <label for="el-hour" class="el-label">시간을 입력하세요 (6-23):</label>
         <input type="number" id="el-hour" class="el-input" placeholder="6" min="0" max="23">
 
-        <label for="el-station" class="el-label">Enter Station Name:</label>
+        <label for="el-station" class="el-label">역 이름을 검색하세요:</label>
         <input type="text" id="el-station" class="el-input" placeholder="예:서울역">
 
         <button id="el-search" class="el-button">Search</button>
@@ -577,7 +577,7 @@ fa
                         <p><strong>Date:</strong> ${inputDate}</p>
                         <p><strong>Hour:</strong> ${inputHour}:00</p>
                         <p><strong>Total Passengers:</strong> ${totalPassengers}</p>
-                        <p><strong>Elderly Seats:</strong> ${elderlySeatCount} seats</p>
+                        <p><strong>노약자 좌석 수:</strong> ${elderlySeatCount} seats</p>
                     `;
                 } else {
                     document.getElementById('el-results').innerHTML = `
