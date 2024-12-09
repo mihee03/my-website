@@ -500,3 +500,252 @@ fa
 </body>
 </html>
 
+/*ser*/
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지하철 검색</title>
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=h1ch1c9q07"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0; /* 전체 배경 회색 */
+            color: #333;
+        }
+    
+        h1 {
+            text-align: center;
+            background-color: #495057; /* 짙은 회색 */
+            color: #ffffff; /* 흰색 텍스트 */
+            padding: 20px;
+            margin: 0;
+            font-size: 24px;
+        }
+    
+        .ser-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 15px;
+            background-color: #ffffff; /* 흰색 배경 */
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 */
+            border-radius: 8px;
+            text-align: center;
+        }
+    
+        .ser-input {
+            width: 60%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+            box-sizing: border-box;
+        }
+    
+        .ser-button {
+            padding: 10px 20px;
+            background-color: #666; /* 버튼 회색 */
+            color: #ffffff; /* 흰색 텍스트 */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+    
+        .ser-button:hover {
+            background-color: #444; /* 버튼 호버 색상 */
+        }
+    
+        .ser-map {
+            width: 90%;
+            height: 400px;
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: #adb5bd; /* 밝은 회색 */
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    
+        .ser-results {
+            margin: 20px auto;
+            padding: 15px;
+            background-color: #ffffff; /* 흰색 배경 */
+            border-radius: 8px;
+            max-width: 800px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    
+        .ser-result-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: #f9f9f9; /* 연한 회색 */
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+    
+        .ser-result-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* 강조 효과 */
+        }
+    
+        .ser-result-item a {
+            text-decoration: none;
+            color: #495057; /* 짙은 회색 */
+            font-weight: bold;
+        }
+    
+        .ser-result-item a:hover {
+            text-decoration: underline;
+        }
+    
+        @media (max-width: 768px) {
+            .ser-input {
+                width: 50%; /* 모바일에서 입력 필드 크기 조정 */
+            }
+        }
+    </style>
+
+</head>
+<body>
+    <h1>지하철 검색</h1>
+
+    <div id="ser-search-box">
+        <input type="text" id="ser-search-input" placeholder="검색어를 입력하세요" />
+        <button id="ser-search-button">검색</button>
+    </div>
+
+    <div id="ser-map"></div>
+
+    <div id="ser-results"></div>
+
+    <script>
+        let serCurrentLat = 37.5665, serCurrentLng = 126.9780;  // 서울시청 좌표 (예시로 서울시청을 사용)
+
+        // 네이버 지도 초기화
+        const serMap = new naver.maps.Map('ser-map', {
+            center: new naver.maps.LatLng(serCurrentLat, serCurrentLng), // 서울 중심
+            zoom: 12
+        });
+
+        // 사용자 위치를 임의로 설정 (예: 서울시청)
+        const serUserMarker = new naver.maps.Marker({
+            position: new naver.maps.LatLng(serCurrentLat, serCurrentLng),
+            map: serMap,
+            title: "현재 위치"
+        });
+
+        // 검색 API 요청
+        async function serSearchPlaces(query) {
+            const serProxyUrl = "https://cors-anywhere.herokuapp.com/"; // CORS Proxy URL
+            const serUrl = `https://openapi.naver.com/v1/search/local.json?query=${encodeURIComponent(query)}&display=5&start=1&sort=random`;
+
+            try {
+                const serResponse = await fetch(serProxyUrl + serUrl, {
+                    headers: {
+                        "X-Naver-Client-Id": "2il85btNfU6KvdvFEPYu",
+                        "X-Naver-Client-Secret": "y4iSS_jPQq"
+                    }
+                });
+
+                if (serResponse.ok) {
+                    const serData = await serResponse.json();
+                    console.log('API Response:', serData);
+                    serDisplayResults(serData.items);
+                } else {
+                    console.error('API 호출 실패:', serResponse.statusText);
+                    alert("검색 결과를 불러오는 데 실패했습니다.");
+                }
+            } catch (error) {
+                console.error("API 요청 중 오류 발생:", error);
+                alert("API 요청 중 오류가 발생했습니다.");
+            }
+        }
+
+        async function serAddressToCoordinates(address) {
+            const serProxyUrl = "https://cors-anywhere.herokuapp.com/";
+            const serGeocodingUrl = `https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${encodeURIComponent(address)}`;
+            
+            try {
+                const serResponse = await fetch(serProxyUrl + serGeocodingUrl, {
+                    headers: {
+                        "X-NCP-APIGW-API-KEY-ID": "h1ch1c9q07",
+                        "X-NCP-APIGW-API-KEY": "Bv9U3RvBVIJHhH73zysQJhSn4OtwiW1jZyhTpzEV",
+                    },
+                });
+        
+                if (serResponse.ok) {
+                    const serData = await serResponse.json();
+                    if (serData.addresses.length > 0) {
+                        const serLocation = serData.addresses[0];
+                        return {
+                            lat: parseFloat(serLocation.y),
+                            lng: parseFloat(serLocation.x),
+                        };
+                    } else {
+                        console.error("주소를 찾을 수 없습니다:", address);
+                        return null;
+                    }
+                } else {
+                    console.error("Geocoding API 호출 실패:", serResponse.statusText);
+                    return null;
+                }
+            } catch (error) {
+                console.error("Geocoding API 요청 중 오류 발생:", error);
+                return null;
+            }
+        }
+
+        function serAddMarker(lat, lng, title) {
+            const serMarker = new naver.maps.Marker({
+                position: new naver.maps.LatLng(lat, lng),
+                map: serMap,
+                title: title
+            });
+
+            const serInfoWindow = new naver.maps.InfoWindow({
+                content: `<div><strong>${title}</strong></div>`
+            });
+
+            naver.maps.Event.addListener(serMarker, "click", () => {
+                serInfoWindow.open(serMap, serMarker);
+            });
+        }
+
+        async function serDisplayResults(places) {
+            document.getElementById("ser-results").innerHTML = "";
+
+            for (const place of places) {
+                const serLatLng = await serAddressToCoordinates(place.address);
+
+                if (serLatLng) {
+                    serAddMarker(serLatLng.lat, serLatLng.lng, place.title.replace(/<[^>]+>/g, ""));
+                    
+                    document.getElementById("ser-results").innerHTML += `
+                        <div class="ser-result-item">
+                            <strong>${place.title.replace(/<[^>]+>/g, "")}</strong><br>
+                            ${place.address}<br>
+                            <a href="${place.link}" target="_blank">상세보기</a>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        document.getElementById("ser-search-button").addEventListener("click", () => {
+            const serQuery = document.getElementById("ser-search-input").value;
+            if (serQuery.trim()) {
+                serSearchPlaces(serQuery.trim());
+            } else {
+                alert("검색어를 입력하세요!");
+            }
+        });
+    </script>
+</body>
+</html>
