@@ -192,7 +192,7 @@ fa
 
 </head>
 <body>
-  <h1>지하철 정보 검색 및 즐겨찾기</h1>
+  <h1>지하철역 정보 검색 & 즐겨찾기</h1>
 
   <div class="fa-container">
     <!-- 검색 영역 -->
@@ -573,10 +573,10 @@ fa
 
                 if (filteredData.length > 0) {
                     document.getElementById('el-results').innerHTML = `
-                        <p><strong>Station:</strong> ${stationName}</p>
-                        <p><strong>Date:</strong> ${inputDate}</p>
-                        <p><strong>Hour:</strong> ${inputHour}:00</p>
-                        <p><strong>Total Passengers:</strong> ${totalPassengers}</p>
+                        <p><strong>역 이름:</strong> ${stationName}</p>
+                        <p><strong>날짜:</strong> ${inputDate}</p>
+                        <p><strong>시간:</strong> ${inputHour}:00</p>
+                        <p><strong>전체 승수:</strong> ${totalPassengers}</p>
                         <p><strong>노약자 좌석 수:</strong> ${elderlySeatCount} seats</p>
                     `;
                 } else {
@@ -599,7 +599,7 @@ fa
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>지하철 검색</title>
+    <title>주변 시설 검색</title>
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=h1ch1c9q07"></script>
     <style>
         body {
@@ -705,10 +705,10 @@ fa
     </style>
 </head>
 <body>
-    <h1>지하철 검색</h1>
+    <h1>주변 시설 검색</h1>
 
     <div id="ser-search-box">
-        <input type="text" id="ser-search-input" placeholder="검색어를 입력하세요" />
+        <input type="text" id="ser-search-input" placeholder="검색어를 입력하세요(예:병원, 팝업)" />
         <button id="ser-search-button">검색</button>
     </div>
 
@@ -949,7 +949,8 @@ fa
     </style>
 </head>
 <body>
-    <h1>설문조사</h1>
+    <h1>설문조사설문 조사 참여 시 지하철 개선에 큰 힘이 됩니다!</h1>
+    <h2>설문 조사 참여 시 지하철 개선에 큰 힘이 됩니다!</h2>
 
     <div class="sur-container">
         <h2>설문에 참여해주세요</h2>
@@ -1370,7 +1371,7 @@ que
 
         <!-- 질문 3 -->
         <div class="que-item">
-            <h3>Q3. 호선별 자전거칸 수는 몇 개일까요?</h3>
+            <h3>Q3. 호선별 자전거칸 수는 몇 개인가요?</h3>
             <p>서비스 관련 질문</p>
             <button class="que-button" onclick="queToggleAnswer(3)">답변 보기</button>
 
