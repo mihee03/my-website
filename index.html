@@ -1118,4 +1118,298 @@ po
 </body>
 </html>
 
+que
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자주 묻는 질문</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0; /* 전체 배경 회색 */
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #495057; /* 짙은 회색 */
+            color: #ffffff;
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .que-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #ffffff; /* 흰색 배경 */
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .que-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f9f9f9; /* 연한 회색 */
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .que-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .que-item h3 {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #495057;
+        }
+
+        .que-item p {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .que-button {
+            background-color: #666; /* 버튼 회색 */
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .que-button:hover {
+            background-color: #444; /* 버튼 호버 색상 */
+        }
+
+        .que-answer-box {
+            display: none;
+            margin-top: 10px;
+            background: #f9f9f9; /* 연한 회색 */
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        .que-answer textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            resize: none;
+            background-color: #ffffff; /* 흰색 */
+            box-sizing: border-box;
+        }
+
+        .que-submit-button {
+            background-color: #6c757d; /* 중간 회색 */
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .que-submit-button:hover {
+            background-color: #495057; /* 짙은 회색 */
+        }
+    </style>
+</head>
+<body>
+    <h1>자주 묻는 질문</h1>
+
+    <div class="que-container">
+        <!-- 질문 1 -->
+        <div class="que-item">
+            <h3>Q1. 유실물을 찾으러 갈 때 필요한 서류는 무엇인가요?</h3>
+            <p>지하철 이용에 관한 자주 묻는 질문입니다.</p>
+            <button class="que-button" onclick="queToggleAnswer(1)">답변 보기</button>
+
+            <!-- 답변 박스 -->
+            <div class="que-answer-box" id="que-answer-box-1">
+                <p>유실물 인도시 본인 확인이 가능한 신분증을 지참하여 고객안전실 또는 유실물센터로 방문해주시기 바랍니다.</p>
+                <div class="que-answer">
+                    <textarea placeholder="시민 참여 답변..."></textarea>
+                    <button class="que-submit-button" onclick="queSubmitAnswer(1)">답변 제출</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 질문 2 -->
+        <div class="que-item">
+            <h3>Q2. 아침에 열차가 잘 가다가 역에 서 있는 이유가 무엇인가요?</h3>
+            <p>지하철 관련 질문</p>
+            <button class="que-button" onclick="queToggleAnswer(2)">답변 보기</button>
+
+            <!-- 답변 박스 -->
+            <div class="que-answer-box" id="que-answer-box-2">
+                <p>아침 시간대 열차 간격 조정, 민원 처리, 신호 오류, 차량 고장 등 다양한 이유로 역에 정차할 수 있습니다.</p>
+                <div class="que-answer">
+                    <textarea placeholder="시민 참여 답변..."></textarea>
+                    <button class="que-submit-button" onclick="queSubmitAnswer(2)">답변 제출</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 질문 3 -->
+        <div class="que-item">
+            <h3>Q3. 호선별 자전거칸 수는 몇 개일까요?</h3>
+            <p>서비스 관련 질문</p>
+            <button class="que-button" onclick="queToggleAnswer(3)">답변 보기</button>
+
+            <!-- 답변 박스 -->
+            <div class="que-answer-box" id="que-answer-box-3">
+                <p>1호선: 5개, 2호선: 3개, 3호선: 5개 등 호선마다 자전거칸 수가 다릅니다.</p>
+                <div class="que-answer">
+                    <textarea placeholder="시민 참여 답변..."></textarea>
+                    <button class="que-submit-button" onclick="queSubmitAnswer(3)">답변 제출</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function queToggleAnswer(id) {
+            const answerBox = document.getElementById(`que-answer-box-${id}`);
+            answerBox.style.display = answerBox.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function queSubmitAnswer(id) {
+            const answerText = document.querySelector(`#que-answer-box-${id} textarea`).value;
+            if (answerText.trim()) {
+                alert("답변이 제출되었습니다!");
+                document.querySelector(`#que-answer-box-${id} textarea`).value = ""; // 초기화
+            } else {
+                alert("답변을 입력해주세요.");
+            }
+        }
+    </script>
+</body>
+</html>
+
+use
+/*use*/
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지하철 이용 에티켓</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa; /* 연한 회색 배경 */
+            color: #495057; /* 중간 회색 */
+        }
+
+        /* 배너 스타일 */
+        #use-etiquette-slide {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #e9ecef; /* 밝은 회색 */
+            padding: 20px 0;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .use-etiquette-slide-container {
+            display: flex;
+            animation: use-slide 20s linear infinite; /* 20초 동안 슬라이드 */
+            align-items: center;
+        }
+
+        .use-etiquette-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: none;
+            min-width: 100%;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .use-etiquette-item img {
+            width: 100px; /* 이미지 크기 */
+            height: 100px;
+            margin-right: 20px; /* 이미지와 텍스트 간격 */
+            border: 2px solid #ced4da; /* 회색 테두리 */
+            border-radius: 10px; /* 둥근 테두리 */
+            background-color: #ffffff; /* 흰색 배경 */
+        }
+
+        .use-etiquette-item h3 {
+            font-size: 18px; /* 텍스트 크기 */
+            margin: 0;
+            color: #495057; /* 중간 회색 텍스트 */
+        }
+
+        /* 애니메이션 */
+        @keyframes use-slide {
+            0% {
+                transform: translateX(100%);
+            }
+            25% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(-100%);
+            }
+            75% {
+                transform: translateX(-200%);
+            }
+            100% {
+                transform: translateX(-300%);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="use-etiquette-slide">
+        <div class="use-etiquette-slide-container">
+            <div class="use-etiquette-item">
+                <img src="https://raw.githubusercontent.com/mihee03/my-website/main/홍보물사진/책가방.png" alt="책가방">
+                <h3>붐비는 열차에서는 가방을 앞으로</h3>
+            </div>
+            <div class="use-etiquette-item">
+                <img src="https://raw.githubusercontent.com/mihee03/my-website/main/홍보물사진/휴대폰 소리.png" alt="휴대폰 소리">
+                <h3>큰 소리로 통화하거나 떠들지 않기</h3>
+            </div>
+            <div class="use-etiquette-item">
+                <img src="https://raw.githubusercontent.com/mihee03/my-website/main/홍보물사진/음식.png" alt="음식">
+                <h3>열차 안에서 음식물 먹지 않기</h3>
+            </div>
+            <div class="use-etiquette-item">
+                <img src="https://raw.githubusercontent.com/mihee03/my-website/main/홍보물사진/넘어짐.png" alt="넘어짐">
+                <h3>보행 중이거나 열차 승하차시엔 스마트폰 사용하지 않기</h3>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
 
