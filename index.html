@@ -49,31 +49,43 @@
     }
 </style>
 <script>
+    function scrollToSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        const offset = -50; // 스크롤 위치를 덜 내려가도록 오프셋 조정
+        const sectionPosition = section.getBoundingClientRect().top + window.pageYOffset + offset;
+
+        window.scrollTo({
+            top: sectionPosition,
+            behavior: 'smooth'
+        });
+    }
+
     document.getElementById('btn-ad-favorites').addEventListener('click', () => {
-        document.getElementById('ad-favorites').scrollIntoView({ behavior: 'smooth' });
+        scrollToSection('ad-favorites');
     });
 
     document.getElementById('btn-elderly-seats').addEventListener('click', () => {
-        document.getElementById('elderly-seats').scrollIntoView({ behavior: 'smooth' });
+        scrollToSection('elderly-seats');
     });
 
     document.getElementById('btn-search-feature').addEventListener('click', () => {
-        document.getElementById('search-feature').scrollIntoView({ behavior: 'smooth' });
+        scrollToSection('search-feature');
     });
 
     document.getElementById('btn-survey').addEventListener('click', () => {
-        document.getElementById('survey').scrollIntoView({ behavior: 'smooth' });
+        scrollToSection('survey');
     });
 
     document.getElementById('btn-anonymous-board').addEventListener('click', () => {
-        document.getElementById('anonymous-board').scrollIntoView({ behavior: 'smooth' });
+        scrollToSection('anonymous-board');
     });
 
     document.getElementById('btn-faq').addEventListener('click', () => {
-        document.getElementById('faq').scrollIntoView({ behavior: 'smooth' });
+        scrollToSection('faq');
     });
 </script>
-<html>
+</html>
+
   
 fa
 <section id="ad-favorites">
