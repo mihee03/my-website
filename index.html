@@ -51,7 +51,7 @@
 <script>
     function scrollToSection(sectionId) {
         const section = document.getElementById(sectionId);
-        const offset = -50; // 스크롤 위치를 덜 내려가도록 오프셋 조정
+        const offset = -100; // 스크롤 위치를 덜 내려가도록 오프셋 조정
         const sectionPosition = section.getBoundingClientRect().top + window.pageYOffset + offset;
 
         window.scrollTo({
