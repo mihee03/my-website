@@ -941,4 +941,181 @@ fa
 </body>
 </html>
 
+po
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>익명 게시판</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0; /* 전체 배경 회색 */
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #495057; /* 짙은 회색 */
+            color: #ffffff; /* 흰색 */
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .po-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #ffffff; /* 흰색 배경 */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+            border-radius: 10px;
+        }
+
+        .po-post {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f9f9f9; /* 연한 회색 배경 */
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .po-post .po-content {
+            font-size: 16px;
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 10px;
+        }
+
+        .po-comments {
+            margin-top: 10px;
+            padding-left: 15px;
+        }
+
+        .po-comment {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e9ecef; /* 밝은 회색 */
+            border-radius: 5px;
+            border-left: 5px solid #6c757d; /* 중간 회색 */
+            color: #495057;
+        }
+
+        .po-textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-top: 10px;
+            resize: none;
+            background-color: #f9f9f9; /* 연한 회색 배경 */
+        }
+
+        .po-button {
+            background-color: #666; /* 버튼 회색 */
+            color: #ffffff; /* 흰색 텍스트 */
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .po-button:hover {
+            background-color: #444; /* 버튼 호버 색상 */
+        }
+    </style>
+</head>
+<body>
+    <h1>익명 게시판</h1>
+
+    <div class="po-container">
+        <h2>익명으로 의견을 나눠보세요</h2>
+        <div id="po-posts"></div>
+        <div>
+            <textarea id="po-post-input" class="po-textarea" placeholder="글을 작성해보세요..."></textarea>
+            <button id="po-post-button" class="po-button">글 작성</button>
+        </div>
+    </div>
+
+    <script>
+        // 게시글 저장 배열
+        const poPosts = [];
+
+        document.getElementById("po-post-button").addEventListener("click", () => {
+            const postInput = document.getElementById("po-post-input");
+            const postContent = postInput.value.trim();
+
+            if (postContent) {
+                const newPost = { id: poPosts.length + 1, content: postContent, comments: [] };
+                poPosts.push(newPost);
+                displayPosts();
+                postInput.value = ""; // 입력창 초기화
+            } else {
+                alert("글을 작성해주세요!");
+            }
+        });
+
+        // 게시글과 댓글 표시 함수
+        function displayPosts() {
+            const postsContainer = document.getElementById("po-posts");
+            postsContainer.innerHTML = ""; // 기존 게시글 초기화
+
+            poPosts.forEach(post => {
+                const postDiv = document.createElement("div");
+                postDiv.classList.add("po-post");
+
+                const postContent = document.createElement("div");
+                postContent.classList.add("po-content");
+                postContent.textContent = `익명글 ${post.id}: ${post.content}`;
+                postDiv.appendChild(postContent);
+
+                // 댓글 입력창
+                const commentInput = document.createElement("textarea");
+                commentInput.classList.add("po-textarea");
+                commentInput.placeholder = "댓글을 작성해보세요...";
+                postDiv.appendChild(commentInput);
+
+                const commentButton = document.createElement("button");
+                commentButton.classList.add("po-button");
+                commentButton.textContent = "댓글 작성";
+                postDiv.appendChild(commentButton);
+
+                commentButton.addEventListener("click", () => {
+                    const commentContent = commentInput.value.trim();
+                    if (commentContent) {
+                        post.comments.push(commentContent);
+                        displayPosts();
+                    } else {
+                        alert("댓글을 작성해주세요!");
+                    }
+                });
+
+                // 댓글 표시
+                const commentsDiv = document.createElement("div");
+                commentsDiv.classList.add("po-comments");
+
+                post.comments.forEach(comment => {
+                    const commentDiv = document.createElement("div");
+                    commentDiv.classList.add("po-comment");
+                    commentDiv.textContent = comment;
+                    commentsDiv.appendChild(commentDiv);
+                });
+
+                postDiv.appendChild(commentsDiv);
+                postsContainer.appendChild(postDiv);
+            });
+        }
+    </script>
+</body>
+</html>
+
 
