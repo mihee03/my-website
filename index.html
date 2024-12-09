@@ -1,318 +1,155 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>지하철 통합 페이지</title>
-  <style>
-    /* 공통 스타일 */
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f0f0f0; /* 전체 배경 회색 */
-      color: #333;
-    }
-    h1 {
-      text-align: center;
-      padding: 20px 0;
-      margin: 0;
-      font-size: 24px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지하철톡톡</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #495057;
+        }
 
-    /* FA 섹션 스타일 */
-    #fa-section {
-      background-color: #ffffff; /* FA 배경 */
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      margin: 20px auto;
-      max-width: 800px;
-    }
-    #fa-section h1 {
-      background-color: #666;
-      color: #fff;
-    }
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #495057;
+            color: white;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
-    /* EL 섹션 스타일 */
-    #el-section {
-      background-color: #fffaf0; /* EL 배경 */
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      margin: 20px auto;
-      max-width: 800px;
-    }
-    #el-section h1 {
-      background-color: #ff9900;
-      color: #fff;
-    }
+        header h1 {
+            font-size: 2em;
+            margin: 0;
+        }
 
-    /* SER 섹션 스타일 */
-    #ser-section {
-      background-color: #f0fff0; /* SER 배경 */
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      margin: 20px auto;
-      max-width: 800px;
-    }
-    #ser-section h1 {
-      background-color: #009900;
-      color: #fff;
-    }
+        header p {
+            margin: 10px 0 0;
+            font-size: 0.9em;
+        }
 
-    /* SUR 섹션 스타일 */
-    #sur-section {
-      background-color: #ffffff; /* SUR 배경 */
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      margin: 20px auto;
-      max-width: 800px;
-    }
-    #sur-section h1 {
-      background-color: #495057;
-      color: #fff;
-    }
+        nav {
+            margin-top: 60px; /* 헤더 아래 위치 */
+            text-align: center;
+            background-color: #e9ecef;
+            padding: 10px 0;
+        }
 
-    /* PO 섹션 스타일 */
-    #po-section {
-      background-color: #ffffff; /* PO 배경 */
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      margin: 20px auto;
-      max-width: 800px;
-    }
-    #po-section h1 {
-      background-color: #495057;
-      color: #fff;
-    }
-  </style>
+        nav a {
+            margin: 0 15px;
+            font-size: 0.9em;
+            color: #495057;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #343a40;
+        }
+
+        section {
+            padding: 100px 20px;
+            margin: 20px auto;
+            max-width: 800px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        section h2 {
+            margin-top: 0;
+            font-size: 1.5em;
+            color: #343a40;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #495057;
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
-  <!-- FA 섹션 -->
-  <section id="fa-section">
-    <h1>지하철 정보 검색 및 즐겨찾기</h1>
-    <div class="fa-container">
-      <!-- 검색 영역 -->
-      <div class="fa-search-container">
-        <label for="fa-station-search" class="fa-label">역 이름 검색:</label>
-        <input type="text" id="fa-station-search" class="fa-input" placeholder="예: 강남역">
-        <button id="fa-search-button" class="fa-button">검색</button>
-        <button id="fa-add-favorite-button" class="fa-button">즐겨찾기에 추가</button>
-      </div>
-  
-      <!-- 즐겨찾기 영역 -->
-      <div class="fa-favorites-container" id="fa-favorites-container">
-        <h3>즐겨찾기</h3>
-        <p>즐겨찾은 역이 여기에 표시됩니다.</p>
-      </div>
-  
-      <!-- 검색 결과 영역 -->
-      <div class="fa-result">
-        <h3>검색 결과</h3>
-        <div id="fa-result">검색 결과가 여기에 표시됩니다.</div>
-      </div>
-  
-      <!-- 광고 영역 -->
-      <div class="fa-ad-container" id="fa-ad-container">
-        <h3>맞춤형 광고</h3>
-        <p id="fa-ad-content">광고가 여기에 표시됩니다.</p>
-      </div>
-    </div>
-  
-    <script>
-      // JavaScript 로직은 요청하신 코드 그대로 사용합니다.
-      let faJsonData;
-  
-      // JSON 파일 로드
-      fetch('./승객_예상_데이터.json')
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(data => {
-          faJsonData = data;
-          console.log("JSON 데이터 로드 성공:", faJsonData);
-        })
-        .catch(error => console.error("JSON 데이터 로드 실패:", error));
-  
-      // 현재 요일과 시간대 계산 함수
-      function faGetCurrentDayAndTimeSlot() {
-        const now = new Date();
-        const days = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
-        const day = days[now.getDay()];
-        const hour = now.getHours();
-        const timeSlot = `${hour.toString().padStart(2, '0')}-${(hour + 1).toString().padStart(2, '0')}시간대`;
-        return { day, timeSlot };
-      }
-  
-      // 즐겨찾기 데이터
-      let faFavorites = [];
-  
-      // 즐겨찾기 업데이트 함수
-      function faUpdateFavorites() {
-        const faFavoritesContainer = document.getElementById('fa-favorites-container');
-        faFavoritesContainer.innerHTML = '<h3>즐겨찾기</h3>';
-  
-        faFavorites.forEach((station, index) => {
-          const buttonWrapper = document.createElement('div');
-          buttonWrapper.style.marginBottom = '10px';
-  
-          const button = document.createElement('button');
-          button.textContent = station;
-          button.className = "fa-button";
-          button.addEventListener('click', () => {
-            document.getElementById('fa-station-search').value = station;
-            document.getElementById('fa-search-button').click();
-          });
-  
-          const removeButton = document.createElement('button');
-          removeButton.textContent = '❌';
-          removeButton.className = "fa-button";
-          removeButton.addEventListener('click', () => {
-            faFavorites.splice(index, 1);
-            faUpdateFavorites();
-          });
-  
-          buttonWrapper.appendChild(button);
-          buttonWrapper.appendChild(removeButton);
-          faFavoritesContainer.appendChild(buttonWrapper);
+
+<header>
+    <h1>지하철톡톡</h1>
+    <p>아래 기능 이름을 클릭하면 해당 기능으로 이동합니다</p>
+</header>
+
+<nav>
+    <a href="#ad-favorites">광고 및 즐겨찾기</a>
+    <a href="#elderly-seats">노약자좌석 개수 조정</a>
+    <a href="#search-feature">검색기능</a>
+    <a href="#survey">설문조사</a>
+    <a href="#anonymous-board">익명게시판</a>
+    <a href="#faq">자주묻는질문</a>
+    <a href="#etiquette">에티켓 홍보</a>
+</nav>
+
+<section id="ad-favorites">
+    <h2>광고 및 즐겨찾기</h2>
+    <p>이곳은 광고 및 즐겨찾기 기능이 포함된 섹션입니다.</p>
+</section>
+
+<section id="elderly-seats">
+    <h2>노약자좌석 개수 조정</h2>
+    <p>이곳은 노약자 좌석 개수 조정 섹션입니다.</p>
+</section>
+
+<section id="search-feature">
+    <h2>검색기능</h2>
+    <p>이곳은 검색기능 섹션입니다.</p>
+</section>
+
+<section id="survey">
+    <h2>설문조사</h2>
+    <p>이곳은 설문조사 섹션입니다.</p>
+</section>
+
+<section id="anonymous-board">
+    <h2>익명게시판</h2>
+    <p>이곳은 익명게시판 섹션입니다.</p>
+</section>
+
+<section id="faq">
+    <h2>자주묻는질문</h2>
+    <p>이곳은 자주묻는질문 섹션입니다.</p>
+</section>
+
+<section id="etiquette">
+    <h2>에티켓 홍보</h2>
+    <p>이곳은 에티켓 홍보 섹션입니다.</p>
+</section>
+
+<footer>
+    <p>© 2024 지하철톡톡</p>
+</footer>
+
+<script>
+    // 스크롤 애니메이션 처리
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const target = document.querySelector(this.getAttribute('href'));
+            target.scrollIntoView({
+                behavior: 'smooth'
+            });
         });
-      }
-  
-      // 즐겨찾기 추가 버튼 이벤트
-      document.getElementById('fa-add-favorite-button').addEventListener('click', () => {
-        const stationName = document.getElementById('fa-station-search').value.trim();
-  
-        if (!stationName) {
-          alert('역 이름을 입력해주세요!');
-          return;
-        }
-        if (faFavorites.includes(stationName)) {
-          alert('이미 즐겨찾기에 추가된 역입니다!');
-          return;
-        }
-        if (faFavorites.length >= 3) {
-          alert('즐겨찾기는 최대 3개까지만 추가할 수 있습니다.');
-          return;
-        }
-  
-        faFavorites.push(stationName);
-        faUpdateFavorites();
-      });
-  
-      // 검색 버튼 클릭 이벤트
-      document.getElementById('fa-search-button').addEventListener('click', () => {
-        const stationName = document.getElementById('fa-station-search').value.trim();
-  
-        if (!stationName) {
-          document.getElementById('fa-result').textContent = "역 이름을 입력해주세요.";
-          return;
-        }
-  
-        if (!faJsonData) {
-          document.getElementById('fa-result').textContent = "JSON 데이터가 아직 로드되지 않았습니다.";
-          return;
-        }
-  
-        // 현재 요일과 시간대 계산
-        const { day, timeSlot } = faGetCurrentDayAndTimeSlot();
-  
-        // JSON 데이터 필터링
-        const results = faJsonData.filter(item =>
-          item.역명 === stationName && item.요일 === day
-        );
-  
-        if (results.length === 0) {
-          document.getElementById('fa-result').textContent = "해당 조건에 맞는 데이터가 없습니다.";
-          return;
-        }
-  
-        // 시간대 데이터 추출
-        const output = results.map(item => ({
-          유형: item.승객유형,
-          인원수: item[timeSlot] || "데이터 없음"
-        }));
-  
-        // 결과 표시
-        let resultHtml = `<strong>${stationName}</strong> (${day}, ${timeSlot}):<br>`;
-        output.forEach(item => {
-          resultHtml += `- ${item.유형}: ${item.인원수}<br>`;
-        });
-        document.getElementById('fa-result').innerHTML = resultHtml;
-  
-        // 맞춤형 광고 표시
-        const highestType = output.reduce((a, b) => {
-          if (a && b) return a.인원수 > b.인원수 ? a : b;
-          return b;
-        }, null)?.유형;
-  
-        const ads = {
-          일반: "일반인을 위한 지하철 안전 캠페인 광고",
-          어린이: "어린이를 위한 지하철 예절 광고",
-          청소년: "청소년을 위한 특별 프로모션 광고"
-        };
-  
-        const faAdContent = document.getElementById('fa-ad-content');
-        faAdContent.textContent = ads[highestType] || "광고 데이터가 없습니다.";
-  
-        // 광고 이미지 표시
-        const adImages = {
-          일반: ["./img/일반광고-1.png", "./img/일반광고-2.png"],
-          어린이: ["./img/어린이광고-1.png", "./img/어린이광고-2.png"],
-          청소년: ["./img/청소년광고-1.png", "./img/청소년광고-2.png"]
-        };
-  
-        if (highestType && adImages[highestType]) {
-          const randomImage = adImages[highestType][Math.floor(Math.random() * adImages[highestType].length)];
-          const adImageElement = document.createElement('img');
-          adImageElement.src = randomImage;
-          adImageElement.alt = `${highestType} 광고 이미지`;
-          adImageElement.style.maxWidth = "100%";
-  
-          // 기존 이미지 제거 후 새로운 이미지 추가
-          const existingImage = faAdContent.nextElementSibling;
-          if (existingImage) {
-            existingImage.remove();
-          }
-          faAdContent.insertAdjacentElement('afterend', adImageElement);
-        }
-      });
-    </script>
-    <!-- FA 기능 추가 -->
-  </section>
+    });
+</script>
 
-  <!-- EL 섹션 -->
-  <section id="el-section">
-    <h1>노약자 좌석 수 검색</h1>
-    <p>이곳은 EL 섹션입니다.</p>
-    <!-- EL 기능 추가 -->
-  </section>
-
-  <!-- SER 섹션 -->
-  <section id="ser-section">
-    <h1>지하철 검색</h1>
-    <p>이곳은 SER 섹션입니다.</p>
-    <!-- SER 기능 추가 -->
-  </section>
-
-  <!-- SUR 섹션 -->
-  <section id="sur-section">
-    <h1>설문조사</h1>
-    <p>이곳은 SUR 섹션입니다.</p>
-    <!-- SUR 기능 추가 -->
-  </section>
-
-  <!-- PO 섹션 -->
-  <section id="po-section">
-    <h1>익명 게시판</h1>
-    <p>이곳은 PO 섹션입니다.</p>
-    <!-- PO 기능 추가 -->
-  </section>
 </body>
 </html>
