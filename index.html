@@ -1170,13 +1170,13 @@ po
 
                 const postContent = document.createElement("div");
                 postContent.classList.add("po-content");
-                postContent.textContent = `익명글 ${post.id}: ${post.content}`;
+                postContent.textContent = `게시글 ${post.id}: ${post.content}`;
                 postDiv.appendChild(postContent);
 
                 // 댓글 입력창
                 const commentInput = document.createElement("textarea");
                 commentInput.classList.add("po-textarea");
-                commentInput.placeholder = "댓글을 작성해보세요...";
+                commentInput.placeholder = "댓글을 작성해보세요.";
                 postDiv.appendChild(commentInput);
 
                 const commentButton = document.createElement("button");
