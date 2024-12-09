@@ -514,55 +514,55 @@ fa
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f0f0f0; /* 전체 배경 회색 */
+            background-color: #e9ecef; /* 회색 배경 */
             color: #333;
         }
-    
+
         h1 {
             text-align: center;
             background-color: #495057; /* 짙은 회색 */
-            color: #ffffff; /* 흰색 텍스트 */
+            color: #fff;
             padding: 20px;
             margin: 0;
             font-size: 24px;
         }
-    
-        .ser-container {
-            max-width: 800px;
+
+        #ser-search-box {
             margin: 20px auto;
+            text-align: center;
+            max-width: 800px;
             padding: 15px;
             background-color: #ffffff; /* 흰색 배경 */
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 */
             border-radius: 8px;
-            text-align: center;
         }
-    
-        .ser-input {
+
+        #ser-search-input {
             width: 60%;
             padding: 10px;
             font-size: 16px;
-            border: 1px solid #ccc;
+            border: 1px solid #ced4da;
             border-radius: 5px;
             margin-right: 10px;
             box-sizing: border-box;
         }
-    
-        .ser-button {
+
+        #ser-search-button {
             padding: 10px 20px;
-            background-color: #666; /* 버튼 회색 */
-            color: #ffffff; /* 흰색 텍스트 */
+            background-color: #6c757d; /* 중간 회색 */
+            color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
             transition: background-color 0.3s ease;
         }
-    
-        .ser-button:hover {
-            background-color: #444; /* 버튼 호버 색상 */
+
+        #ser-search-button:hover {
+            background-color: #495057; /* 짙은 회색 */
         }
-    
-        .ser-map {
+
+        #ser-map {
             width: 90%;
             height: 400px;
             max-width: 1200px;
@@ -571,8 +571,8 @@ fa
             border-radius: 8px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
-    
-        .ser-results {
+
+        #ser-results {
             margin: 20px auto;
             padding: 15px;
             background-color: #ffffff; /* 흰색 배경 */
@@ -580,38 +580,37 @@ fa
             max-width: 800px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
-    
+
         .ser-result-item {
             margin-bottom: 15px;
             padding: 15px;
-            background-color: #f9f9f9; /* 연한 회색 */
+            background-color: #f8f9fa; /* 매우 밝은 회색 */
             border-radius: 8px;
-            border: 1px solid #ddd;
+            border: 1px solid #ced4da;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-    
+
         .ser-result-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* 강조 효과 */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
-    
+
         .ser-result-item a {
             text-decoration: none;
             color: #495057; /* 짙은 회색 */
             font-weight: bold;
         }
-    
+
         .ser-result-item a:hover {
             text-decoration: underline;
         }
-    
+
         @media (max-width: 768px) {
-            .ser-input {
+            #ser-search-input {
                 width: 50%; /* 모바일에서 입력 필드 크기 조정 */
             }
         }
     </style>
-
 </head>
 <body>
     <h1>지하철 검색</h1>
@@ -749,3 +748,4 @@ fa
     </script>
 </body>
 </html>
+
