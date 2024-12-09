@@ -30,11 +30,6 @@
             margin: 0;
         }
 
-        header p {
-            margin: 10px 0 0;
-            font-size: 0.9em;
-        }
-
         nav {
             margin-top: 60px; /* 헤더 아래 위치 */
             text-align: center;
@@ -42,16 +37,20 @@
             padding: 10px 0;
         }
 
-        nav a {
-            margin: 0 15px;
+        nav button {
+            margin: 0 10px;
             font-size: 0.9em;
-            color: #495057;
-            text-decoration: none;
-            transition: color 0.3s;
+            padding: 10px 15px;
+            border: none;
+            background-color: #495057;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
-        nav a:hover {
-            color: #343a40;
+        nav button:hover {
+            background-color: #343a40;
         }
 
         section {
@@ -85,19 +84,50 @@
 
 <header>
     <h1>지하철톡톡</h1>
-    <p>아래 기능 이름을 클릭하면 해당 기능으로 이동합니다</p>
 </header>
 
 <nav>
-    <a href="#ad-favorites">광고 및 즐겨찾기</a>
-    <a href="#elderly-seats">노약자좌석 개수 조정</a>
-    <a href="#search-feature">검색기능</a>
-    <a href="#survey">설문조사</a>
-    <a href="#anonymous-board">익명게시판</a>
-    <a href="#faq">자주묻는질문</a>
-    <a href="#etiquette">에티켓 홍보</a>
+    <button id="btn-ad-favorites">광고 및 즐겨찾기</button>
+    <button id="btn-elderly-seats">노약자좌석 개수 조정</button>
+    <button id="btn-search-feature">검색기능</button>
+    <button id="btn-survey">설문조사</button>
+    <button id="btn-anonymous-board">익명게시판</button>
+    <button id="btn-faq">자주묻는질문</button>
+    <button id="btn-etiquette">에티켓 홍보</button>
 </nav>
-  
+
+<footer>
+    &copy; 2024 지하철톡톡
+</footer>
+
+<script>
+    // 버튼 클릭 이벤트를 추가하여 부드러운 스크롤 기능 구현
+    document.getElementById('btn-ad-favorites').addEventListener('click', () => {
+        document.getElementById('ad-favorites').scrollIntoView({ behavior: 'smooth' });
+    });
+    document.getElementById('btn-elderly-seats').addEventListener('click', () => {
+        document.getElementById('elderly-seats').scrollIntoView({ behavior: 'smooth' });
+    });
+    document.getElementById('btn-search-feature').addEventListener('click', () => {
+        document.getElementById('search-feature').scrollIntoView({ behavior: 'smooth' });
+    });
+    document.getElementById('btn-survey').addEventListener('click', () => {
+        document.getElementById('survey').scrollIntoView({ behavior: 'smooth' });
+    });
+    document.getElementById('btn-anonymous-board').addEventListener('click', () => {
+        document.getElementById('anonymous-board').scrollIntoView({ behavior: 'smooth' });
+    });
+    document.getElementById('btn-faq').addEventListener('click', () => {
+        document.getElementById('faq').scrollIntoView({ behavior: 'smooth' });
+    });
+    document.getElementById('btn-etiquette').addEventListener('click', () => {
+        document.getElementById('etiquette').scrollIntoView({ behavior: 'smooth' });
+    });
+</script>
+
+</body>
+</html>
+
 fa
 <section id="ad-favorites">
 <!DOCTYPE html>
